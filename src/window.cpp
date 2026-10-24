@@ -1,4 +1,3 @@
-#include "src/input/threaded_input.hpp"
 #include <src/window.hpp>
 
 #include <src/input/hotkey_listener_evdev.hpp>
