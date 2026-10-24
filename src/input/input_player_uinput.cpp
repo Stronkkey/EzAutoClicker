@@ -188,7 +188,7 @@ std::unique_ptr<EzAutoClicker::InputPlayerUInput> EzAutoClicker::create_input_pl
 	if (!uinput_device.successful)
 		return nullptr;
 
-	auto uinput_clicker = std::make_unique<EzAutoClicker::InputPlayerUInput>();
+	auto uinput_clicker = std::make_unique<InputPlayerUInput>();
 	uinput_clicker->set_mouse_file_descriptor(uinput_device.mouse_fd);
 	uinput_clicker->set_keyboard_file_descriptor(uinput_device.keyboard_fd);
 	uinput_clicker->initialize();

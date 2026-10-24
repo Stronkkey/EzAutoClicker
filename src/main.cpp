@@ -49,10 +49,6 @@ SessionType get_session_type() {
 	return x11_display_env ? SessionType::X11 : SessionType::INVALID;
 }
 
-std::unique_ptr<EzAutoClicker::InputPlayerUInput> create_input_player_uinput() {
-	return EzAutoClicker::create_input_player_uinput();
-}
-
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
 std::unique_ptr<EzAutoClicker::InputPlayerX11> create_input_player_x11() {
@@ -65,6 +61,25 @@ std::unique_ptr<EzAutoClicker::InputPlayerX11> create_input_player_x11() {
 }
 
 #endif
+
+std::unique_ptr<EzAutoClicker::InputPlayer> create_input_player_from_session_type(SessionType session_type) {
+	auto input_player_uinput = EzAutoClicker::create_input_player_uinput();
+
+	if (input_player_uinput)
+		return input_player_uinput;
+
+	#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+	if (session_type == SessionType::X11 || session_type == SessionType::WAYLAND_WITH_XWAYLAND) {
+		auto input_player_x11 = create_input_player_x11();
+		if (input_player_x11)
+			return input_player_x11;
+	}
+
+	#endif
+
+	return nullptr;
+}
 
 std::unique_ptr<EzAutoClicker::HotkeyListener> create_hotkey_listener_evdev() {
 	return std::make_unique<EzAutoClicker::HotkeyListenerEvdev>();
@@ -132,21 +147,18 @@ int main(int argc, char *argv[]) {
 	std::unique_ptr<EzAutoClicker::InputPlayer> input_player = nullptr;
 	std::unique_ptr<EzAutoClicker::HotkeyListener> hotkey_listener = nullptr;
 	SessionType session_type = get_session_type();
-	bool running_as_root = is_running_as_root();
-	bool player_created = false;
 
-	if (running_as_root) {
-		input_player = create_input_player_uinput();
+	if (is_running_as_root()) {
+		auto input_player_uinput= EzAutoClicker::create_input_player_uinput();
+
+		if (input_player_uinput)
+			input_player = std::move(input_player_uinput);
 		hotkey_listener = create_hotkey_listener_evdev();
 		drop_root_privileges();
 	}
 
 	if (!input_player)
-		if (session_type == SessionType::X11)
-			input_player = create_input_player_x11();
-
-	if (!input_player)
-		input_player = create_input_player_uinput();
+		input_player = create_input_player_from_session_type(session_type);
 
 	if (!hotkey_listener)
 		hotkey_listener = create_hotkey_listener_evdev();

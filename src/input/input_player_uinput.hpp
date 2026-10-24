@@ -117,6 +117,6 @@ public:
 	void send_input(const Input &input) override;
 };
 
-std::unique_ptr<EzAutoClicker::InputPlayerUInput> create_input_player_uinput();
+std::unique_ptr<InputPlayerUInput> create_input_player_uinput();
 
 }
