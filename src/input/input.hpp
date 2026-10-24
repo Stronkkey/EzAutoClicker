@@ -24,7 +24,7 @@ struct Input {
 		LEFT, ///< Left mouse button.
 		MIDDLE, ///< Middle mouse button (wheel click).
 		RIGHT, ///< Right mouse button.
-		UNKNOWN, ///< Unspecified or unsupported button.
+		UNKNOWN ///< Unspecified or unsupported button.
 	};
 
 	MOUSE_BUTTON button;
