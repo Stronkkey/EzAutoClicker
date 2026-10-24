@@ -2,7 +2,7 @@
  * This file is part of EzAutoClicker.
  *
  * EzAutoClicker is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either 
+ * the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  *
  * EzAutoClicker is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
@@ -10,7 +10,7 @@
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
- * If not, see <https://www.gnu.org/licenses/>. 
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/input/input_player_uinput.hpp>
 
@@ -134,7 +134,7 @@ void EzAutoClicker::InputPlayerUInput::send_input(const Input &input) {
 		synchronise_mouse_inputs();
 	}
 		*/
-	
+
 	send_mouse_input(EV_KEY, mouse_code, 1);
 	synchronise_mouse_inputs();
 	send_mouse_input(EV_KEY, mouse_code, 0);
@@ -177,7 +177,7 @@ uinput_devices get_mouse_keyboard_file_descriptors() {
 	file_descriptors.successful = false;
 
 	attempt_open_uinput_device("/dev/uinput", file_descriptors);
-	attempt_open_uinput_device("/dev/input/uinput", file_descriptors);	
+	attempt_open_uinput_device("/dev/input/uinput", file_descriptors);
 
 	return file_descriptors;
 }

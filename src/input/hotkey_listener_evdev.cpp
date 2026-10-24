@@ -79,7 +79,7 @@ void EzAutoClicker::HotkeyListenerEvdev::stop_reading() {
 
 	for (libevdev *device: devices) {
 		int fd = libevdev_get_fd(device);
-	
+
 		if (fd > -1)
 			close(fd);
 		libevdev_free(device);

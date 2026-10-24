@@ -41,7 +41,7 @@ void EzAutoClicker::MainWindow::on_mouse_button_selection_changed() {
 
 void EzAutoClicker::MainWindow::on_click_type_selection_changed() {
 	guint pos = click_type_dropdown->get_selected();
-	
+
 	if (pos == 0)
 		threaded_input.options.double_inputs = false;
 	else

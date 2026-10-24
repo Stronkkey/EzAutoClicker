@@ -2,7 +2,7 @@
  * This file is part of EzAutoClicker.
  *
  * EzAutoClicker is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either 
+ * the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  *
  * EzAutoClicker is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
@@ -10,7 +10,7 @@
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
- * If not, see <https://www.gnu.org/licenses/>. 
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/app.hpp>
 #include <src/window.hpp>
@@ -31,7 +31,7 @@ EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 		TOGGLE_LONG_NAME,
 		TOGGLE_SHORT_NAME,
 		TOGGLE_OPTION_DESCRIPTION);
-	
+
 	add_main_option_entry(Gio::Application::OptionType::STRING_VECTOR,
 		SEND_CLICK_LONG_NAME,
 		SEND_CLICK_SHORT_NAME,

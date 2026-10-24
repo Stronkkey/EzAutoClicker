@@ -2,7 +2,7 @@
  * This file is part of EzAutoClicker.
  *
  * EzAutoClicker is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation, either 
+ * the GNU General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  *
  * EzAutoClicker is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
@@ -10,7 +10,7 @@
  * See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
- * If not, see <https://www.gnu.org/licenses/>. 
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 #pragma once
 
@@ -41,7 +41,7 @@ private:
 	bool connected = false; ///< true once initialize() has succeeded.
 	int mouse_uinput_fd = -1; ///< File descriptor for the mouse uinput device file.
 	int keyboard_uinput_fd = -1; ///< File descriptor for the keyboard uinput device file.
-	
+
 	/**
 	 * @brief Sends a single input event to the virtual mouse device.
 	 * @param type The event type (e.g. EV_KEY).
@@ -65,7 +65,7 @@ private:
 	 * @return true if the event was written successfully, false otherwise.
 	 */
 	bool synchronise_mouse_inputs();
-	
+
 	/**
 	 * @brief Flushes pending keyboard events by sending a synchronisation event.
 	 * @return true if the event was written successfully, false otherwise.
