@@ -2,8 +2,8 @@
 #include <src/window.hpp>
 
 #include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/input_x11.hpp>
-#include <src/input/input_uinput.hpp>
+#include <src/input/input_player_x11.hpp>
+#include <src/input/input_player_uinput.hpp>
 
 #include <linux/input-event-codes.h>
 

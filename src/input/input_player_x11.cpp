@@ -1,6 +1,6 @@
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/input_x11.hpp>
+#include <src/input/input_player_x11.hpp>
 
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>

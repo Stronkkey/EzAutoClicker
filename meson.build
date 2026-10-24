@@ -10,8 +10,8 @@ sources = [
   'src/main.cpp',
   'src/window.cpp',
   'src/app.cpp',
-  'src/input/input_x11.cpp',
-  'src/input/input_uinput.cpp',
+  'src/input/input_player_x11.cpp',
+  'src/input/input_player_uinput.cpp',
   'src/input/threaded_input.cpp',
   'src/input/hotkey_listener_evdev.cpp',
   'src/input/hotkey_listener_x11.cpp'
