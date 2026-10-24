@@ -27,20 +27,20 @@ namespace EzAutoClicker {
 
 class HotkeyListenerX11 final : public HotkeyListener {
 private:
-    Display *display;
+	Display *display;
 
-    std::jthread worker_thread;
-    std::mutex mutex;
-    KeyCode key_code;
-    bool running;
+	std::jthread worker_thread;
+	std::mutex mutex;
+	KeyCode key_code;
+	bool running;
 
-    void read_inputs(std::stop_token stop_token);
+	void read_inputs(std::stop_token stop_token);
 public:
-    HotkeyListenerX11();
-    ~HotkeyListenerX11();
+	HotkeyListenerX11();
+	~HotkeyListenerX11();
 
-    int start_reading() override;
-    void stop_reading() override;
+	int start_reading() override;
+	void stop_reading() override;
 };
 
 }
