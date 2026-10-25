@@ -50,7 +50,7 @@ void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, const copy_th
 		if (send_inputs_twice)
 			send_input(copy.input);
 
-		auto wait_time = options.interval;
+		auto wait_time = copy.options.interval;
 		if (options.add_random_offset)
 			wait_time += get_random_offset();
 
