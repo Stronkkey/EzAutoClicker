@@ -40,6 +40,12 @@ private:
 
 	std::chrono::microseconds input_interval;
 
+	Gtk::CheckButton *current_location_toggle;
+	Gtk::CheckButton *pick_location_toggle;
+	Gtk::Button *pick_location_button;
+	Gtk::SpinButton *x_position_entry;
+	Gtk::SpinButton *y_position_entry;
+
 	Gtk::CheckButton *repeat_toggle;
 	Gtk::SpinButton *click_repeat_counter;
 	Gtk::CheckButton *repeal_until_stopped_toggle;
@@ -48,6 +54,7 @@ private:
 
 	void on_mouse_button_selection_changed();
 	void on_click_type_selection_changed();
+	void on_pick_location_button_pressed();
 	void on_repeat_button_pressed();
 
 	void update_interval_from_entries();

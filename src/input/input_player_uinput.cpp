@@ -120,32 +120,20 @@ void EzAutoClicker::InputPlayerUInput::send_input(const Input &input) {
 		return;
 
 	int mouse_code = mouse_button_to_code(input.button);
-	/*
-	if (input.use_global_mouse_position) {
+
+	if (input.use_set_mouse_location) {
 		send_mouse_input(EV_REL, REL_X, -9999);
 		send_mouse_input(EV_REL, REL_Y, -9999);
 		synchronise_mouse_inputs();
-		send_mouse_input(EV_REL, REL_X, 500);
-		send_mouse_input(EV_REL, REL_Y, 500);
-		synchronise_mouse_inputs();
-	} else if (input.mouse_x_offset != 0 && input.mouse_y_offset != 0) {
-		send_mouse_input(EV_REL, REL_X, input.mouse_x_offset);
-		send_mouse_input(EV_REL, REL_Y, input.mouse_y_offset);
+		send_mouse_input(EV_REL, REL_X, input.mouse_x_position);
+		send_mouse_input(EV_REL, REL_Y, input.mouse_y_position);
 		synchronise_mouse_inputs();
 	}
-		*/
 
 	send_mouse_input(EV_KEY, mouse_code, 1);
 	synchronise_mouse_inputs();
 	send_mouse_input(EV_KEY, mouse_code, 0);
 	synchronise_mouse_inputs();
-
-	/*
-	if (input.mouse_x_offset != 0 && input.mouse_y_offset != 0) {
-		send_mouse_input(EV_REL, REL_X, -input.mouse_x_offset);
-		send_mouse_input(EV_REL, REL_Y, -input.mouse_y_offset);
-		synchronise_mouse_inputs();
-	}*/
 }
 
 struct uinput_devices {

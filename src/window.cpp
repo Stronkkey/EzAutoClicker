@@ -21,6 +21,12 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 	mouse_button_dropdown = builder->get_widget<Gtk::DropDown>("mouse_button_dropdown");
 	click_type_dropdown = builder->get_widget<Gtk::DropDown>("click_type_dropdown");
 
+	current_location_toggle = builder->get_widget<Gtk::CheckButton>("current_location_toggle");
+	pick_location_toggle = builder->get_widget<Gtk::CheckButton>("pick_location_toggle");
+	pick_location_button = builder->get_widget<Gtk::Button>("pick_location_button");
+	x_position_entry = builder->get_widget<Gtk::SpinButton>("x_position_entry");
+	y_position_entry = builder->get_widget<Gtk::SpinButton>("y_position_entry");
+
 	repeal_until_stopped_toggle = builder->get_widget<Gtk::CheckButton>("repeal_until_stopped_toggle");
 	click_repeat_counter = builder->get_widget<Gtk::SpinButton>("click_repeat_counter");
 	repeat_toggle = builder->get_widget<Gtk::CheckButton>("repeat_toggle");
@@ -50,6 +56,10 @@ void EzAutoClicker::MainWindow::on_click_type_selection_changed() {
 		threaded_input.options.send_inputs_twice = false;
 	else
 		threaded_input.options.send_inputs_twice = true;
+}
+
+void EzAutoClicker::MainWindow::on_pick_location_button_pressed() {
+	// Intentionally left blank
 }
 
 void EzAutoClicker::MainWindow::on_repeat_button_pressed() {
@@ -102,6 +112,26 @@ void EzAutoClicker::MainWindow::create_gui() {
 	click_type_dropdown->property_selected().signal_changed().connect(
 		sigc::mem_fun(*this,
 		&MainWindow::on_click_type_selection_changed));
+
+	current_location_toggle->signal_toggled().connect([this]{
+		threaded_input.input.use_set_mouse_location = false;
+	});
+
+	pick_location_toggle->signal_toggled().connect([this]{
+		threaded_input.input.use_set_mouse_location = true;
+	});
+
+	pick_location_button->signal_clicked().connect(
+		sigc::mem_fun(*this,
+		&MainWindow::on_pick_location_button_pressed));
+
+	x_position_entry->signal_value_changed().connect([this]{
+		threaded_input.input.mouse_x_position = x_position_entry->get_value_as_int();
+	});
+
+	y_position_entry->signal_value_changed().connect([this]{
+		threaded_input.input.mouse_y_position = y_position_entry->get_value_as_int();
+	});
 
 	repeat_toggle->signal_toggled().connect(
 		sigc::mem_fun(*this,

@@ -52,8 +52,8 @@ void EzAutoClicker::InputPlayerX11::send_input(const Input &input) {
 	if (x11_button_number == 0)
 		return;
 
-	if (input.use_global_mouse_position)
-		XTestFakeMotionEvent(display, -1, input.mouse_x_offset, input.mouse_y_offset, CurrentTime);
+	if (input.use_set_mouse_location)
+		XTestFakeMotionEvent(display, -1, input.mouse_x_position, input.mouse_y_position, CurrentTime);
 
     XTestFakeButtonEvent(display, x11_button_number, True, CurrentTime);
 	XTestFakeButtonEvent(display, x11_button_number, False, CurrentTime);
