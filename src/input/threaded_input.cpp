@@ -51,7 +51,7 @@ void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, const copy_th
 			send_input(copy.input);
 
 		auto wait_time = copy.options.interval;
-		if (options.add_random_offset)
+		if (copy.options.add_random_offset)
 			wait_time += get_random_offset();
 
 		auto lock = std::unique_lock(mutex);
