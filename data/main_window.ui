@@ -305,6 +305,7 @@ Double</property>
                                                       </object>
                                                     </property>
                                                     <property name="margin-end">4</property>
+                                                    <property name="numeric">True</property>
                                                   </object>
                                                 </child>
                                               </object>
@@ -343,6 +344,7 @@ Double</property>
                                                       </object>
                                                     </property>
                                                     <property name="margin-end">4</property>
+                                                    <property name="numeric">True</property>
                                                   </object>
                                                 </child>
                                               </object>
@@ -415,6 +417,7 @@ Double</property>
                                                       </object>
                                                     </property>
                                                     <property name="margin-end">4</property>
+                                                    <property name="numeric">True</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -445,4 +448,6 @@ Double</property>
       </object>
     </child>
   </object>
+  <object class="GtkShortcut"/>
+  <object class="GtkShortcutController"/>
 </interface>
