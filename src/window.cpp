@@ -25,6 +25,10 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 	click_repeat_counter = builder->get_widget<Gtk::SpinButton>("click_repeat_counter");
 	repeat_toggle = builder->get_widget<Gtk::CheckButton>("repeat_toggle");
 
+	threaded_input.on_autostopped.connect([this]{
+		stop_clicker();
+	});
+
 	create_gui();
 }
 
@@ -43,16 +47,16 @@ void EzAutoClicker::MainWindow::on_click_type_selection_changed() {
 	guint pos = click_type_dropdown->get_selected();
 
 	if (pos == 0)
-		threaded_input.options.double_inputs = false;
+		threaded_input.options.send_inputs_twice = false;
 	else
-		threaded_input.options.double_inputs = true;
+		threaded_input.options.send_inputs_twice = true;
 }
 
 void EzAutoClicker::MainWindow::on_repeat_button_pressed() {
 	if (repeal_until_stopped_toggle->get_active())
-		threaded_input.options.infinitly_repeating = true;
+		threaded_input.options.repeat_until_stopped = true;
 	else
-		threaded_input.options.infinitly_repeating = false;
+		threaded_input.options.repeat_until_stopped = false;
 }
 
 void EzAutoClicker::MainWindow::update_interval_from_entries() {

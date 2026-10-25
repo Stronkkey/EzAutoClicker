@@ -6,7 +6,6 @@
 EzAutoClicker::ThreadedInput::ThreadedInput() : mutex(), condition_variable() {
 	worker_thread = {};
 	running = false;
-	current_repeat_count = 0;
 
 	input_player = nullptr;
 	input = {.button = Input::MOUSE_BUTTON::LEFT};
@@ -14,10 +13,9 @@ EzAutoClicker::ThreadedInput::ThreadedInput() : mutex(), condition_variable() {
 	options.interval = std::chrono::milliseconds(100);
 	options.random_offset_span = std::chrono::milliseconds(0);
 	options.repeat_until = 1;
-	current_repeat_count = 0;
-	options.double_inputs = false;
-	options.enable_random_offset = false;
-	options.infinitly_repeating = true;
+	options.send_inputs_twice = false;
+	options.add_random_offset = false;
+	options.repeat_until_stopped = true;
 }
 
 EzAutoClicker::ThreadedInput::~ThreadedInput() {
@@ -34,33 +32,38 @@ EzAutoClicker::ThreadedInput::duration_type EzAutoClicker::ThreadedInput::get_ra
 	return duration_type(distribution(rng));
 }
 
-void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token) {
-	auto next = std::chrono::steady_clock::now();
-	while (!stop_token.stop_requested()) {
-		bool finished_repeating = ++current_repeat_count > options.repeat_until;
-		if (!options.infinitly_repeating && finished_repeating)
-			break;
+void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, const copy_thread &copy) {
+	long long current_repeat_count = 0;
+	long long repeat_until = copy.options.repeat_until;
+	bool repeat_until_stopped = copy.options.repeat_until_stopped;
+	bool send_inputs_twice = copy.options.send_inputs_twice;
 
-		send_click();
-		next += options.interval;
-		if (options.enable_random_offset)
-			next += get_random_offset();
+	while (!stop_token.stop_requested()) {
+		bool finished_repeating = ++current_repeat_count > repeat_until;
+		if (!repeat_until_stopped && finished_repeating) {
+			stop();
+			on_autostopped.emit();
+			break;
+		}
+
+		send_input(copy.input);
+		if (send_inputs_twice)
+			send_input(copy.input);
+
+		auto wait_time = options.interval;
+		if (options.add_random_offset)
+			wait_time += get_random_offset();
 
 		auto lock = std::unique_lock(mutex);
-		condition_variable.wait_until(lock, stop_token, next, [] {
+		condition_variable.wait_for(lock, stop_token, wait_time, [] {
 			return false;
 		});
 	}
-
-	stop();
 }
 
-void EzAutoClicker::ThreadedInput::send_click() {
+void EzAutoClicker::ThreadedInput::send_input(const Input &input) {
 	if (!input_player)
 		return;
-
-	if (options.double_inputs)
-		input_player->send_input(input);
 	input_player->send_input(input);
 }
 
@@ -69,9 +72,12 @@ void EzAutoClicker::ThreadedInput::start() {
 		return;
 
 	running = true;
-
-	worker_thread = std::jthread([this](std::stop_token stop_token) {
-		run(stop_token);
+	copy_thread copy;
+	copy.input = input;
+	copy.input_player = input_player;
+	copy.options = options;
+	worker_thread = std::jthread([this, copy](std::stop_token stop_token) {
+		run(stop_token, copy);
 	});
 }
 
@@ -80,6 +86,5 @@ void EzAutoClicker::ThreadedInput::stop() {
 		return;
 
 	running = false;
-	current_repeat_count = 0;
 	worker_thread.request_stop();
 }

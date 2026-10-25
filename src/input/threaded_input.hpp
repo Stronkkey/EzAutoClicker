@@ -16,7 +16,7 @@
 
 #include <src/input/input.hpp>
 
-#include <sigc++/sigc++.h>
+#include <glibmm.h>
 
 #include <chrono>
 #include <condition_variable>
@@ -28,30 +28,39 @@ namespace EzAutoClicker {
 class InputPlayer;
 
 class ThreadedInput {
-private:
+public:
 	using duration_type = std::chrono::microseconds;
 
+	struct Options {
+		duration_type interval;
+		duration_type random_offset_span;
+		long long repeat_until;
+		bool send_inputs_twice;
+		bool add_random_offset;
+		bool repeat_until_stopped;
+	};
+private:
 	std::mutex mutex;
 	std::condition_variable_any condition_variable;
 	std::jthread worker_thread;
 	bool running;
-	long long current_repeat_count;
+
+	struct copy_thread {
+		Options options;
+		Input input;
+		InputPlayer *input_player;
+	};
 
 	duration_type get_random_offset() const;
 
-	void run(std::stop_token stop_token);
-	void send_click();
+	void run(std::stop_token stop_token, const copy_thread &copy);
+	void send_input(const Input &p_input);
 public:
 	InputPlayer *input_player;
 	Input input;
-	struct {
-		duration_type interval;
-		duration_type random_offset_span;
-		long long repeat_until;
-		bool double_inputs;
-		bool enable_random_offset;
-		bool infinitly_repeating;
-	} options;
+	Options options;
+
+	Glib::Dispatcher on_autostopped;
 
 	ThreadedInput();
 	~ThreadedInput();
