@@ -81,8 +81,27 @@ std::unique_ptr<EzAutoClicker::InputPlayer> create_input_player_from_session_typ
 	return nullptr;
 }
 
-std::unique_ptr<EzAutoClicker::HotkeyListener> create_hotkey_listener_evdev() {
+std::unique_ptr<EzAutoClicker::HotkeyListenerEvdev> create_hotkey_listener_evdev() {
 	return std::make_unique<EzAutoClicker::HotkeyListenerEvdev>();
+}
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+std::unique_ptr<EzAutoClicker::HotkeyListenerX11> create_hotkey_listener_x11() {
+	return std::make_unique<EzAutoClicker::HotkeyListenerX11>();
+}
+
+#endif
+
+std::unique_ptr<EzAutoClicker::HotkeyListener> create_hotkey_listener_from_session_type(SessionType session_type) {
+	#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+	if (session_type == SessionType::X11)
+		return create_hotkey_listener_x11();
+
+	#endif
+
+	return create_hotkey_listener_evdev();
 }
 
 int get_running_user_id() {
@@ -161,7 +180,7 @@ int main(int argc, char *argv[]) {
 		input_player = create_input_player_from_session_type(session_type);
 
 	if (!hotkey_listener)
-		hotkey_listener = create_hotkey_listener_evdev();
+		hotkey_listener = create_hotkey_listener_from_session_type(session_type);
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
 		input_player.get(),
