@@ -28,9 +28,9 @@ struct Input {
 	};
 
 	MOUSE_BUTTON button;
-	bool use_global_mouse_position = true;
-	int mouse_x_offset = 100;
-	int mouse_y_offset = 100;
+	bool use_global_mouse_position = false;
+	int mouse_x_offset = 0;
+	int mouse_y_offset = 0;
 };
 
 }
