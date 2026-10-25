@@ -60,7 +60,7 @@ public:
 	Input input;
 	Options options;
 
-	Glib::Dispatcher on_autostopped;
+	Glib::Dispatcher on_autostopping;
 
 	ThreadedInput();
 	~ThreadedInput();

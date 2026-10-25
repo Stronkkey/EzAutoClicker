@@ -41,8 +41,8 @@ void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, const copy_th
 	while (!stop_token.stop_requested()) {
 		bool finished_repeating = ++current_repeat_count > repeat_until;
 		if (!repeat_until_stopped && finished_repeating) {
+			on_autostopping.emit();
 			stop();
-			on_autostopped.emit();
 			break;
 		}
 

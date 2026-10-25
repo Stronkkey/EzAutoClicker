@@ -55,6 +55,8 @@ private:
 
 	void start_clicker();
 	void stop_clicker();
+
+	void set_sending_inputs(bool p_sending_inputs);
 public:
 	MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

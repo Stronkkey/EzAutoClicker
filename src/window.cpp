@@ -25,8 +25,8 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 	click_repeat_counter = builder->get_widget<Gtk::SpinButton>("click_repeat_counter");
 	repeat_toggle = builder->get_widget<Gtk::CheckButton>("repeat_toggle");
 
-	threaded_input.on_autostopped.connect([this]{
-		stop_clicker();
+	threaded_input.on_autostopping.connect([this]{
+		set_sending_inputs(false);
 	});
 
 	create_gui();
@@ -122,10 +122,7 @@ void EzAutoClicker::MainWindow::start_clicker() {
 	if (sending_inputs)
 		return;
 
-	start_button->set_sensitive(false);
-	stop_button->set_sensitive(true);
-
-	sending_inputs = true;
+	set_sending_inputs(true);
 	threaded_input.options.interval = input_interval;
 	threaded_input.start();
 }
@@ -134,11 +131,14 @@ void EzAutoClicker::MainWindow::stop_clicker() {
 	if (!sending_inputs)
 		return;
 
-	start_button->set_sensitive(true);
-	stop_button->set_sensitive(false);
-
-	sending_inputs = false;
+	set_sending_inputs(false);
 	threaded_input.stop();
+}
+
+void EzAutoClicker::MainWindow::set_sending_inputs(bool p_sending_inputs) {
+	sending_inputs = p_sending_inputs;
+	start_button->set_sensitive(!p_sending_inputs);
+	stop_button->set_sensitive(p_sending_inputs);
 }
 
 void EzAutoClicker::MainWindow::toggle_clicker() {
