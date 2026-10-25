@@ -13,18 +13,8 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/app.hpp>
+#include <src/app_constants.hpp>
 #include <src/window.hpp>
-
-#define APP_ID "org.Stronkkey.EzAutoClicker"
-#define APP_NAME "EzAutoClicker"
-
-#define TOGGLE_SHORT_NAME 't'
-#define TOGGLE_LONG_NAME "toggle"
-#define TOGGLE_OPTION_DESCRIPTION "Start or stop the autoclicker in the running instance"
-
-#define SEND_CLICK_SHORT_NAME 's'
-#define SEND_CLICK_LONG_NAME "send-click"
-#define SEND_CLICK_OPTION_DESCRIPTION "Send a click"
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 	add_main_option_entry(Gio::Application::OptionType::BOOL,
