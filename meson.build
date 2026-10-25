@@ -31,12 +31,9 @@ dependencies = [
   dependency('libevdev'),
 ]
 
-input_handler_exists = false
-
 if get_option('x11_input').enabled()
   dependencies += dependency('x11')
   dependencies += dependency('xtst')
-  input_handler_exists = true
   features += x11_feature
 endif
 
