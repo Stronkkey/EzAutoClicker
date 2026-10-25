@@ -70,7 +70,6 @@
                                         <property name="halign">start</property>
                                         <property name="label">hours</property>
                                         <property name="margin-end">16</property>
-                                        <property name="selectable">True</property>
                                         <layout>
                                           <property name="column">1</property>
                                           <property name="row">0</property>
@@ -118,7 +117,6 @@
                                         <property name="halign">start</property>
                                         <property name="label">seconds</property>
                                         <property name="margin-end">16</property>
-                                        <property name="selectable">True</property>
                                         <layout>
                                           <property name="column">1</property>
                                           <property name="column-span">1</property>
@@ -147,7 +145,6 @@
                                       <object class="GtkLabel">
                                         <property name="halign">start</property>
                                         <property name="label">minutes</property>
-                                        <property name="selectable">True</property>
                                         <layout>
                                           <property name="column">3</property>
                                           <property name="row">0</property>
@@ -176,7 +173,6 @@
                                         <property name="halign">start</property>
                                         <property name="label">milliseconds</property>
                                         <property name="margin-end">4</property>
-                                        <property name="selectable">True</property>
                                         <layout>
                                           <property name="column">3</property>
                                           <property name="row">1</property>
@@ -210,7 +206,6 @@
                                       <object class="GtkLabel">
                                         <property name="label">Mouse button:</property>
                                         <property name="margin-end">8</property>
-                                        <property name="selectable">True</property>
                                       </object>
                                     </child>
                                     <child>
@@ -233,7 +228,6 @@ Right</property>
                                         <property name="label">Click type:</property>
                                         <property name="margin-end">8</property>
                                         <property name="margin-start">64</property>
-                                        <property name="selectable">True</property>
                                       </object>
                                     </child>
                                     <child>
@@ -293,7 +287,6 @@ Double</property>
                                                     <property name="label">Current location</property>
                                                     <property name="margin-end">8</property>
                                                     <property name="margin-start">4</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -301,7 +294,6 @@ Double</property>
                                                     <property name="label">X</property>
                                                     <property name="margin-end">4</property>
                                                     <property name="margin-start">21</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -340,7 +332,6 @@ Double</property>
                                                   <object class="GtkLabel">
                                                     <property name="label">Y</property>
                                                     <property name="margin-end">4</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -390,7 +381,6 @@ Double</property>
                                                   <object class="GtkLabel">
                                                     <property name="label">Repeat until stopped</property>
                                                     <property name="margin-start">4</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                               </object>
@@ -412,7 +402,6 @@ Double</property>
                                                     <property name="label">Repeat</property>
                                                     <property name="margin-end">4</property>
                                                     <property name="margin-start">4</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -431,7 +420,6 @@ Double</property>
                                                 <child>
                                                   <object class="GtkLabel">
                                                     <property name="label">times</property>
-                                                    <property name="selectable">True</property>
                                                   </object>
                                                 </child>
                                               </object>
