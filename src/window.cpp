@@ -94,6 +94,8 @@ void EzAutoClicker::MainWindow::update_options() {
 	options.click.x_position = x_position_entry->get_value_as_int();
 	options.click.y_position = y_position_entry->get_value_as_int();
 	options.repeat_count = click_repeat_counter->get_value_as_int();
+	options.add_random_offset = false;
+	options.random_offset_ms = 0;
 }
 
 void EzAutoClicker::MainWindow::connect_signals() {
