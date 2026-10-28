@@ -16,16 +16,9 @@
 #include <grp.h>
 #include <pwd.h>
 
-#include <print>
-
 #include <src/app.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 #include <src/input/input_player_factory.hpp>
-
-void throw_error_and_quit(const std::string_view &error_message) {
-	std::print("{0}", error_message);
-	exit(EXIT_FAILURE);
-}
 
 int get_running_user_id() {
 	const char *sudo_env = getenv("SUDO_UID");
