@@ -16,8 +16,6 @@
 
 #include <src/input/input_player.hpp>
 
-#include <memory>
-
 struct libevdev;
 struct libevdev_uinput;
 
@@ -116,7 +114,5 @@ public:
 	 */
 	void send_input(const Input &input) override;
 };
-
-std::unique_ptr<InputPlayerUInput> create_input_player_uinput();
 
 }

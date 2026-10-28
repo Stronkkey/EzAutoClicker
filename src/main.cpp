@@ -13,10 +13,11 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/app.hpp>
-#include <src/input/input_player_uinput.hpp>
-#include <src/input/input_player_x11.hpp>
 #include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/hotkey_listener_factory.hpp>
+#include <src/input/input_player.hpp>
+#include <src/input/input_player_factory.hpp>
+#include <src/input/input_player_uinput.hpp>
 
 #include <fcntl.h>
 #include <grp.h>
@@ -27,81 +28,6 @@
 void throw_error_and_quit(const std::string_view &error_message) {
 	std::print("{0}", error_message);
 	exit(EXIT_FAILURE);
-}
-
-enum class SessionType {
-	WAYLAND,
-	X11,
-	WAYLAND_WITH_XWAYLAND,
-	INVALID ///< GUI cannot be created.
-};
-
-SessionType get_session_type() {
-	const char *x11_display_env = std::getenv("DISPLAY");
-	const char *wayland_display_env = std::getenv("WAYLAND_DISPLAY");
-
-	if (wayland_display_env) {
-		if (x11_display_env)
-			return SessionType::WAYLAND_WITH_XWAYLAND;
-		return SessionType::WAYLAND;
-	}
-
-	return x11_display_env ? SessionType::X11 : SessionType::INVALID;
-}
-
-#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-std::unique_ptr<EzAutoClicker::InputPlayerX11> create_input_player_x11() {
-	auto input_player = std::make_unique<EzAutoClicker::InputPlayerX11>();
-	input_player->initialize();
-
-	if (!input_player->is_connected())
-		return nullptr;
-	return input_player;
-}
-
-#endif
-
-std::unique_ptr<EzAutoClicker::InputPlayer> create_input_player_from_session_type(SessionType session_type) {
-	auto input_player_uinput = EzAutoClicker::create_input_player_uinput();
-
-	if (input_player_uinput)
-		return input_player_uinput;
-
-	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-	if (session_type == SessionType::X11 || session_type == SessionType::WAYLAND_WITH_XWAYLAND) {
-		auto input_player_x11 = create_input_player_x11();
-		if (input_player_x11)
-			return input_player_x11;
-	}
-
-	#endif
-
-	return nullptr;
-}
-
-std::unique_ptr<EzAutoClicker::HotkeyListenerEvdev> create_hotkey_listener_evdev() {
-	return std::make_unique<EzAutoClicker::HotkeyListenerEvdev>();
-}
-
-#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-std::unique_ptr<EzAutoClicker::HotkeyListenerX11> create_hotkey_listener_x11() {
-	return std::make_unique<EzAutoClicker::HotkeyListenerX11>();
-}
-
-#endif
-
-std::unique_ptr<EzAutoClicker::HotkeyListener> create_hotkey_listener_from_session_type(SessionType session_type) {
-	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-	if (session_type == SessionType::X11)
-		return create_hotkey_listener_x11();
-
-	#endif
-
-	return create_hotkey_listener_evdev();
 }
 
 int get_running_user_id() {
@@ -165,22 +91,21 @@ void drop_root_privileges() {
 int main(int argc, char *argv[]) {
 	std::unique_ptr<EzAutoClicker::InputPlayer> input_player = nullptr;
 	std::unique_ptr<EzAutoClicker::HotkeyListener> hotkey_listener = nullptr;
-	SessionType session_type = get_session_type();
 
 	if (is_running_as_root()) {
-		auto input_player_uinput= EzAutoClicker::create_input_player_uinput();
+		auto input_player_uinput= EzAutoClicker::InputPlayerFactory::create_input_player_uinput();
 
 		if (input_player_uinput)
 			input_player = std::move(input_player_uinput);
-		hotkey_listener = create_hotkey_listener_evdev();
+		hotkey_listener = EzAutoClicker::HotkeyListenerFactory::create_hotkey_listener_evdev();
 		drop_root_privileges();
 	}
 
 	if (!input_player)
-		input_player = create_input_player_from_session_type(session_type);
+		input_player = EzAutoClicker::InputPlayerFactory::create_compatible_input_player();
 
 	if (!hotkey_listener)
-		hotkey_listener = create_hotkey_listener_from_session_type(session_type);
+		hotkey_listener = EzAutoClicker::HotkeyListenerFactory::create_compatible_hotkey_listener();
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
 		input_player.get(),
