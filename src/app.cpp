@@ -88,11 +88,11 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 }
 
 Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
-		Input::Clicker *clicker, Input::HotkeyListener *hotkey_listener)
+		std::unique_ptr<Input::Clicker> clicker, std::unique_ptr<Input::HotkeyListener> hotkey_listener)
 {
 	auto app = Glib::make_refptr_for_instance(new EzAutoClickerApp());
-	app->clicker = clicker;
-	app->hotkey_listener = hotkey_listener;
+	app->clicker = std::move(clicker);
+	app->hotkey_listener = std::move(hotkey_listener);
 
 	return app;
 }
@@ -236,8 +236,8 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 	auto builder = Gtk::Builder::create_from_resource("/org/Stronkkey/EzAutoClicker/main_window.ui");
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
-	main_window->set_clicker(clicker);
-	main_window->set_hotkey_listener(hotkey_listener);
+	main_window->set_clicker(clicker.get());
+	main_window->set_hotkey_listener(hotkey_listener.get());
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);
 

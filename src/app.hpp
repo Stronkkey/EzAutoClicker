@@ -34,8 +34,8 @@ private:
 	void on_toggle();
 
 	MainWindow *main_window;
-	Input::Clicker *clicker;
-	Input::HotkeyListener *hotkey_listener;
+	std::unique_ptr<Input::Clicker> clicker;
+	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
 
 	struct {
 		std::optional<Input::Click::MOUSE_BUTTON> button = std::nullopt;
@@ -59,8 +59,8 @@ protected:
 	void on_activate() override;
 public:
 	static Glib::RefPtr<EzAutoClickerApp> create(
-		Input::Clicker *clicker = nullptr,
-		Input::HotkeyListener *hotkey_listener = nullptr);
+		std::unique_ptr<Input::Clicker> clicker = nullptr,
+		std::unique_ptr<Input::HotkeyListener> hotkey_listener = nullptr);
 };
 
 }
