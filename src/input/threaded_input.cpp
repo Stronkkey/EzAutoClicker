@@ -1,8 +1,9 @@
-#include "src/input/input_player_options.hpp"
-#include <src/input/input_player.hpp>
 #include <src/input/threaded_input.hpp>
 
 #include <random>
+
+#include <src/input/input_player.hpp>
+
 
 EzAutoClicker::ThreadedInput::ThreadedInput() {
 	worker_thread = {};

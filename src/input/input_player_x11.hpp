@@ -2,10 +2,10 @@
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/input_player.hpp>
-
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
+
+#include <src/input/input_player.hpp>
 
 namespace EzAutoClicker {
 

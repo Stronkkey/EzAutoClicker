@@ -16,12 +16,12 @@
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/hotkey_listener.hpp>
+#include <mutex>
+#include <thread>
 
 #include <X11/Xlib.h>
 
-#include <mutex>
-#include <thread>
+#include <src/input/hotkey_listener.hpp>
 
 namespace EzAutoClicker {
 

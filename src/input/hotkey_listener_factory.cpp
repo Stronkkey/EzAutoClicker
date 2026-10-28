@@ -13,11 +13,12 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/input/hotkey_listener_factory.hpp>
-#include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/hotkey_listener_x11.hpp>
-#include <src/session.hpp>
 
 #include <fcntl.h>
+
+#include <src/session.hpp>
+#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/hotkey_listener_x11.hpp>
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 

@@ -12,18 +12,18 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+#include <fcntl.h>
+#include <grp.h>
+#include <pwd.h>
+
+#include <print>
+
 #include <src/app.hpp>
 #include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 #include <src/input/input_player.hpp>
 #include <src/input/input_player_factory.hpp>
 #include <src/input/input_player_uinput.hpp>
-
-#include <fcntl.h>
-#include <grp.h>
-#include <pwd.h>
-
-#include <print>
 
 void throw_error_and_quit(const std::string_view &error_message) {
 	std::print("{0}", error_message);

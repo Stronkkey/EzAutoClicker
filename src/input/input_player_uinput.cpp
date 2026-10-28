@@ -14,10 +14,10 @@
  */
 #include <src/input/input_player_uinput.hpp>
 
-#include <libevdev/libevdev-uinput.h>
-
 #include <fcntl.h>
 #include <unistd.h>
+
+#include <libevdev/libevdev-uinput.h>
 
 bool EzAutoClicker::InputPlayerUInput::send_mouse_input(int type, int code, int value) {
 	return libevdev_uinput_write_event(mouse_uinput_device, type, code, value);

@@ -12,9 +12,9 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-#include <src/session.hpp>
-
 #include <cstdlib>
+
+#include <src/session.hpp>
 
 EzAutoClicker::Session::Type EzAutoClicker::Session::get_type() {
 	const char *x11_display_env = std::getenv("DISPLAY");

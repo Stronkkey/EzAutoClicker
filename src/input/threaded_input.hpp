@@ -14,14 +14,14 @@
  */
 #pragma once
 
-#include <src/input/input_player_options.hpp>
-
-#include <glibmm.h>
-
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+
+#include <glibmm.h>
+
+#include <src/input/input_player_options.hpp>
 
 namespace EzAutoClicker {
 

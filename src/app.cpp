@@ -13,6 +13,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/app.hpp>
+
 #include <src/app_constants.hpp>
 #include <src/window.hpp>
 

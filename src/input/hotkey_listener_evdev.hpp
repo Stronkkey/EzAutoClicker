@@ -14,11 +14,11 @@
  */
 #pragma once
 
-#include <src/input/hotkey_listener.hpp>
+#include <vector>
 
 #include <sigc++/sigc++.h>
 
-#include <vector>
+#include <src/input/hotkey_listener.hpp>
 
 struct input_event;
 struct libevdev;

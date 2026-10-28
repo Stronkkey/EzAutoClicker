@@ -14,17 +14,14 @@
  */
 #include <src/input/hotkey_listener_evdev.hpp>
 
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <filesystem>
+
 #include <glibmm.h>
 
 #include <libevdev/libevdev.h>
-
-#include <dirent.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-
-#include <cerrno>
-#include <filesystem>
 
 EzAutoClicker::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 	stop_reading();

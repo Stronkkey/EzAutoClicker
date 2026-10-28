@@ -1,9 +1,8 @@
 #pragma once
 
-#include "src/input/input_player_options.hpp"
-#include <src/input/input.hpp>
-
 #include <gtkmm.h>
+
+#include <src/input/input_player_options.hpp>
 
 namespace EzAutoClicker {
 

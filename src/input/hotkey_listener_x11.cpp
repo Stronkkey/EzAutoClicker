@@ -14,11 +14,11 @@
  */
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/hotkey_listener_x11.hpp>
+#include <thread>
 
 #include <X11/keysym.h>
 
-#include <thread>
+#include <src/input/hotkey_listener_x11.hpp>
 
 EzAutoClicker::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
 	display = XOpenDisplay(nullptr);
