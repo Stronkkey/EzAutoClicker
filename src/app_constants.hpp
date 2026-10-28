@@ -14,60 +14,67 @@
  */
 #pragma once
 
-#define APP_ID "org.Stronkkey.EzAutoClicker"
-#define APP_NAME "EzAutoClicker"
-#define APP_VERSION "1.0"
+#include <glibmm.h>
 
-#define NO_SHORT_NAME '\0'
+namespace EzAutoClicker {
 
-#define TOGGLE_SHORT_NAME 't'
-#define TOGGLE_LONG_NAME "toggle"
-#define TOGGLE_OPTION_DESCRIPTION "Start or stop the autoclicker in a running instance."
+const Glib::ustring APP_ID = "org.Stronkkey.EzAutoClicker";
 
-#define INTERVAL_MS_SHORT_NAME NO_SHORT_NAME
-#define INTERVAL_MS_LONG_NAME "milliseconds"
-#define INTERVAL_MS_OPTION_DESCRIPTION "Sets the interval for milliseconds."
-#define INTERVAL_MS_ARG_DESCRIPTION "NUMBER"
+const Glib::ustring APP_NAME = "EzAutoClicker";
+const Glib::ustring APP_VERSION = "1.0";
 
-#define INTERVAL_S_SHORT_NAME NO_SHORT_NAME
-#define INTERVAL_S_LONG_NAME "seconds"
-#define INTERVAL_S_OPTION_DESCRIPTION "Sets the interval for seconds."
-#define INTERVAL_S_ARG_DESCRIPTION "NUMBER"
+constexpr const char NO_SHORT_NAME = '\0';
 
-#define INTERVAL_M_SHORT_NAME NO_SHORT_NAME
-#define INTERVAL_M_LONG_NAME "minutes"
-#define INTERVAL_M_OPTION_DESCRIPTION "Sets the interval for minutes."
-#define INTERVAL_M_ARG_DESCRIPTION "NUMBER"
+constexpr const char TOGGLE_SHORT_NAME = 't';
+const Glib::ustring TOGGLE_LONG_NAME = "toggle";
+const Glib::ustring TOGGLE_OPTION_DESCRIPTION = "Start or stop the autoclicker in a running instance.";
 
-#define INTERVAL_H_SHORT_NAME NO_SHORT_NAME
-#define INTERVAL_H_LONG_NAME "hours"
-#define INTERVAL_H_OPTION_DESCRIPTION "Sets the interval for hours."
-#define INTERVAL_H_ARG_DESCRIPTION "NUMBER"
+constexpr const char INTERVAL_MS_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring INTERVAL_MS_LONG_NAME = "milliseconds";
+const Glib::ustring INTERVAL_MS_OPTION_DESCRIPTION = "Sets the interval for milliseconds.";
+const Glib::ustring INTERVAL_MS_ARG_DESCRIPTION = "NUMBER";
 
-#define MOUSE_BUTTON_SHORT_NAME NO_SHORT_NAME
-#define MOUSE_BUTTON_LONG_NAME "mouse-button"
-#define MOUSE_BUTTON_OPTION_DESCRIPTION "Set the mouse button to use."
-#define MOUSE_BUTTON_ARG_DESCRIPTION "left|middle|right"
+constexpr const char INTERVAL_S_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring INTERVAL_S_LONG_NAME = "seconds";
+const Glib::ustring INTERVAL_S_OPTION_DESCRIPTION = "Sets the interval for seconds.";
+const Glib::ustring INTERVAL_S_ARG_DESCRIPTION = "NUMBER";
 
-#define CLICK_TYPE_SHORT_NAME NO_SHORT_NAME
-#define CLICK_TYPE_LONG_NAME "click-type"
-#define CLICK_TYPE_OPTION_DESCRIPTION "Set the click type."
-#define CLICK_TYPE_ARG_DESCRIPTION "single|double"
+constexpr const char INTERVAL_M_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring INTERVAL_M_LONG_NAME = "minutes";
+const Glib::ustring INTERVAL_M_OPTION_DESCRIPTION = "Sets the interval for minutes.";
+const Glib::ustring INTERVAL_M_ARG_DESCRIPTION = "NUMBER";
 
-#define CURRENT_LOCATION_SHORT_NAME NO_SHORT_NAME
-#define CURRENT_LOCATION_LONG_NAME "use-current-location"
-#define CURRENT_LOCATION_OPTION_DESCRIPTION "Use current mouse location when sending clicks."
+constexpr const char INTERVAL_H_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring INTERVAL_H_LONG_NAME = "hours";
+const Glib::ustring INTERVAL_H_OPTION_DESCRIPTION = "Sets the interval for hours.";
+const Glib::ustring INTERVAL_H_ARG_DESCRIPTION = "NUMBER";
 
-#define PICK_LOCATION_SHORT_NAME NO_SHORT_NAME
-#define PICK_LOCATION_LONG_NAME "pick-location"
-#define PICK_LOCATION_OPTION_DESCRIPTION "Use a set mouse location when sending clicks."
-#define PICK_LOCATION_ARG_DESCRIPTION "X,Y"
+constexpr const char MOUSE_BUTTON_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring MOUSE_BUTTON_LONG_NAME = "mouse-button";
+const Glib::ustring MOUSE_BUTTON_OPTION_DESCRIPTION = "Set the mouse button to use.";
+const Glib::ustring MOUSE_BUTTON_ARG_DESCRIPTION = "left|middle|right";
 
-#define REPEAT_UNTIL_STOPPED_SHORT_NAME NO_SHORT_NAME
-#define REPEAT_UNTIL_STOPPED_LONG_NAME "repeat-until-stopped"
-#define REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION "Repeat click until stopped."
+constexpr const char CLICK_TYPE_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring CLICK_TYPE_LONG_NAME = "click-type";
+const Glib::ustring CLICK_TYPE_OPTION_DESCRIPTION = "Set the click type.";
+const Glib::ustring CLICK_TYPE_ARG_DESCRIPTION = "single|double";
 
-#define SET_REPEAT_COUNT_SHORT_NAME NO_SHORT_NAME
-#define SET_REPEAT_COUNT_LONG_NAME "repeat-count"
-#define SET_REPEAT_COUNT_OPTION_DESCRIPTION "Sets the repeat count."
-#define SET_REPEAT_COUNT_ARG_DESCRIPTION "NUMBER"
+constexpr const char CURRENT_LOCATION_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring CURRENT_LOCATION_LONG_NAME = "use-current-location";
+const Glib::ustring CURRENT_LOCATION_OPTION_DESCRIPTION = "Use current mouse location when sending clicks.";
+
+constexpr const char PICK_LOCATION_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring PICK_LOCATION_LONG_NAME = "pick-location";
+const Glib::ustring PICK_LOCATION_OPTION_DESCRIPTION = "Use a set mouse location when sending clicks.";
+const Glib::ustring PICK_LOCATION_ARG_DESCRIPTION = "X,Y";
+
+constexpr const char REPEAT_UNTIL_STOPPED_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring REPEAT_UNTIL_STOPPED_LONG_NAME = "repeat-until-stopped";
+const Glib::ustring REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION = "Repeat click until stopped.";
+
+constexpr const char SET_REPEAT_COUNT_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring SET_REPEAT_COUNT_LONG_NAME = "repeat-count";
+const Glib::ustring SET_REPEAT_COUNT_OPTION_DESCRIPTION = "Sets the repeat count.";
+const Glib::ustring SET_REPEAT_COUNT_ARG_DESCRIPTION = "NUMBER";
+
+}
