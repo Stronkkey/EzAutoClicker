@@ -16,21 +16,25 @@
 
 #include <memory>
 
-#include <src/input/input_player_uinput.hpp>
-#include <src/input/input_player_x11.hpp>
+#include <src/input/clicker_uinput.hpp>
+#include <src/input/clicker_x11.hpp>
 
 namespace EzAutoClicker {
 
-namespace InputPlayerFactory {
+namespace Input {
+
+namespace ClickerFactory {
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-std::unique_ptr<InputPlayerX11> create_input_player_x11();
+std::unique_ptr<ClickerX11> create_clicker_x11();
 
 #endif
 
-std::unique_ptr<InputPlayerUInput> create_input_player_uinput();
-std::unique_ptr<InputPlayer> create_compatible_input_player();
+std::unique_ptr<ClickerUInput> create_clicker_uinput();
+std::unique_ptr<Clicker> create_compatible_clicker();
+
+}
 
 }
 

@@ -14,10 +14,10 @@ sources = [
   'src/input/hotkey_listener_evdev.cpp',
   'src/input/hotkey_listener_factory.cpp',
   'src/input/hotkey_listener_x11.cpp',
-  'src/input/input_player_factory.cpp',
-  'src/input/input_player_uinput.cpp',
-  'src/input/input_player_x11.cpp',
-  'src/input/threaded_input.cpp',
+  'src/input/clicker_factory.cpp',
+  'src/input/clicker_uinput.cpp',
+  'src/input/clicker_x11.cpp',
+  'src/input/threaded_clicker.cpp',
 ]
 
 build_args = [

@@ -22,6 +22,8 @@
 
 namespace EzAutoClicker {
 
+namespace Input {
+
 class HotkeyListenerEvdev final : public HotkeyListener {
 	std::vector<libevdev*> devices = {};
 	std::vector<sigc::connection> watches = {};
@@ -47,5 +49,7 @@ public:
 	int start_reading() override;
 	void stop_reading() override;
 };
+
+}
 
 }

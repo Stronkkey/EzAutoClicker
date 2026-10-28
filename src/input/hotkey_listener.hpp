@@ -18,6 +18,8 @@
 
 namespace EzAutoClicker {
 
+namespace Input {
+
 class HotkeyListener {
 public:
 	virtual ~HotkeyListener() = default;
@@ -27,5 +29,7 @@ public:
 	virtual int start_reading() =0;
 	virtual void stop_reading() =0;
 };
+
+}
 
 }

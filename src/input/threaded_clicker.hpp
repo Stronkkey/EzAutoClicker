@@ -21,12 +21,14 @@
 
 #include <glibmm.h>
 
-#include <src/input/input_player.hpp>
-#include <src/input/input_player_options.hpp>
+#include <src/input/clicker.hpp>
+#include <src/input/clicker_options.hpp>
 
 namespace EzAutoClicker {
 
-class ThreadedInput {
+namespace Input {
+
+class ThreadedClicker {
 private:
 	std::mutex mutex;
 	std::condition_variable_any condition_variable;
@@ -35,20 +37,22 @@ private:
 
 	std::chrono::milliseconds get_random_offset(unsigned long random_offset_ms) const;
 
-	void run(std::stop_token stop_token, InputPlayer *input_player, const InputPlayerOptions &options);
-	void send_input(InputPlayer *input_player, const Input &p_input);
+	void run(std::stop_token stop_token, Clicker *clicker, const ClickerOptions &options);
+	void send_click(Clicker *clicker, const Click &click);
 public:
 	Glib::Dispatcher on_autostopping;
 
-	ThreadedInput();
-	~ThreadedInput();
+	ThreadedClicker();
+	~ThreadedClicker();
 
-	void start(InputPlayer *input_player, const InputPlayerOptions &options);
+	void start(Clicker *clicker, const ClickerOptions &options);
 	void stop();
 
 	constexpr bool is_running() const {
 		return running;
 	}
 };
+
+}
 
 }

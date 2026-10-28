@@ -17,16 +17,16 @@
 #include <gtkmm.h>
 
 #include <src/input/hotkey_listener.hpp>
-#include <src/input/threaded_input.hpp>
+#include <src/input/threaded_clicker.hpp>
 
 namespace EzAutoClicker {
 
 class MainWindow : public Gtk::ApplicationWindow {
 private:
-	InputPlayerOptions options;
-	ThreadedInput threaded_input;
-	InputPlayer *input_player;
-	HotkeyListener *hotkey_listener;
+	Input::ClickerOptions options;
+	Input::ThreadedClicker threaded_clicker;
+	Input::Clicker *clicker;
+	Input::HotkeyListener *hotkey_listener;
 
 	Gtk::Button *start_button;
 	Gtk::Button *stop_button;
@@ -70,17 +70,17 @@ public:
 
 	void toggle_clicker();
 
-	void set_input_player(InputPlayer *p_input_player);
-	void set_hotkey_listener(HotkeyListener *p_hotkey_listener);
+	void set_clicker(Input::Clicker *p_clicker);
+	void set_hotkey_listener(Input::HotkeyListener *p_hotkey_listener);
 
 	void set_interval_ms(std::chrono::milliseconds interval);
 	void set_interval_s(std::chrono::seconds interval);
 	void set_interval_m(std::chrono::minutes interval);
 	void set_interval_h(std::chrono::hours interval);
 
-	void set_mouse_button(Input::MOUSE_BUTTON mouse_button);
-	void set_click_type(InputPlayerOptions::ClickType click_type);
-	void set_repeat_mode(InputPlayerOptions::RepeatMode repeat_mode);
+	void set_mouse_button(Input::Click::MOUSE_BUTTON mouse_button);
+	void set_click_type(Input::ClickerOptions::ClickType click_type);
+	void set_repeat_mode(Input::ClickerOptions::RepeatMode repeat_mode);
 	void set_use_mouse_offset(bool use_mouse_offset);
 	void set_mouse_x_position(int x);
 	void set_mouse_y_position(int y);
@@ -88,7 +88,7 @@ public:
 	void set_random_offset(std::chrono::milliseconds random_offset);
 
 	inline bool is_clicker_running() const {
-		return threaded_input.is_running();
+		return threaded_clicker.is_running();
 	}
 };
 

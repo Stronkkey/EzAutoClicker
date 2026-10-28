@@ -16,7 +16,9 @@
 
 namespace EzAutoClicker {
 
-struct Input {
+namespace Input {
+
+struct Click {
 	/**
 	 * @brief Mouse buttons that can be clicked.
 	 */
@@ -32,5 +34,7 @@ struct Input {
 	unsigned short x_position = 0;
 	unsigned short y_position = 0;
 };
+
+}
 
 }

@@ -20,7 +20,7 @@
 
 #include <src/input/hotkey_listener_x11.hpp>
 
-EzAutoClicker::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
+EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
 	display = XOpenDisplay(nullptr);
 
 	if (!display)
@@ -42,12 +42,12 @@ EzAutoClicker::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex()
 	XSelectInput(display, root, KeyPressMask);
 }
 
-EzAutoClicker::HotkeyListenerX11::~HotkeyListenerX11() {
+EzAutoClicker::Input::HotkeyListenerX11::~HotkeyListenerX11() {
 	if (display)
 		XCloseDisplay(display);
 }
 
-void EzAutoClicker::HotkeyListenerX11::read_inputs(std::stop_token stop_token) {
+void EzAutoClicker::Input::HotkeyListenerX11::read_inputs(std::stop_token stop_token) {
 	XEvent event;
 	while (!stop_token.stop_requested()) {
 		XNextEvent(display, &event);
@@ -57,7 +57,7 @@ void EzAutoClicker::HotkeyListenerX11::read_inputs(std::stop_token stop_token) {
 
 }
 
-int EzAutoClicker::HotkeyListenerX11::start_reading() {
+int EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
 	if (running)
 		return 1;
 
@@ -66,7 +66,7 @@ int EzAutoClicker::HotkeyListenerX11::start_reading() {
 	return 1;
 }
 
-void EzAutoClicker::HotkeyListenerX11::stop_reading() {
+void EzAutoClicker::Input::HotkeyListenerX11::stop_reading() {
 	if (!running)
 		return;
 

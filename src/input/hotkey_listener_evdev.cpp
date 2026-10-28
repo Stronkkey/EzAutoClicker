@@ -21,11 +21,11 @@
 
 #include <glibmm.h>
 
-EzAutoClicker::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
+EzAutoClicker::Input::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 	stop_reading();
 }
 
-void EzAutoClicker::HotkeyListenerEvdev::for_input_device(const std::string_view &input_device_path) {
+void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::string_view &input_device_path) {
 	if (!input_device_path.contains("event"))
 		return;
 
@@ -47,11 +47,11 @@ void EzAutoClicker::HotkeyListenerEvdev::for_input_device(const std::string_view
 		fd, Glib::IOCondition::IO_IN));
 }
 
-bool EzAutoClicker::HotkeyListenerEvdev::device_has_key(libevdev *device) const {
+bool EzAutoClicker::Input::HotkeyListenerEvdev::device_has_key(libevdev *device) const {
 	return libevdev_has_event_type(device, EV_KEY);
 }
 
-int EzAutoClicker::HotkeyListenerEvdev::start_reading() {
+int EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
 	key_code = KEY_LEFTBRACE;
 	stop_reading();
 
@@ -67,7 +67,7 @@ int EzAutoClicker::HotkeyListenerEvdev::start_reading() {
 	return static_cast<int>(devices.size());
 }
 
-void EzAutoClicker::HotkeyListenerEvdev::stop_reading() {
+void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading() {
 	for (auto &watch : watches)
 		watch.disconnect();
 	watches.clear();
@@ -82,12 +82,12 @@ void EzAutoClicker::HotkeyListenerEvdev::stop_reading() {
 	devices.clear();
 }
 
-void EzAutoClicker::HotkeyListenerEvdev::handle_event(input_event &event) {
+void EzAutoClicker::Input::HotkeyListenerEvdev::handle_event(input_event &event) {
 	if (event.type == EV_KEY && event.code == key_code && event.value == 1)
 		signal_pressed.emit();
 }
 
-bool EzAutoClicker::HotkeyListenerEvdev::listen_for_device(libevdev *device) {
+bool EzAutoClicker::Input::HotkeyListenerEvdev::listen_for_device(libevdev *device) {
 	int status;
 
 	while (true) {

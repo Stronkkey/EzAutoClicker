@@ -14,19 +14,21 @@
  */
 #pragma once
 
-#include <src/input/input.hpp>
+#include <src/input/click.hpp>
 
 namespace EzAutoClicker {
 
+namespace Input {
+
 /**
- * @brief Abstract interface for sending inputs.
+ * @brief Abstract interface for sending clicks.
  *
- * Platform-specific backends (currently uinput with InputPlayerUInput and X11 with InputPlayerX11)
+ * Platform-specific backends (currently uinput with ClickerUInput and X11 with ClickerX11)
  * implement this interface. Call initialize() before using any other method.
  */
-class InputPlayer {
+class Clicker {
 public:
-	virtual ~InputPlayer() = default;
+	virtual ~Clicker() = default;
 
 	/**
 	 * @brief Prepares the backend for sending inputs.
@@ -35,11 +37,11 @@ public:
 	virtual bool initialize() =0;
 
 	/**
-	 * @brief Sends a single input to the input player.
-	 * @param input The input to send.
+	 * @brief Sends a single click to the clicker.
+	 * @param click The click to send.
 	 * @note Requires initialize to be called beforehand, does nothing otherwise.
 	 */
-	virtual void send_input(const Input &input)=0;
+	virtual void send_click(const Click &click)=0;
 
 	/**
 	 * @brief Checks whether the backend is connected and inputs can be sent.
@@ -48,5 +50,7 @@ public:
 	 */
 	virtual bool is_connected() const=0;
 };
+
+}
 
 }

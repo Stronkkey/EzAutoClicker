@@ -14,17 +14,17 @@
  */
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/input_player_x11.hpp>
+#include <src/input/clicker_x11.hpp>
 
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 
-EzAutoClicker::InputPlayerX11::~InputPlayerX11() {
+EzAutoClicker::Input::ClickerX11::~ClickerX11() {
 	if (display)
 		XCloseDisplay(display);
 }
 
-bool EzAutoClicker::InputPlayerX11::initialize() {
+bool EzAutoClicker::Input::ClickerX11::initialize() {
 	display = XOpenDisplay(nullptr);
 	if (display) {
 		int unused;
@@ -43,8 +43,8 @@ bool EzAutoClicker::InputPlayerX11::initialize() {
  * @return The X11 button number or 0 if the button is not supported (e.g. MOUSE_BUTTON::UNKNOWN).
  * @see http://xahlee.info/linux/linux_x11_mouse_button_number.html
  */
-static int mouse_button_to_int(EzAutoClicker::Input::MOUSE_BUTTON mouse_button) {
-	using MOUSE_BUTTON = EzAutoClicker::Input::MOUSE_BUTTON;
+static int mouse_button_to_int(EzAutoClicker::Input::Click::MOUSE_BUTTON mouse_button) {
+	using MOUSE_BUTTON = EzAutoClicker::Input::Click::MOUSE_BUTTON;
 
 	switch (mouse_button) {
 		case MOUSE_BUTTON::LEFT:
@@ -58,16 +58,16 @@ static int mouse_button_to_int(EzAutoClicker::Input::MOUSE_BUTTON mouse_button) 
 	}
 }
 
-void EzAutoClicker::InputPlayerX11::send_input(const Input &input) {
+void EzAutoClicker::Input::ClickerX11::send_click(const Click &click) {
 	if (!display)
 		return;
 
-	int x11_button_number = mouse_button_to_int(input.button);
+	int x11_button_number = mouse_button_to_int(click.button);
 	if (x11_button_number == 0)
 		return;
 
-	if (input.set_mouse_location)
-		XTestFakeMotionEvent(display, -1, input.x_position, input.y_position, CurrentTime);
+	if (click.set_mouse_location)
+		XTestFakeMotionEvent(display, -1, click.x_position, click.y_position, CurrentTime);
 
 	XTestFakeButtonEvent(display, x11_button_number, True, CurrentTime);
 	XTestFakeButtonEvent(display, x11_button_number, False, CurrentTime);

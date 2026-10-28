@@ -12,22 +12,22 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-#include <src/input/threaded_input.hpp>
+#include <src/input/threaded_clicker.hpp>
 
 #include <random>
 
-#include <src/input/input_player.hpp>
+#include <src/input/clicker.hpp>
 
-EzAutoClicker::ThreadedInput::ThreadedInput() {
+EzAutoClicker::Input::ThreadedClicker::ThreadedClicker() {
 	worker_thread = {};
 	running = false;
 }
 
-EzAutoClicker::ThreadedInput::~ThreadedInput() {
+EzAutoClicker::Input::ThreadedClicker::~ThreadedClicker() {
 	stop();
 }
 
-std::chrono::milliseconds EzAutoClicker::ThreadedInput::get_random_offset(unsigned long random_offset_ms) const {
+std::chrono::milliseconds EzAutoClicker::Input::ThreadedClicker::get_random_offset(unsigned long random_offset_ms) const {
 	static std::random_device device;
 	static std::mt19937_64 rng(device());
 
@@ -37,26 +37,26 @@ std::chrono::milliseconds EzAutoClicker::ThreadedInput::get_random_offset(unsign
 	return std::chrono::milliseconds(distribution(rng));
 }
 
-void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, InputPlayer *input_player, const InputPlayerOptions &options) {
+void EzAutoClicker::Input::ThreadedClicker::run(std::stop_token stop_token, Clicker *clicker, const ClickerOptions &options) {
 	long long current_repeat_count = 0;
 	long long repeat_count = options.repeat_count;
-	InputPlayerOptions::RepeatMode repeat_mode = options.repeat_mode;
-	InputPlayerOptions::ClickType click_type = options.click_type;
+	ClickerOptions::RepeatMode repeat_mode = options.repeat_mode;
+	ClickerOptions::ClickType click_type = options.click_type;
 
 	while (!stop_token.stop_requested()) {
 		bool finished_repeating = ++current_repeat_count > repeat_count;
-		if (repeat_mode != InputPlayerOptions::RepeatMode::UNTIL_STOPPED && finished_repeating) {
+		if (repeat_mode != ClickerOptions::RepeatMode::UNTIL_STOPPED && finished_repeating) {
 			on_autostopping.emit();
 			stop();
 			break;
 		}
 
-		send_input(input_player, options.input);
-		if (click_type == InputPlayerOptions::ClickType::DOUBLE)
-			send_input(input_player, options.input);
+		send_click(clicker, options.click);
+		if (click_type == ClickerOptions::ClickType::DOUBLE)
+			send_click(clicker, options.click);
 
 		auto wait_time = std::chrono::milliseconds(
-			get_input_player_options_total_interval_ms(options));
+			get_clicker_options_total_interval_ms(options));
 		if (options.add_random_offset)
 			wait_time += get_random_offset(options.random_offset_ms);
 
@@ -67,23 +67,23 @@ void EzAutoClicker::ThreadedInput::run(std::stop_token stop_token, InputPlayer *
 	}
 }
 
-void EzAutoClicker::ThreadedInput::send_input(InputPlayer *input_player, const Input &input) {
-	if (!input_player)
+void EzAutoClicker::Input::ThreadedClicker::send_click(Clicker *clicker, const Click &click) {
+	if (!clicker)
 		return;
-	input_player->send_input(input);
+	clicker->send_click(click);
 }
 
-void EzAutoClicker::ThreadedInput::start(InputPlayer *input_player, const InputPlayerOptions &options) {
+void EzAutoClicker::Input::ThreadedClicker::start(Clicker *clicker, const ClickerOptions &options) {
 	if (running)
 		return;
 
 	running = true;
-	worker_thread = std::jthread([this, input_player, options](std::stop_token stop_token) {
-		run(stop_token, input_player, options);
+	worker_thread = std::jthread([this, clicker, options](std::stop_token stop_token) {
+		run(stop_token, clicker, options);
 	});
 }
 
-void EzAutoClicker::ThreadedInput::stop() {
+void EzAutoClicker::Input::ThreadedClicker::stop() {
 	if (!running)
 		return;
 

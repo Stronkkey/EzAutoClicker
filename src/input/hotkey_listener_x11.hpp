@@ -25,6 +25,8 @@
 
 namespace EzAutoClicker {
 
+namespace Input {
+
 class HotkeyListenerX11 final : public HotkeyListener {
 private:
 	Display *display;
@@ -42,6 +44,8 @@ public:
 	int start_reading() override;
 	void stop_reading() override;
 };
+
+}
 
 }
 

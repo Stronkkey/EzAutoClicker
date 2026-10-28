@@ -19,24 +19,26 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
 
-#include <src/input/input_player.hpp>
+#include <src/input/clicker.hpp>
 
 namespace EzAutoClicker {
 
+namespace Input {
+
 /**
- * @brief X11 backend for the InputPlayer interface.
+ * @brief X11 backend for the Clicker interface.
  *
- * Sends inputs through an X server connection using XTest. Call initialize()
+ * Sends clicks through an X server connection using XTest. Call initialize()
  * to open the display before using other methods.
  */
-class InputPlayerX11 final : public InputPlayer {
+class ClickerX11 final : public Clicker {
 private:
 	Display *display = nullptr; ///< Connection to the X server, nullptr if not connected.
 public:
 	/**
 	 * @brief Destructor, closes the X display connection if it is open.
 	 */
-	~InputPlayerX11();
+	~ClickerX11();
 
 	/**
 	 * @brief Opens the connection to the X server.
@@ -53,12 +55,14 @@ public:
 	}
 
 	/**
-	 * @brief Sends a single input to the X server.
-	 * @param input The input to send.
+	 * @brief Sends a single click to the X server.
+	 * @param click The click to send.
 	 * @note Requires initialize to be called beforehand, does nothing otherwise.
 	 */
-	void send_input(const Input &input) override;
+	void send_click(const Click &click) override;
 };
+
+}
 
 }
 

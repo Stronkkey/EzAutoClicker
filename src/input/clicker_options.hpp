@@ -14,12 +14,14 @@
  */
 #pragma once
 
-#include <src/input/input.hpp>
+#include <src/input/click.hpp>
 
 namespace EzAutoClicker {
 
-struct InputPlayerOptions {
-        Input input;
+namespace Input {
+
+struct ClickerOptions {
+        Click click;
 	unsigned long interval_ms;
 	unsigned long interval_s;
 	unsigned long interval_m;
@@ -42,11 +44,13 @@ struct InputPlayerOptions {
 
 };
 
-constexpr unsigned long long get_input_player_options_total_interval_ms(const InputPlayerOptions &input_player_options) {
-	return input_player_options.interval_ms +
-		(input_player_options.interval_s * 1000) +
-		(input_player_options.interval_m * 1000 * 60) +
-		(input_player_options.interval_h * 1000 * 60 * 60);
+constexpr unsigned long long get_clicker_options_total_interval_ms(const ClickerOptions &clicker_options) {
+	return clicker_options.interval_ms +
+		(clicker_options.interval_s * 1000) +
+		(clicker_options.interval_m * 1000 * 60) +
+		(clicker_options.interval_h * 1000 * 60 * 60);
+}
+
 }
 
 }

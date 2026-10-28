@@ -18,7 +18,7 @@
 
 #include <src/app.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
-#include <src/input/input_player_factory.hpp>
+#include <src/input/clicker_factory.hpp>
 
 int get_running_user_id() {
 	const char *sudo_env = getenv("SUDO_UID");
@@ -79,26 +79,26 @@ void drop_root_privileges() {
 
 
 int main(int argc, char *argv[]) {
-	std::unique_ptr<EzAutoClicker::InputPlayer> input_player = nullptr;
-	std::unique_ptr<EzAutoClicker::HotkeyListener> hotkey_listener = nullptr;
+	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;
+	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
 	if (is_running_as_root()) {
-		auto input_player_uinput= EzAutoClicker::InputPlayerFactory::create_input_player_uinput();
+		auto clicker_uinput= EzAutoClicker::Input::ClickerFactory::create_clicker_uinput();
 
-		if (input_player_uinput)
-			input_player = std::move(input_player_uinput);
-		hotkey_listener = EzAutoClicker::HotkeyListenerFactory::create_hotkey_listener_evdev();
+		if (clicker_uinput)
+			clicker = std::move(clicker_uinput);
+		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
 		drop_root_privileges();
 	}
 
-	if (!input_player)
-		input_player = EzAutoClicker::InputPlayerFactory::create_compatible_input_player();
+	if (!clicker)
+		clicker = EzAutoClicker::Input::ClickerFactory::create_compatible_clicker();
 
 	if (!hotkey_listener)
-		hotkey_listener = EzAutoClicker::HotkeyListenerFactory::create_compatible_hotkey_listener();
+		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_compatible_hotkey_listener();
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
-		input_player.get(),
+		clicker.get(),
 		hotkey_listener.get());
 	return app->run(argc, argv);
 }

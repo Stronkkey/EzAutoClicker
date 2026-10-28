@@ -88,11 +88,11 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 }
 
 Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
-		InputPlayer *p_input_player, HotkeyListener *p_hotkey_listener)
+		Input::Clicker *clicker, Input::HotkeyListener *hotkey_listener)
 {
 	auto app = Glib::make_refptr_for_instance(new EzAutoClickerApp());
-	app->input_player = p_input_player;
-	app->hotkey_listener = p_hotkey_listener;
+	app->clicker = clicker;
+	app->hotkey_listener = hotkey_listener;
 
 	return app;
 }
@@ -129,7 +129,7 @@ int EzAutoClicker::EzAutoClickerApp::on_handle_local_options(const Glib::RefPtr<
 		handle_pick_location_option(string_value);
 
 	if (options->lookup_value(REPEAT_UNTIL_STOPPED_LONG_NAME, bool_value))
-		cli_options.repeat_mode = bool_value ? InputPlayerOptions::RepeatMode::UNTIL_STOPPED : InputPlayerOptions::RepeatMode::REPEAT_X_TIMES;
+		cli_options.repeat_mode = bool_value ? Input::ClickerOptions::RepeatMode::UNTIL_STOPPED : Input::ClickerOptions::RepeatMode::REPEAT_X_TIMES;
 
 	if (options->lookup_value(SET_REPEAT_COUNT_LONG_NAME, int_value))
 		cli_options.repeat_count = int_value;
@@ -154,18 +154,18 @@ void EzAutoClicker::EzAutoClickerApp::handle_toggle_option() {
 
 void EzAutoClicker::EzAutoClickerApp::handle_mouse_button_option(const Glib::ustring &value) {
 	if (value.lowercase() == "left")
-		cli_options.button = Input::MOUSE_BUTTON::LEFT;
+		cli_options.button = Input::Click::MOUSE_BUTTON::LEFT;
 	if (value.lowercase() == "middle")
-		cli_options.button = Input::MOUSE_BUTTON::MIDDLE;
+		cli_options.button = Input::Click::MOUSE_BUTTON::MIDDLE;
 	if (value.lowercase() == "right")
-		cli_options.button = Input::MOUSE_BUTTON::RIGHT;
+		cli_options.button = Input::Click::MOUSE_BUTTON::RIGHT;
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_click_type_option(const Glib::ustring &value) {
 	if (value.lowercase() == "single")
-		cli_options.click_type = InputPlayerOptions::ClickType::SINGLE;
+		cli_options.click_type = Input::ClickerOptions::ClickType::SINGLE;
 	if (value.lowercase() == "double")
-		cli_options.click_type = InputPlayerOptions::ClickType::DOUBLE;
+		cli_options.click_type = Input::ClickerOptions::ClickType::DOUBLE;
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::ustring &value) {
@@ -236,7 +236,7 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 	auto builder = Gtk::Builder::create_from_resource("/org/Stronkkey/EzAutoClicker/main_window.ui");
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
-	main_window->set_input_player(input_player);
+	main_window->set_clicker(clicker);
 	main_window->set_hotkey_listener(hotkey_listener);
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);

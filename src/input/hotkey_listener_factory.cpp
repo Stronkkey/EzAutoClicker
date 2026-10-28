@@ -20,17 +20,17 @@
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-std::unique_ptr<EzAutoClicker::HotkeyListenerX11> EzAutoClicker::HotkeyListenerFactory::create_hotkey_listener_x11() {
-	return std::make_unique<EzAutoClicker::HotkeyListenerX11>();
+std::unique_ptr<EzAutoClicker::Input::HotkeyListenerX11> EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_x11() {
+	return std::make_unique<EzAutoClicker::Input::HotkeyListenerX11>();
 }
 
 #endif
 
-std::unique_ptr<EzAutoClicker::HotkeyListenerEvdev> EzAutoClicker::HotkeyListenerFactory::create_hotkey_listener_evdev() {
-	return std::make_unique<EzAutoClicker::HotkeyListenerEvdev>();
+std::unique_ptr<EzAutoClicker::Input::HotkeyListenerEvdev> EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_evdev() {
+	return std::make_unique<EzAutoClicker::Input::HotkeyListenerEvdev>();
 }
 
-std::unique_ptr<EzAutoClicker::HotkeyListener> EzAutoClicker::HotkeyListenerFactory::create_compatible_hotkey_listener() {
+std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::Input::HotkeyListenerFactory::create_compatible_hotkey_listener() {
 	Session::Type session_type = Session::get_type();
 	auto hotkey_listener_evdev = create_hotkey_listener_evdev();
 
