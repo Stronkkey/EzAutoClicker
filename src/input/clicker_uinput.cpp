@@ -59,7 +59,7 @@ bool EzAutoClicker::Input::ClickerUInput::initialize() {
 	if (mouse_uinput_fd < 0)
 		mouse_uinput_fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 
-	if (mouse_uinput_fd > -1) {
+	if (mouse_uinput_fd < 0) {
 		close(mouse_uinput_fd);
 		return false;
 	}
