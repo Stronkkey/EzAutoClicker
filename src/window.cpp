@@ -6,7 +6,7 @@
 
 #include <linux/input-event-codes.h>
 
-EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject), threaded_input() {
+EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	hotkey_listener = nullptr;
 	sending_inputs = false;
 
@@ -35,52 +35,58 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 		set_sending_inputs(false);
 	});
 
-	create_gui();
+	update_options();
+	connect_signals();
 }
 
-void EzAutoClicker::MainWindow::on_mouse_button_selection_changed() {
+void EzAutoClicker::MainWindow::update_mouse_button_option() {
 	guint pos = mouse_button_dropdown->get_selected();
 
 	if (pos == 0)
-		threaded_input.input.button = Input::MOUSE_BUTTON::LEFT;
+		options.input.button = Input::MOUSE_BUTTON::LEFT;
 	else if (pos == 1)
-		threaded_input.input.button = Input::MOUSE_BUTTON::MIDDLE;
+		options.input.button = Input::MOUSE_BUTTON::MIDDLE;
 	else
-		threaded_input.input.button = Input::MOUSE_BUTTON::RIGHT;
+		options.input.button = Input::MOUSE_BUTTON::RIGHT;
 }
 
-void EzAutoClicker::MainWindow::on_click_type_selection_changed() {
+void EzAutoClicker::MainWindow::update_click_type_option() {
 	guint pos = click_type_dropdown->get_selected();
 
 	if (pos == 0)
-		threaded_input.options.send_inputs_twice = false;
+		options.click_type = InputPlayerOptions::ClickType::SINGLE;
 	else
-		threaded_input.options.send_inputs_twice = true;
+		options.click_type = InputPlayerOptions::ClickType::DOUBLE;
 }
 
 void EzAutoClicker::MainWindow::on_pick_location_button_pressed() {
 	// Intentionally left blank
 }
 
-void EzAutoClicker::MainWindow::on_repeat_button_pressed() {
+void EzAutoClicker::MainWindow::update_repeating_mode() {
 	if (repeal_until_stopped_toggle->get_active())
-		threaded_input.options.repeat_until_stopped = true;
+		options.repeat_mode = InputPlayerOptions::RepeatMode::UNTIL_STOPPED;
 	else
-		threaded_input.options.repeat_until_stopped = false;
+		options.repeat_mode = InputPlayerOptions::RepeatMode::REPEAT_X_TIMES;
 }
 
-void EzAutoClicker::MainWindow::update_interval_from_entries() {
-	input_interval = std::chrono::milliseconds(milliseconds_entry->get_value_as_int());
-	input_interval += std::chrono::seconds(seconds_entry->get_value_as_int());
-	input_interval += std::chrono::minutes(minutes_entry->get_value_as_int());
-	input_interval += std::chrono::hours(hours_entry->get_value_as_int());
+void EzAutoClicker::MainWindow::update_options() {
+	options.interval_ms = milliseconds_entry->get_value_as_int();
+	options.interval_s = seconds_entry->get_value_as_int();
+	options.interval_m = minutes_entry->get_value_as_int();
+	options.interval_h = hours_entry->get_value_as_int();
+	
+	update_mouse_button_option();
+	update_click_type_option();
+	update_repeating_mode();
 
-	if (input_interval < std::chrono::microseconds(500))
-		input_interval = std::chrono::microseconds(500);
-	threaded_input.options.interval = input_interval;
+	options.input.set_mouse_location = pick_location_toggle->get_active();
+	options.input.x_position = x_position_entry->get_value_as_int();
+	options.input.y_position = y_position_entry->get_value_as_int();
+	options.repeat_count = click_repeat_counter->get_value_as_int();
 }
 
-void EzAutoClicker::MainWindow::create_gui() {
+void EzAutoClicker::MainWindow::connect_signals() {
 	start_button->signal_clicked().connect([this]{
 		start_clicker();
 	});
@@ -89,63 +95,9 @@ void EzAutoClicker::MainWindow::create_gui() {
 		stop_clicker();
 	});
 
-	milliseconds_entry->signal_value_changed().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::update_interval_from_entries));
-
-	seconds_entry->signal_value_changed().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::update_interval_from_entries));
-
-	minutes_entry->signal_value_changed().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::update_interval_from_entries));
-
-	hours_entry->signal_value_changed().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::update_interval_from_entries));
-
-	mouse_button_dropdown->property_selected().signal_changed().connect(
-	sigc::mem_fun(*this,
-			&MainWindow::on_mouse_button_selection_changed));
-
-	click_type_dropdown->property_selected().signal_changed().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::on_click_type_selection_changed));
-
-	current_location_toggle->signal_toggled().connect([this]{
-		threaded_input.input.use_set_mouse_location = false;
-	});
-
-	pick_location_toggle->signal_toggled().connect([this]{
-		threaded_input.input.use_set_mouse_location = true;
-	});
-
 	pick_location_button->signal_clicked().connect(
 		sigc::mem_fun(*this,
 		&MainWindow::on_pick_location_button_pressed));
-
-	x_position_entry->signal_value_changed().connect([this]{
-		threaded_input.input.mouse_x_position = x_position_entry->get_value_as_int();
-	});
-
-	y_position_entry->signal_value_changed().connect([this]{
-		threaded_input.input.mouse_y_position = y_position_entry->get_value_as_int();
-	});
-
-	repeat_toggle->signal_toggled().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::on_repeat_button_pressed));
-
-	click_repeat_counter->signal_value_changed().connect([this]{
-		threaded_input.options.repeat_until = click_repeat_counter->get_value_as_int();
-	});
-
-	repeal_until_stopped_toggle->signal_toggled().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::on_repeat_button_pressed));
-
-	update_interval_from_entries();
 }
 
 void EzAutoClicker::MainWindow::start_clicker() {
@@ -153,8 +105,8 @@ void EzAutoClicker::MainWindow::start_clicker() {
 		return;
 
 	set_sending_inputs(true);
-	threaded_input.options.interval = input_interval;
-	threaded_input.start();
+	update_options();
+	threaded_input.start(input_player, options);
 }
 
 void EzAutoClicker::MainWindow::stop_clicker() {
@@ -179,7 +131,7 @@ void EzAutoClicker::MainWindow::toggle_clicker() {
 }
 
 void EzAutoClicker::MainWindow::set_input_player(InputPlayer *p_input_player) {
-	threaded_input.input_player = p_input_player;
+	input_player = p_input_player;
 }
 
 void EzAutoClicker::MainWindow::set_hotkey_listener(HotkeyListener *p_hotkey_listener) {
@@ -193,4 +145,59 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(HotkeyListener *p_hotkey_lis
 		toggle_clicker();
 	});
 	hotkey_listener->start_reading();
+}
+
+void EzAutoClicker::MainWindow::set_interval_ms(std::chrono::milliseconds interval) {
+	milliseconds_entry->set_value(interval.count());
+}
+
+void EzAutoClicker::MainWindow::set_interval_s(std::chrono::seconds interval) {
+	seconds_entry->set_value(interval.count());
+}
+
+void EzAutoClicker::MainWindow::set_interval_m(std::chrono::minutes interval) {
+	minutes_entry->set_value(interval.count());
+}
+
+void EzAutoClicker::MainWindow::set_interval_h(std::chrono::hours interval) {
+	hours_entry->set_value(interval.count());
+}
+
+void EzAutoClicker::MainWindow::set_mouse_button(Input::MOUSE_BUTTON mouse_button) {
+	if (mouse_button == Input::MOUSE_BUTTON::LEFT)
+		mouse_button_dropdown->set_selected(0);
+	else if (mouse_button == Input::MOUSE_BUTTON::MIDDLE)
+		mouse_button_dropdown->set_selected(1);
+	else
+		mouse_button_dropdown->set_selected(2);
+}
+
+void EzAutoClicker::MainWindow::set_click_type(InputPlayerOptions::ClickType click_type) {
+	if (click_type == InputPlayerOptions::ClickType::SINGLE)
+		click_type_dropdown->set_selected(0);
+	else
+		click_type_dropdown->set_selected(1);
+}
+
+void EzAutoClicker::MainWindow::set_repeat_mode(InputPlayerOptions::RepeatMode repeat_mode) {
+	repeal_until_stopped_toggle->set_active(repeat_mode == InputPlayerOptions::RepeatMode::UNTIL_STOPPED);
+}
+
+void EzAutoClicker::MainWindow::set_use_mouse_offset(bool use_mouse_offset) {
+	pick_location_toggle->set_active(use_mouse_offset);
+}
+
+void EzAutoClicker::MainWindow::set_mouse_x_position(int x) {
+	x_position_entry->set_value(x);
+}
+
+void EzAutoClicker::MainWindow::set_mouse_y_position(int y) {
+	y_position_entry->set_value(y);
+}
+
+void EzAutoClicker::MainWindow::set_repeat_count(long long repeat_count) {
+	click_repeat_counter->set_value(repeat_count);
+}
+
+void EzAutoClicker::MainWindow::set_random_offset(std::chrono::milliseconds) {
 }

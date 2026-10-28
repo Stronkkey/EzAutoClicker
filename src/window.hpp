@@ -24,7 +24,9 @@ class HotkeyListener;
 
 class MainWindow : public Gtk::ApplicationWindow {
 private:
+	InputPlayerOptions options;
 	ThreadedInput threaded_input;
+	InputPlayer *input_player;
 	HotkeyListener *hotkey_listener;
 
 	Gtk::Button *start_button;
@@ -52,13 +54,13 @@ private:
 
 	bool sending_inputs;
 
-	void on_mouse_button_selection_changed();
-	void on_click_type_selection_changed();
 	void on_pick_location_button_pressed();
-	void on_repeat_button_pressed();
 
-	void update_interval_from_entries();
-	void create_gui();
+	void update_mouse_button_option();
+	void update_click_type_option();
+	void update_repeating_mode();
+	void update_options();
+	void connect_signals();
 
 	void start_clicker();
 	void stop_clicker();
@@ -71,6 +73,20 @@ public:
 
 	void set_input_player(InputPlayer *p_input_player);
 	void set_hotkey_listener(HotkeyListener *p_hotkey_listener);
+
+	void set_interval_ms(std::chrono::milliseconds interval);
+	void set_interval_s(std::chrono::seconds interval);
+	void set_interval_m(std::chrono::minutes interval);
+	void set_interval_h(std::chrono::hours interval);
+
+	void set_mouse_button(Input::MOUSE_BUTTON mouse_button);
+	void set_click_type(InputPlayerOptions::ClickType click_type);
+	void set_repeat_mode(InputPlayerOptions::RepeatMode repeat_mode);
+	void set_use_mouse_offset(bool use_mouse_offset);
+	void set_mouse_x_position(int x);
+	void set_mouse_y_position(int y);
+	void set_repeat_count(long long repeat_count);
+	void set_random_offset(std::chrono::milliseconds random_offset);
 
 	inline bool is_clicker_running() const {
 		return threaded_input.is_running();

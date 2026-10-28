@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <src/input/input.hpp>
+#include <src/input/input_player_options.hpp>
 
 #include <glibmm.h>
 
@@ -28,44 +28,23 @@ namespace EzAutoClicker {
 class InputPlayer;
 
 class ThreadedInput {
-public:
-	using duration_type = std::chrono::microseconds;
-
-	struct Options {
-		duration_type interval;
-		duration_type random_offset_span;
-		long long repeat_until;
-		bool send_inputs_twice;
-		bool add_random_offset;
-		bool repeat_until_stopped;
-	};
 private:
 	std::mutex mutex;
 	std::condition_variable_any condition_variable;
 	std::jthread worker_thread;
 	bool running;
 
-	struct copy_thread {
-		Options options;
-		Input input;
-		InputPlayer *input_player;
-	};
+	std::chrono::milliseconds get_random_offset(unsigned long random_offset_ms) const;
 
-	duration_type get_random_offset() const;
-
-	void run(std::stop_token stop_token, const copy_thread &copy);
-	void send_input(const Input &p_input);
+	void run(std::stop_token stop_token, InputPlayer *input_player, const InputPlayerOptions &options);
+	void send_input(InputPlayer *input_player, const Input &p_input);
 public:
-	InputPlayer *input_player;
-	Input input;
-	Options options;
-
 	Glib::Dispatcher on_autostopping;
 
 	ThreadedInput();
 	~ThreadedInput();
 
-	void start();
+	void start(InputPlayer *input_player, const InputPlayerOptions &options);
 	void stop();
 
 	constexpr bool is_running() const {

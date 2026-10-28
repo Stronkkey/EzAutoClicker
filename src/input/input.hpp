@@ -28,9 +28,9 @@ struct Input {
 	};
 
 	MOUSE_BUTTON button;
-	bool use_set_mouse_location = false;
-	int mouse_x_position = 0;
-	int mouse_y_position = 0;
+	bool set_mouse_location = false;
+	unsigned short x_position = 0;
+	unsigned short y_position = 0;
 };
 
 }

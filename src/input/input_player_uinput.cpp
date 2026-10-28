@@ -121,12 +121,12 @@ void EzAutoClicker::InputPlayerUInput::send_input(const Input &input) {
 
 	int mouse_code = mouse_button_to_code(input.button);
 
-	if (input.use_set_mouse_location) {
+	if (input.set_mouse_location) {
 		send_mouse_input(EV_REL, REL_X, -9999);
 		send_mouse_input(EV_REL, REL_Y, -9999);
 		synchronise_mouse_inputs();
-		send_mouse_input(EV_REL, REL_X, input.mouse_x_position);
-		send_mouse_input(EV_REL, REL_Y, input.mouse_y_position);
+		send_mouse_input(EV_REL, REL_X, input.x_position);
+		send_mouse_input(EV_REL, REL_Y, input.y_position);
 		synchronise_mouse_inputs();
 	}
 
