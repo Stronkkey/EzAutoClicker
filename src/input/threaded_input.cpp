@@ -4,7 +4,6 @@
 
 #include <src/input/input_player.hpp>
 
-
 EzAutoClicker::ThreadedInput::ThreadedInput() {
 	worker_thread = {};
 	running = false;

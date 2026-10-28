@@ -2,13 +2,11 @@
 
 #include <gtkmm.h>
 
-#include <src/input/input_player_options.hpp>
+#include <src/window.hpp>
+#include <src/input/hotkey_listener.hpp>
+#include <src/input/input_player.hpp>
 
 namespace EzAutoClicker {
-
-class HotkeyListener;
-class InputPlayer;
-class MainWindow;
 
 class EzAutoClickerApp : public Gtk::Application {
 private:

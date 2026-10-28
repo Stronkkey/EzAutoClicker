@@ -14,10 +14,9 @@
  */
 #pragma once
 
-#include <src/input/input_player.hpp>
+#include <libevdev/libevdev-uinput.h>
 
-struct libevdev;
-struct libevdev_uinput;
+#include <src/input/input_player.hpp>
 
 namespace EzAutoClicker {
 

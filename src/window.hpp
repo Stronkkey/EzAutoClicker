@@ -16,11 +16,10 @@
 
 #include <gtkmm.h>
 
+#include <src/input/hotkey_listener.hpp>
 #include <src/input/threaded_input.hpp>
 
 namespace EzAutoClicker {
-
-class HotkeyListener;
 
 class MainWindow : public Gtk::ApplicationWindow {
 private:

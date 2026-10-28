@@ -16,11 +16,10 @@
 
 #include <memory>
 
-namespace EzAutoClicker {
+#include <src/input/input_player_uinput.hpp>
+#include <src/input/input_player_x11.hpp>
 
-class InputPlayer;
-class InputPlayerX11;
-class InputPlayerUInput;
+namespace EzAutoClicker {
 
 namespace InputPlayerFactory {
 

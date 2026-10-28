@@ -13,6 +13,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #pragma once
+
 #define APP_ID "org.Stronkkey.EzAutoClicker"
 #define APP_NAME "EzAutoClicker"
 #define APP_VERSION "1.0"

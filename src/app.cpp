@@ -15,7 +15,6 @@
 #include <src/app.hpp>
 
 #include <src/app_constants.hpp>
-#include <src/window.hpp>
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 	set_id(APP_ID);

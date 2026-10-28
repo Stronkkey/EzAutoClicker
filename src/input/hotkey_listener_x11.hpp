@@ -12,9 +12,9 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-#pragma once
-
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+#pragma once
 
 #include <mutex>
 #include <thread>

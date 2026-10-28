@@ -19,11 +19,8 @@
 #include <print>
 
 #include <src/app.hpp>
-#include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
-#include <src/input/input_player.hpp>
 #include <src/input/input_player_factory.hpp>
-#include <src/input/input_player_uinput.hpp>
 
 void throw_error_and_quit(const std::string_view &error_message) {
 	std::print("{0}", error_message);

@@ -13,11 +13,10 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/input/input_player_factory.hpp>
-#include <src/input/input_player_uinput.hpp>
-#include <src/input/input_player_x11.hpp>
-#include <src/session.hpp>
 
 #include <fcntl.h>
+
+#include <src/session.hpp>
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 

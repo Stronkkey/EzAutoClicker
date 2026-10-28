@@ -16,11 +16,10 @@
 
 #include <memory>
 
-namespace EzAutoClicker {
+#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/hotkey_listener_x11.hpp>
 
-class HotkeyListener;
-class HotkeyListenerX11;
-class HotkeyListenerEvdev;
+namespace EzAutoClicker {
 
 namespace HotkeyListenerFactory {
 

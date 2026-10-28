@@ -16,12 +16,9 @@
 
 #include <vector>
 
-#include <sigc++/sigc++.h>
+#include <libevdev/libevdev.h>
 
 #include <src/input/hotkey_listener.hpp>
-
-struct input_event;
-struct libevdev;
 
 namespace EzAutoClicker {
 

@@ -2,10 +2,6 @@
 
 #include <linux/input-event-codes.h>
 
-#include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/input_player_x11.hpp>
-#include <src/input/input_player_uinput.hpp>
-
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	hotkey_listener = nullptr;
 	sending_inputs = false;

@@ -21,8 +21,6 @@
 
 #include <glibmm.h>
 
-#include <libevdev/libevdev.h>
-
 EzAutoClicker::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 	stop_reading();
 }

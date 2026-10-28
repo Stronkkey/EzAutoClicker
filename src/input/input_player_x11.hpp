@@ -1,6 +1,6 @@
-#pragma once
-
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+#pragma once
 
 #include <X11/Xlib.h>
 #include <X11/extensions/XTest.h>
