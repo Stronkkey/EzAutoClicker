@@ -14,11 +14,14 @@
  */
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
+#include <src/input/hotkey_listener_x11.hpp>
+
+#include <poll.h>
+
 #include <thread>
 
 #include <X11/keysym.h>
 
-#include <src/input/hotkey_listener_x11.hpp>
 
 EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
 	display = XOpenDisplay(nullptr);
@@ -43,18 +46,28 @@ EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), 
 }
 
 EzAutoClicker::Input::HotkeyListenerX11::~HotkeyListenerX11() {
+	stop_reading();
 	if (display)
 		XCloseDisplay(display);
 }
 
 void EzAutoClicker::Input::HotkeyListenerX11::read_inputs(std::stop_token stop_token) {
+	int x11_fd = ConnectionNumber(display);
 	XEvent event;
-	while (!stop_token.stop_requested()) {
-		XNextEvent(display, &event);
-		if (event.type == KeyPress && event.xkey.keycode == key_code)
-			signal_pressed.emit();
-	}
+	pollfd poll_fd;
+	poll_fd.events = POLLIN;
+	poll_fd.revents = 0;
 
+	while (!stop_token.stop_requested()) {
+		while (XPending(display) > 0) {
+			XNextEvent(display, &event);
+			if (event.type == KeyPress && event.xkey.keycode == key_code)
+				signal_pressed.emit();
+		}
+
+		poll_fd.fd = x11_fd;
+		poll(&poll_fd, 1, 100); // wake up every 100 ms to re-check the stop token
+	}
 }
 
 int EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
