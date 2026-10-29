@@ -176,11 +176,11 @@ void EzAutoClicker::EzAutoClickerApp::handle_toggle_option() {
 
 void EzAutoClicker::EzAutoClickerApp::handle_mouse_button_option(const Glib::ustring &value) {
 	if (value.lowercase() == "left")
-		cli_options.button = Input::Click::MOUSE_BUTTON::LEFT;
+		cli_options.button = Input::Click::MouseButton::LEFT;
 	if (value.lowercase() == "middle")
-		cli_options.button = Input::Click::MOUSE_BUTTON::MIDDLE;
+		cli_options.button = Input::Click::MouseButton::MIDDLE;
 	if (value.lowercase() == "right")
-		cli_options.button = Input::Click::MOUSE_BUTTON::RIGHT;
+		cli_options.button = Input::Click::MouseButton::RIGHT;
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_click_type_option(const Glib::ustring &value) {

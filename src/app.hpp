@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<Input::HotkeyListener> get_hotkey_listener();
 
 	struct {
-		std::optional<Input::Click::MOUSE_BUTTON> button = std::nullopt;
+		std::optional<Input::Click::MouseButton> button = std::nullopt;
 		unsigned short mouse_x_position = 0;
 		unsigned short mouse_y_position = 0;
 		std::optional<gint32> interval_ms = std::nullopt;

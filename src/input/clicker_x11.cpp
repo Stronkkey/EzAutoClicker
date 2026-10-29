@@ -48,15 +48,15 @@ bool EzAutoClicker::Input::ClickerX11::initialize() {
  * @return The X11 button number or 0 if the button is not supported (e.g. MOUSE_BUTTON::UNKNOWN).
  * @see http://xahlee.info/linux/linux_x11_mouse_button_number.html
  */
-static int mouse_button_to_int(EzAutoClicker::Input::Click::MOUSE_BUTTON mouse_button) {
-	using MOUSE_BUTTON = EzAutoClicker::Input::Click::MOUSE_BUTTON;
+static int mouse_button_to_int(EzAutoClicker::Input::Click::MouseButton mouse_button) {
+	using MouseButton = EzAutoClicker::Input::Click::MouseButton;
 
 	switch (mouse_button) {
-		case MOUSE_BUTTON::LEFT:
+		case MouseButton::LEFT:
 			return 1;
-		case MOUSE_BUTTON::MIDDLE:
+		case MouseButton::MIDDLE:
 			return 2;
-		case MOUSE_BUTTON::RIGHT:
+		case MouseButton::RIGHT:
 			return 3;
 		default:
 			return 0;

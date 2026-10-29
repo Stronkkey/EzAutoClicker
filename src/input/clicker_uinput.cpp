@@ -33,15 +33,15 @@ bool EzAutoClicker::Input::ClickerUInput::synchronise_mouse_inputs() {
  * @brief Converts a Clicker mouse button to its uinput button number.
  * @return The uinput button number or BTN_LEFT if the button is not supported (e.g. MOUSE_BUTTON::UNKNOWN).
  */
-int mouse_button_to_code(EzAutoClicker::Input::Click::MOUSE_BUTTON button) {
-	using MOUSE_BUTTON = EzAutoClicker::Input::Click::MOUSE_BUTTON;
+int mouse_button_to_code(EzAutoClicker::Input::Click::MouseButton button) {
+	using MouseButton = EzAutoClicker::Input::Click::MouseButton;
 
 	switch (button) {
-		case MOUSE_BUTTON::LEFT:
+		case MouseButton::LEFT:
 			return BTN_LEFT;
-		case MOUSE_BUTTON::RIGHT:
+		case MouseButton::RIGHT:
 			return BTN_RIGHT;
-		case MOUSE_BUTTON::MIDDLE:
+		case MouseButton::MIDDLE:
 			return BTN_MIDDLE;
 		default:
 			return BTN_LEFT;

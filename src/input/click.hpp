@@ -22,14 +22,14 @@ struct Click {
 	/**
 	 * @brief Mouse buttons that can be clicked.
 	 */
-	enum class MOUSE_BUTTON {
+	enum class MouseButton {
 		LEFT, ///< Left mouse button.
 		MIDDLE, ///< Middle mouse button (wheel click).
 		RIGHT, ///< Right mouse button.
 		UNKNOWN ///< Unspecified or unsupported button.
 	};
 
-	MOUSE_BUTTON button;
+	MouseButton button;
 	bool set_mouse_location = false;
 	unsigned short x_position = 0;
 	unsigned short y_position = 0;

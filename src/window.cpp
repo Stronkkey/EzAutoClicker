@@ -54,11 +54,11 @@ void EzAutoClicker::MainWindow::update_mouse_button_option() {
 	guint pos = mouse_button_dropdown->get_selected();
 
 	if (pos == 0)
-		options.click.button = Input::Click::MOUSE_BUTTON::LEFT;
+		options.click.button = Input::Click::MouseButton::LEFT;
 	else if (pos == 1)
-		options.click.button = Input::Click::MOUSE_BUTTON::MIDDLE;
+		options.click.button = Input::Click::MouseButton::MIDDLE;
 	else
-		options.click.button = Input::Click::MOUSE_BUTTON::RIGHT;
+		options.click.button = Input::Click::MouseButton::RIGHT;
 }
 
 void EzAutoClicker::MainWindow::update_click_type_option() {
@@ -176,10 +176,10 @@ void EzAutoClicker::MainWindow::set_interval_h(std::chrono::hours interval) {
 	hours_entry->set_value(interval.count());
 }
 
-void EzAutoClicker::MainWindow::set_mouse_button(Input::Click::MOUSE_BUTTON mouse_button) {
-	if (mouse_button == Input::Click::MOUSE_BUTTON::LEFT)
+void EzAutoClicker::MainWindow::set_mouse_button(Input::Click::MouseButton mouse_button) {
+	if (mouse_button == Input::Click::MouseButton::LEFT)
 		mouse_button_dropdown->set_selected(0);
-	else if (mouse_button == Input::Click::MOUSE_BUTTON::MIDDLE)
+	else if (mouse_button == Input::Click::MouseButton::MIDDLE)
 		mouse_button_dropdown->set_selected(1);
 	else
 		mouse_button_dropdown->set_selected(2);

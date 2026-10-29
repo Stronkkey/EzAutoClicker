@@ -79,7 +79,7 @@ public:
 	void set_interval_m(std::chrono::minutes interval);
 	void set_interval_h(std::chrono::hours interval);
 
-	void set_mouse_button(Input::Click::MOUSE_BUTTON mouse_button);
+	void set_mouse_button(Input::Click::MouseButton mouse_button);
 	void set_click_type(Input::ClickerOptions::ClickType click_type);
 	void set_repeat_mode(Input::ClickerOptions::RepeatMode repeat_mode);
 	void set_use_mouse_offset(bool use_mouse_offset);
