@@ -67,4 +67,4 @@ test_x11= executable(
 )
 
 test('basic', exe, timeout: -1)
-test('TestX11', test_x11, timeout: -1)
+test('TestX11', test_x11, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
