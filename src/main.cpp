@@ -21,6 +21,7 @@
 #include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 
+
 uid_t get_running_user_id() {
 	const char *sudo_env = getenv("SUDO_UID");
 	const char *pkexec_env = getenv("PKEXEC_UID");
@@ -28,7 +29,7 @@ uid_t get_running_user_id() {
 	if (pkexec_env != NULL) {
 		try {
 			return std::stoi(pkexec_env);
-		} catch (const std::invalid_argument&) {
+		} catch (const std::exception&) {
 			return getuid();
 		}
 	}
@@ -36,7 +37,7 @@ uid_t get_running_user_id() {
 	if (sudo_env != NULL) {
 		try {
 			return std::stoi(sudo_env);
-		} catch (const std::invalid_argument&) {
+		} catch (const std::exception&) {
 			return getuid();
 		}
 	}
