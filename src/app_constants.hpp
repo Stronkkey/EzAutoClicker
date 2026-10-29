@@ -77,4 +77,14 @@ const Glib::ustring SET_REPEAT_COUNT_LONG_NAME = "repeat-count";
 const Glib::ustring SET_REPEAT_COUNT_OPTION_DESCRIPTION = "Sets the repeat count.";
 const Glib::ustring SET_REPEAT_COUNT_ARG_DESCRIPTION = "NUMBER";
 
+constexpr const char CLICKER_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring CLICKER_LONG_NAME = "clicker";
+const Glib::ustring CLICKER_OPTION_DESCRIPTION = "Specifies the clicker backend.";
+const Glib::ustring CLICKER_ARG_DESCRIPTION = "x11|uinput|auto";
+
+constexpr const char HOTKEY_LISTENER_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring HOTKEY_LISTENER_LONG_NAME = "hotkey-listener";
+const Glib::ustring HOTKEY_LISTENER_OPTION_DESCRIPTION = "Specifies the hotkey listener backend.";
+const Glib::ustring HOTKEY_LISTENER_ARG_DESCRIPTION = "x11|evdev|auto";
+
 }

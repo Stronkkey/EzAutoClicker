@@ -15,6 +15,10 @@
 #include <src/app.hpp>
 
 #include <src/app_constants.hpp>
+#include <src/input/clicker_factory.hpp>
+#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/hotkey_listener_factory.hpp>
+#include <src/input/hotkey_listener_x11.hpp>
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 	set_id(APP_ID);
@@ -85,6 +89,18 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 		SET_REPEAT_COUNT_SHORT_NAME,
 		SET_REPEAT_COUNT_OPTION_DESCRIPTION,
 		SET_REPEAT_COUNT_ARG_DESCRIPTION);
+
+	add_main_option_entry(Gio::Application::OptionType::STRING,
+		CLICKER_LONG_NAME,
+		CLICKER_SHORT_NAME,
+		CLICKER_OPTION_DESCRIPTION,
+		CLICKER_ARG_DESCRIPTION);
+
+	add_main_option_entry(Gio::Application::OptionType::STRING,
+		HOTKEY_LISTENER_LONG_NAME,
+		HOTKEY_LISTENER_SHORT_NAME,
+		HOTKEY_LISTENER_OPTION_DESCRIPTION,
+		HOTKEY_LISTENER_ARG_DESCRIPTION);
 }
 
 Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
@@ -133,6 +149,12 @@ int EzAutoClicker::EzAutoClickerApp::on_handle_local_options(const Glib::RefPtr<
 
 	if (options->lookup_value(SET_REPEAT_COUNT_LONG_NAME, int_value))
 		cli_options.repeat_count = int_value;
+
+	if (options->lookup_value(CLICKER_LONG_NAME, string_value))
+		handle_clicker_option(string_value);
+
+	if (options->lookup_value(HOTKEY_LISTENER_LONG_NAME, string_value))
+		handle_hotkey_listener_option(string_value);
 
 	return -1;
 }
@@ -184,8 +206,34 @@ void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::us
 	cli_options.set_mouse_location = true;
 }
 
+void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring &value) {
+	if (value.lowercase() == "x11")
+		clicker = Input::ClickerFactory::create_clicker_x11();
+	else if (value.lowercase() == "uinput")
+		clicker = Input::ClickerFactory::create_clicker_uinput();
+}
+
+void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
+	if (value.lowercase() == "x11")
+		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_x11();
+	else if (value.lowercase() == "evdev")
+		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+}
+
 void EzAutoClicker::EzAutoClickerApp::on_toggle() {
 	main_window->toggle_clicker();
+}
+
+std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::EzAutoClickerApp::get_clicker() {
+	if (clicker)
+		return std::move(clicker);
+	return Input::ClickerFactory::create_compatible_clicker();
+}
+
+std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::EzAutoClickerApp::get_hotkey_listener() {
+	if (hotkey_listener)
+		return std::move(hotkey_listener);
+	return Input::HotkeyListenerFactory::create_hotkey_listener();
 }
 
 void EzAutoClicker::EzAutoClickerApp::set_cli_options_on_main_window() {
@@ -236,8 +284,8 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 	auto builder = Gtk::Builder::create_from_resource("/org/Stronkkey/EzAutoClicker/main_window.ui");
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
-	main_window->set_clicker(std::move(clicker));
-	main_window->set_hotkey_listener(std::move(hotkey_listener));
+	main_window->set_clicker(get_clicker());
+	main_window->set_hotkey_listener(get_hotkey_listener());
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);
 

@@ -31,11 +31,16 @@ private:
 	void handle_mouse_button_option(const Glib::ustring &value);
 	void handle_click_type_option(const Glib::ustring &value);
 	void handle_pick_location_option(const Glib::ustring &value);
+	void handle_clicker_option(const Glib::ustring &value);
+	void handle_hotkey_listener_option(const Glib::ustring &value);
 	void on_toggle();
 
 	MainWindow *main_window;
 	std::unique_ptr<Input::Clicker> clicker;
 	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
+
+	std::unique_ptr<Input::Clicker> get_clicker();
+	std::unique_ptr<Input::HotkeyListener> get_hotkey_listener();
 
 	struct {
 		std::optional<Input::Click::MOUSE_BUTTON> button = std::nullopt;

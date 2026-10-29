@@ -108,18 +108,15 @@ int main(int argc, char *argv[]) {
 		// like privilege escalation attacks. Also applies to hotkey listeners as well.
 		// Note: running any gui application as root is not safe, this doesn't change this.
 		auto clicker_uinput= EzAutoClicker::Input::ClickerFactory::create_clicker_uinput();
-
-		if (clicker_uinput)
+		if (clicker_uinput && clicker_uinput->is_connected())
 			clicker = std::move(clicker_uinput);
-		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+		
+		auto hotkey_listener_evdev = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+		if (hotkey_listener_evdev && hotkey_listener_evdev->is_reading())
+			hotkey_listener = std::move(hotkey_listener_evdev);
+
 		drop_root_privileges();
 	}
-
-	if (!clicker)
-		clicker = EzAutoClicker::Input::ClickerFactory::create_compatible_clicker();
-
-	if (!hotkey_listener)
-		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener();
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
 		std::move(clicker),
