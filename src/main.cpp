@@ -21,7 +21,7 @@
 #include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 
-int get_running_user_id() {
+uid_t get_running_user_id() {
 	const char *sudo_env = getenv("SUDO_UID");
 	const char *pkexec_env = getenv("PKEXEC_UID");
 
@@ -63,7 +63,7 @@ void drop_root_privileges() {
 	if (geteuid() != 0)
 		return;
 
-	int running_user_id = get_running_user_id();
+	uid_t running_user_id = get_running_user_id();
 	if (running_user_id == 0)
 		throw std::runtime_error("Couldn't find suitable user to drop privileges to. Try running the program with SUDO_UID=$(id -u).");
 
