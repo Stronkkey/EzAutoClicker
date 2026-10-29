@@ -47,8 +47,10 @@ EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), 
 
 EzAutoClicker::Input::HotkeyListenerX11::~HotkeyListenerX11() {
 	stop_reading();
-	if (display)
+	if (display) {
+		XUngrabKey(display, key_code, AnyModifier, DefaultRootWindow(display));
 		XCloseDisplay(display);
+	}
 }
 
 void EzAutoClicker::Input::HotkeyListenerX11::read_inputs(std::stop_token stop_token) {
