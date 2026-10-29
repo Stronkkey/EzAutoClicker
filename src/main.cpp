@@ -44,10 +44,21 @@ int get_running_user_id() {
 	return getuid();
 }
 
+/**
+ * @brief Checks if the program is running as root.
+ * @details This function gets the effective uid of the program
+ * and checks if it is equal to 0.
+ * @returns true if the program is running as root, false otherwise.
+ */
 bool is_running_as_root() {
 	return geteuid() == 0;
 }
 
+/**
+ * @brief Permanently drops all root privileges so they can't be restored again.
+ * @throw std::runtime_error if able to restore root privileges after dropping them.
+ * @see https://web.archive.org/web/20241226230125/https://unix.stackexchange.com/a/21290
+ */
 void drop_root_privileges() {
 	if (geteuid() != 0)
 		return;
