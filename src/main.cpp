@@ -84,6 +84,11 @@ int main(int argc, char *argv[]) {
 	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
 	if (is_running_as_root()) {
+		// We intentionally only try to create a uinput clicker with root privileges
+		// as that is the only clicker that can make use of them. Other clickers
+		// shouldn't be created with root privileges as it can create security vulnerabilities
+		// like privilege escalation attacks. Also applies to hotkey listeners as well.
+		// Note: running any gui application as root is not safe, this doesn't change this.
 		auto clicker_uinput= EzAutoClicker::Input::ClickerFactory::create_clicker_uinput();
 
 		if (clicker_uinput)
