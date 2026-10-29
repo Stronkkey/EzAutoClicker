@@ -21,24 +21,28 @@
 #include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 
-
+/**
+ * @brief Gets the uid of the user who is actually running the program.
+ * @details Checks for the environment variables set by pkexec or sudo which contain
+ * the uid of the running user, uses getuid() if the environment variables aren't set
+ * or can't be parsed.
+ * @return the uid of the running user, or the real uid of the program.
+ */
 uid_t get_running_user_id() {
-	const char *sudo_env = getenv("SUDO_UID");
 	const char *pkexec_env = getenv("PKEXEC_UID");
+	const char *sudo_env = getenv("SUDO_UID");
 
-	if (pkexec_env != NULL) {
+	if (pkexec_env) {
 		try {
-			return std::stoi(pkexec_env);
+			return std::stoul(pkexec_env);
 		} catch (const std::exception&) {
-			return getuid();
 		}
 	}
 
-	if (sudo_env != NULL) {
+	if (sudo_env) {
 		try {
-			return std::stoi(sudo_env);
+			return std::stoul(sudo_env);
 		} catch (const std::exception&) {
-			return getuid();
 		}
 	}
 
