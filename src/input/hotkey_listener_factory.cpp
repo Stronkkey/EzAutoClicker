@@ -16,7 +16,6 @@
 
 #include <fcntl.h>
 
-#include <src/session.hpp>
 #include <src/input/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_x11.hpp>
 
@@ -36,8 +35,7 @@ std::unique_ptr<EzAutoClicker::Input::HotkeyListenerEvdev> EzAutoClicker::Input:
 	return hotkey_listener_evdev;
 }
 
-std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::Input::HotkeyListenerFactory::create_compatible_hotkey_listener() {
-	Session::Type session_type = Session::get_type();
+std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener() {
 	auto hotkey_listener_evdev = create_hotkey_listener_evdev();
 
 	if (hotkey_listener_evdev->is_reading())
@@ -45,11 +43,9 @@ std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::Input::Hotk
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-	if (session_type == Session::Type::X11 || session_type == Session::Type::WAYLAND_WITH_XWAYLAND) {
-		auto hotkey_listener_x11 = create_hotkey_listener_x11();
-		if (hotkey_listener_x11->is_reading())
-			return hotkey_listener_x11;
-	}
+	auto hotkey_listener_x11 = create_hotkey_listener_x11();
+	if (hotkey_listener_x11->is_reading())
+		return hotkey_listener_x11;
 
 	#endif
 

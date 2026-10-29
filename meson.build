@@ -9,7 +9,6 @@ project(
 sources = [
   'src/app.cpp',
   'src/main.cpp',
-  'src/session.cpp',
   'src/window.cpp',
   'src/input/hotkey_listener_evdev.cpp',
   'src/input/hotkey_listener_factory.cpp',

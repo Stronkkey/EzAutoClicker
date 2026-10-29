@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 		clicker = EzAutoClicker::Input::ClickerFactory::create_compatible_clicker();
 
 	if (!hotkey_listener)
-		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_compatible_hotkey_listener();
+		hotkey_listener = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener();
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
 		std::move(clicker),

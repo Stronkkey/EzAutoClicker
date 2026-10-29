@@ -33,7 +33,7 @@ std::unique_ptr<HotkeyListenerX11> create_hotkey_listener_x11();
 #endif
 
 std::unique_ptr<HotkeyListenerEvdev> create_hotkey_listener_evdev();
-std::unique_ptr<HotkeyListener> create_compatible_hotkey_listener();
+std::unique_ptr<HotkeyListener> create_hotkey_listener();
 
 }
 

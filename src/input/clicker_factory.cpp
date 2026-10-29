@@ -18,8 +18,6 @@
  
 #include <optional>
 
-#include <src/session.hpp>
-
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
 std::unique_ptr<EzAutoClicker::Input::ClickerX11> EzAutoClicker::Input::ClickerFactory::create_clicker_x11() {
@@ -60,7 +58,6 @@ std::unique_ptr<EzAutoClicker::Input::ClickerUInput> EzAutoClicker::Input::Click
 }
 
 std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFactory::create_compatible_clicker() {
-	Session::Type session_type = Session::get_type();
 	auto input_player_uinput = create_clicker_uinput();
 
 	if (input_player_uinput)
@@ -68,11 +65,9 @@ std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFact
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-	if (session_type == Session::Type::X11 || session_type == Session::Type::WAYLAND_WITH_XWAYLAND) {
-		auto input_player_x11 = create_clicker_x11();
-		if (input_player_x11)
-			return input_player_x11;
-	}
+	auto input_player_x11 = create_clicker_x11();
+	if (input_player_x11)
+		return input_player_x11;
 
 	#endif
 
