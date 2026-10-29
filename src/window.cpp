@@ -17,7 +17,6 @@
 #include <linux/input-event-codes.h>
 
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
-	hotkey_listener = nullptr;
 	sending_inputs = false;
 	hotkey_listener_connection = {};
 
@@ -147,15 +146,10 @@ void EzAutoClicker::MainWindow::set_clicker(Input::Clicker *p_clicker) {
 	clicker = p_clicker;
 }
 
-void EzAutoClicker::MainWindow::set_hotkey_listener(Input::HotkeyListener *p_hotkey_listener) {
-	if (hotkey_listener)
-		hotkey_listener->stop_reading();
-
+void EzAutoClicker::MainWindow::add_hotkey_listener_connection(Glib::Dispatcher &dispatcher) {
 	if (hotkey_listener_connection.connected())
 		hotkey_listener_connection.disconnect();
-
-	hotkey_listener = p_hotkey_listener;
-	auto slot = hotkey_listener->signal_pressed.connect([this] {
+	dispatcher.connect([this] {
 		toggle_clicker();
 	});
 }

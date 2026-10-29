@@ -237,7 +237,7 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
 	main_window->set_clicker(clicker.get());
-	main_window->set_hotkey_listener(hotkey_listener.get());
+	main_window->add_hotkey_listener_connection(hotkey_listener->signal_pressed);
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);
 
