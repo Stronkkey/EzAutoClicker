@@ -27,6 +27,7 @@ private:
 	Input::ThreadedClicker threaded_clicker;
 	Input::Clicker *clicker;
 	Input::HotkeyListener *hotkey_listener;
+	sigc::connection hotkey_listener_connection;
 
 	Gtk::Button *start_button;
 	Gtk::Button *stop_button;

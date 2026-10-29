@@ -19,6 +19,7 @@
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	hotkey_listener = nullptr;
 	sending_inputs = false;
+	hotkey_listener_connection = {};
 
 	start_button = builder->get_widget<Gtk::Button>("start_button");
 	stop_button = builder->get_widget<Gtk::Button>("stop_button");
@@ -147,13 +148,14 @@ void EzAutoClicker::MainWindow::set_clicker(Input::Clicker *p_clicker) {
 }
 
 void EzAutoClicker::MainWindow::set_hotkey_listener(Input::HotkeyListener *p_hotkey_listener) {
-	if (hotkey_listener) {
+	if (hotkey_listener)
 		hotkey_listener->stop_reading();
-		hotkey_listener->signal_pressed.clear();
-	}
+
+	if (hotkey_listener_connection.connected())
+		hotkey_listener_connection.disconnect();
 
 	hotkey_listener = p_hotkey_listener;
-	hotkey_listener->signal_pressed.connect([this] {
+	auto slot = hotkey_listener->signal_pressed.connect([this] {
 		toggle_clicker();
 	});
 	hotkey_listener->start_reading();

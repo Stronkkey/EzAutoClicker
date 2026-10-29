@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <sigc++/sigc++.h>
+#include <glibmm/dispatcher.h>
 
 namespace EzAutoClicker {
 
@@ -23,7 +23,7 @@ namespace Input {
 class HotkeyListener {
 public:
 	virtual ~HotkeyListener() = default;
-	sigc::signal<void()> signal_pressed = {};
+	Glib::Dispatcher signal_pressed = {};
 
 	// Returns the number of devices being watched (0 = nothing usable)
 	virtual int start_reading() =0;
