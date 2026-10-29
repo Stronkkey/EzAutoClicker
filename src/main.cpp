@@ -97,10 +97,7 @@ void drop_root_privileges() {
 
 int main(int argc, char *argv[]) {
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-	if (XInitThreads() == 0)
-		return EXIT_FAILURE;
-
+	XInitThreads();
 	#endif
 
 	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;

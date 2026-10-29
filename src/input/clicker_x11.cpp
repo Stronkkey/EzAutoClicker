@@ -27,6 +27,9 @@ EzAutoClicker::Input::ClickerX11::~ClickerX11() {
 }
 
 bool EzAutoClicker::Input::ClickerX11::initialize() {
+	if (XInitThreads() == 0)
+		return false;
+
 	display = XOpenDisplay(nullptr);
 	if (display) {
 		int unused;

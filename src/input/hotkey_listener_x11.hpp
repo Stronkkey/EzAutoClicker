@@ -29,7 +29,7 @@ namespace Input {
 
 class HotkeyListenerX11 final : public HotkeyListener {
 private:
-	Display *display;
+	Display *display = nullptr;
 
 	std::jthread worker_thread;
 	std::mutex mutex;
