@@ -14,7 +14,7 @@
  */
 #pragma once
 
-#include <glibmm.h>
+#include <glibmm/stringutils.h>
 
 namespace EzAutoClicker {
 

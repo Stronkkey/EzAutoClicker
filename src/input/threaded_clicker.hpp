@@ -19,7 +19,7 @@
 #include <mutex>
 #include <thread>
 
-#include <glibmm.h>
+#include <glibmm/dispatcher.h>
 
 #include <src/input/clicker.hpp>
 #include <src/input/clicker_options.hpp>

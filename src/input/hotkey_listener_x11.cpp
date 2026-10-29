@@ -22,7 +22,6 @@
 
 #include <X11/keysym.h>
 
-
 EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
 	display = XOpenDisplay(nullptr);
 

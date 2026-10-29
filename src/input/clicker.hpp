@@ -14,11 +14,11 @@
  */
 #pragma once
 
-#include <src/input/click.hpp>
-
 namespace EzAutoClicker {
 
 namespace Input {
+
+struct Click;
 
 /**
  * @brief Abstract interface for sending clicks.

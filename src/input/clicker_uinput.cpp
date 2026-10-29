@@ -19,6 +19,8 @@
 
 #include <libevdev/libevdev-uinput.h>
 
+#include <src/input/click.hpp>
+
 bool EzAutoClicker::Input::ClickerUInput::send_mouse_input(int type, int code, int value) {
 	return libevdev_uinput_write_event(mouse_uinput_device, type, code, value);
 }

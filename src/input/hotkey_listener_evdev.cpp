@@ -19,7 +19,7 @@
 
 #include <filesystem>
 
-#include <glibmm.h>
+#include <glibmm/main.h>
 
 EzAutoClicker::Input::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 	stop_reading();

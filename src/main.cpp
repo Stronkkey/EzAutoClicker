@@ -17,8 +17,9 @@
 #include <pwd.h>
 
 #include <src/app.hpp>
-#include <src/input/hotkey_listener_factory.hpp>
 #include <src/input/clicker_factory.hpp>
+#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/hotkey_listener_factory.hpp>
 
 int get_running_user_id() {
 	const char *sudo_env = getenv("SUDO_UID");

@@ -19,6 +19,8 @@
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 
+#include <src/input/click.hpp>
+
 EzAutoClicker::Input::ClickerX11::~ClickerX11() {
 	if (display)
 		XCloseDisplay(display);
