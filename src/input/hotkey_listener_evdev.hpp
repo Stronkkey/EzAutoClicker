@@ -45,8 +45,8 @@ public:
 		return key_code;
 	}
 
-	// Returns the number of devices being watched (0 = nothing usable)
-	int start_reading() override;
+	bool is_reading() const override;
+	void start_reading() override;
 	void stop_reading() override;
 };
 

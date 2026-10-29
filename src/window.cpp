@@ -158,7 +158,6 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(Input::HotkeyListener *p_hot
 	auto slot = hotkey_listener->signal_pressed.connect([this] {
 		toggle_clicker();
 	});
-	hotkey_listener->start_reading();
 }
 
 void EzAutoClicker::MainWindow::set_interval_ms(std::chrono::milliseconds interval) {

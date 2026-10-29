@@ -25,8 +25,8 @@ public:
 	virtual ~HotkeyListener() = default;
 	Glib::Dispatcher signal_pressed = {};
 
-	// Returns the number of devices being watched (0 = nothing usable)
-	virtual int start_reading() =0;
+	virtual bool is_reading() const =0;
+	virtual void start_reading() =0;
 	virtual void stop_reading() =0;
 };
 

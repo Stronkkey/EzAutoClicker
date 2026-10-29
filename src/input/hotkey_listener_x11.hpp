@@ -41,7 +41,8 @@ public:
 	HotkeyListenerX11();
 	~HotkeyListenerX11();
 
-	int start_reading() override;
+	bool is_reading() const override;
+	void start_reading() override;
 	void stop_reading() override;
 };
 

@@ -51,20 +51,22 @@ bool EzAutoClicker::Input::HotkeyListenerEvdev::device_has_key(libevdev *device)
 	return libevdev_has_event_type(device, EV_KEY);
 }
 
-int EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
+bool EzAutoClicker::Input::HotkeyListenerEvdev::is_reading() const {
+	return !devices.empty();
+}
+
+void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
 	key_code = KEY_LEFTBRACE;
 	stop_reading();
 
 	if (!std::filesystem::exists("/dev/input"))
-		return 0;
+		return;
 
 	using directory_iterator = std::filesystem::directory_iterator;
 	constexpr const auto option = std::filesystem::directory_options::follow_directory_symlink;
 
 	for (const auto &entry: directory_iterator("/dev/input", option))
 		for_input_device(entry.path().string());
-
-	return static_cast<int>(devices.size());
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading() {
