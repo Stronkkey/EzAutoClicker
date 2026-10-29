@@ -236,8 +236,8 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 	auto builder = Gtk::Builder::create_from_resource("/org/Stronkkey/EzAutoClicker/main_window.ui");
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
-	main_window->set_clicker(clicker.get());
-	main_window->set_hotkey_listener(hotkey_listener.get());
+	main_window->set_clicker(std::move(clicker));
+	main_window->set_hotkey_listener(std::move(hotkey_listener));
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);
 

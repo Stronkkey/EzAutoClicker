@@ -119,7 +119,7 @@ void EzAutoClicker::MainWindow::start_clicker() {
 
 	set_sending_inputs(true);
 	update_options();
-	threaded_clicker.start(clicker, options);
+	threaded_clicker.start(clicker.get(), options);
 }
 
 void EzAutoClicker::MainWindow::stop_clicker() {
@@ -143,18 +143,18 @@ void EzAutoClicker::MainWindow::toggle_clicker() {
 		start_clicker();
 }
 
-void EzAutoClicker::MainWindow::set_clicker(Input::Clicker *p_clicker) {
-	clicker = p_clicker;
+void EzAutoClicker::MainWindow::set_clicker(std::unique_ptr<Input::Clicker> &&p_clicker) {
+	clicker = std::move(p_clicker);
 }
 
-void EzAutoClicker::MainWindow::set_hotkey_listener(Input::HotkeyListener *p_hotkey_listener) {
+void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener) {
 	if (hotkey_listener)
 		hotkey_listener->stop_reading();
 
 	if (hotkey_listener_connection.connected())
 		hotkey_listener_connection.disconnect();
 
-	hotkey_listener = p_hotkey_listener;
+	hotkey_listener = std::move(p_hotkey_listener);
 	auto slot = hotkey_listener->signal_pressed.connect([this] {
 		toggle_clicker();
 	});
