@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-#include <src/input/input_listener_evdev.hpp>
+#include <src/input/hotkey_listener_evdev.hpp>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -22,7 +22,7 @@
 #include <glibmm/main.h>
 
 EzAutoClicker::Input::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
-	stop_reading_hotkey();
+	stop_reading();
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::string_view &input_device_path) {
@@ -51,13 +51,13 @@ bool EzAutoClicker::Input::HotkeyListenerEvdev::device_has_key(libevdev *device)
 	return libevdev_has_event_type(device, EV_KEY);
 }
 
-bool EzAutoClicker::Input::HotkeyListenerEvdev::is_reading_hotkey() const {
+bool EzAutoClicker::Input::HotkeyListenerEvdev::is_reading() const {
 	return !devices.empty();
 }
 
-void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading_hotkey() {
+void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
 	key_code = KEY_LEFTBRACE;
-	stop_reading_hotkey();
+	stop_reading();
 
 	if (!std::filesystem::exists("/dev/input"))
 		return;
@@ -69,7 +69,7 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading_hotkey() {
 		for_input_device(entry.path().string());
 }
 
-void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading_hotkey() {
+void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading() {
 	for (auto &watch : watches)
 		watch.disconnect();
 	watches.clear();

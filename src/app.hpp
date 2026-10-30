@@ -17,7 +17,7 @@
 #include <gtkmm.h>
 
 #include <src/window.hpp>
-#include <src/input/input_listener.hpp>
+#include <src/input/hotkey_listener.hpp>
 #include <src/input/clicker.hpp>
 
 namespace EzAutoClicker {
@@ -32,15 +32,15 @@ private:
 	void handle_click_type_option(const Glib::ustring &value);
 	void handle_pick_location_option(const Glib::ustring &value);
 	void handle_clicker_option(const Glib::ustring &value);
-	void handle_input_listener_option(const Glib::ustring &value);
+	void handle_hotkey_listener_option(const Glib::ustring &value);
 	void on_toggle();
 
 	MainWindow *main_window;
 	std::unique_ptr<Input::Clicker> clicker;
-	std::unique_ptr<Input::HotkeyListener> input_listener;
+	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
 
 	std::unique_ptr<Input::Clicker> get_clicker();
-	std::unique_ptr<Input::HotkeyListener> get_input_listener();
+	std::unique_ptr<Input::HotkeyListener> get_hotkey_listener();
 
 	struct {
 		std::optional<Input::Click::MouseButton> button = std::nullopt;
@@ -65,7 +65,7 @@ protected:
 public:
 	static Glib::RefPtr<EzAutoClickerApp> create(
 		std::unique_ptr<Input::Clicker> clicker = nullptr,
-		std::unique_ptr<Input::HotkeyListener> input_listener = nullptr);
+		std::unique_ptr<Input::HotkeyListener> hotkey_listener = nullptr);
 };
 
 }

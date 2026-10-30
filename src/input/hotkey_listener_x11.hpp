@@ -12,44 +12,40 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
 #pragma once
 
-#include <vector>
+#include <thread>
 
-#include <libevdev/libevdev.h>
+#include <X11/Xlib.h>
 
-#include <src/input/input_listener.hpp>
+#include <src/input/hotkey_listener.hpp>
 
 namespace EzAutoClicker {
 
 namespace Input {
 
-class HotkeyListenerEvdev final : public HotkeyListener {
-	std::vector<libevdev*> devices = {};
-	std::vector<sigc::connection> watches = {};
-	unsigned int key_code = 0;
+class HotkeyListenerX11 final : public HotkeyListener {
+private:
+	Display *display = nullptr;
 
-	void for_input_device(const std::string_view &input_device_path);
-	bool device_has_key(libevdev *device) const;
+	std::jthread worker_thread;
+	KeyCode key_code;
+	bool running;
 
-	void handle_event(input_event &event);
-	bool listen_for_device(libevdev *device);
+	void read_inputs(std::stop_token stop_token);
 public:
-	~HotkeyListenerEvdev();
+	HotkeyListenerX11();
+	~HotkeyListenerX11();
 
-	constexpr void set_key_code(unsigned int new_key_code) {
-		key_code = new_key_code;
-	}
-
-	constexpr unsigned int get_key_code() const {
-		return key_code;
-	}
-
-	bool is_reading_hotkey() const override;
-	void start_reading_hotkey() override;
-	void stop_reading_hotkey() override;
+	bool is_reading() const override;
+	void start_reading() override;
+	void stop_reading() override;
 };
 
 }
 
 }
+
+#endif

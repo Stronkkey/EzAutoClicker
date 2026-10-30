@@ -31,7 +31,6 @@ struct Click {
 
 	MouseButton button;
 	bool set_mouse_location = false;
-	bool only_move = false;
 	unsigned short x_position = 0;
 	unsigned short y_position = 0;
 };

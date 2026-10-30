@@ -28,12 +28,12 @@ namespace HotkeyListenerFactory {
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-std::unique_ptr<HotkeyListenerX11> create_input_listener_x11();
+std::unique_ptr<HotkeyListenerX11> create_hotkey_listener_x11();
 
 #endif
 
-std::unique_ptr<HotkeyListenerEvdev> create_input_listener_evdev();
-std::unique_ptr<HotkeyListener> create_input_listener();
+std::unique_ptr<HotkeyListenerEvdev> create_hotkey_listener_evdev();
+std::unique_ptr<HotkeyListener> create_hotkey_listener();
 
 }
 

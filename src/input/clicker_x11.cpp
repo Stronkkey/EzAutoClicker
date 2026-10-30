@@ -74,11 +74,6 @@ void EzAutoClicker::Input::ClickerX11::send_click(const Click &click) {
 	if (click.set_mouse_location)
 		XTestFakeMotionEvent(display, -1, click.x_position, click.y_position, CurrentTime);
 
-	if (click.only_move) {
-		XFlush(display);
-		return;
-	}
-
 	XTestFakeButtonEvent(display, x11_button_number, True, CurrentTime);
 	XTestFakeButtonEvent(display, x11_button_number, False, CurrentTime);
 	XFlush(display);

@@ -82,9 +82,9 @@ const Glib::ustring CLICKER_LONG_NAME = "clicker";
 const Glib::ustring CLICKER_OPTION_DESCRIPTION = "Specifies the clicker backend.";
 const Glib::ustring CLICKER_ARG_DESCRIPTION = "x11|uinput|auto";
 
-constexpr const char INPUT_LISTENER_SHORT_NAME = NO_SHORT_NAME;
-const Glib::ustring INPUT_LISTENER_LONG_NAME = "input-listener";
-const Glib::ustring INPUT_LISTENER_OPTION_DESCRIPTION = "Specifies the input listener backend.";
-const Glib::ustring INPUT_LISTENER_ARG_DESCRIPTION = "x11|evdev|auto";
+constexpr const char HOTKEY_LISTENER_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring HOTKEY_LISTENER_LONG_NAME = "hotkey-listener";
+const Glib::ustring HOTKEY_LISTENER_OPTION_DESCRIPTION = "Specifies the hotkey listener backend.";
+const Glib::ustring HOTKEY_LISTENER_ARG_DESCRIPTION = "x11|evdev|auto";
 
 }

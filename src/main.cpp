@@ -18,8 +18,8 @@
 
 #include <src/app.hpp>
 #include <src/input/clicker_factory.hpp>
-#include <src/input/input_listener_evdev.hpp>
-#include <src/input/input_listener_factory.hpp>
+#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/hotkey_listener_factory.hpp>
 
 /**
  * @brief Gets the uid of the user who is actually running the program.
@@ -101,27 +101,27 @@ int main(int argc, char *argv[]) {
 	#endif
 
 	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;
-	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> input_listener = nullptr;
+	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
 	if (is_running_as_root()) {
 		// We intentionally only try to create a uinput clicker with root privileges
 		// as that is the only clicker that can make use of them. Other clickers
 		// shouldn't be created with root privileges as it can create security vulnerabilities
-		// like privilege escalation attacks. Also applies to input listeners as well.
+		// like privilege escalation attacks. Also applies to hotkey listeners as well.
 		// Note: running any gui application as root is not safe, this doesn't change this.
 		auto clicker_uinput= EzAutoClicker::Input::ClickerFactory::create_clicker_uinput();
 		if (clicker_uinput && clicker_uinput->is_connected())
 			clicker = std::move(clicker_uinput);
 		
-		auto input_listener_evdev = EzAutoClicker::Input::HotkeyListenerFactory::create_input_listener_evdev();
-		if (input_listener_evdev && input_listener_evdev->is_reading_hotkey())
-			input_listener = std::move(input_listener_evdev);
+		auto hotkey_listener_evdev = EzAutoClicker::Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+		if (hotkey_listener_evdev && hotkey_listener_evdev->is_reading())
+			hotkey_listener = std::move(hotkey_listener_evdev);
 
 		drop_root_privileges();
 	}
 
 	auto app = EzAutoClicker::EzAutoClickerApp::create(
 		std::move(clicker),
-		std::move(input_listener));
+		std::move(hotkey_listener));
 	return app->run(argc, argv);
 }

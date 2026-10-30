@@ -25,9 +25,9 @@ public:
 	virtual ~HotkeyListener() = default;
 	Glib::Dispatcher signal_pressed = {};
 
-	virtual bool is_reading_hotkey() const =0;
-	virtual void start_reading_hotkey() =0;
-	virtual void stop_reading_hotkey() =0;
+	virtual bool is_reading() const =0;
+	virtual void start_reading() =0;
+	virtual void stop_reading() =0;
 };
 
 }

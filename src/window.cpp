@@ -17,9 +17,9 @@
 #include <linux/input-event-codes.h>
 
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
-	input_listener = nullptr;
+	hotkey_listener = nullptr;
 	sending_inputs = false;
-	input_listener_connection = {};
+	hotkey_listener_connection = {};
 
 	start_button = builder->get_widget<Gtk::Button>("start_button");
 	stop_button = builder->get_widget<Gtk::Button>("stop_button");
@@ -147,15 +147,15 @@ void EzAutoClicker::MainWindow::set_clicker(std::unique_ptr<Input::Clicker> &&p_
 	clicker = std::move(p_clicker);
 }
 
-void EzAutoClicker::MainWindow::set_input_listener(std::unique_ptr<Input::HotkeyListener> &&p_input_listener) {
-	if (input_listener)
-		input_listener->stop_reading_hotkey();
+void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener) {
+	if (hotkey_listener)
+		hotkey_listener->stop_reading();
 
-	if (input_listener_connection.connected())
-		input_listener_connection.disconnect();
+	if (hotkey_listener_connection.connected())
+		hotkey_listener_connection.disconnect();
 
-	input_listener = std::move(p_input_listener);
-	auto slot = input_listener->signal_pressed.connect([this] {
+	hotkey_listener = std::move(p_hotkey_listener);
+	auto slot = hotkey_listener->signal_pressed.connect([this] {
 		toggle_clicker();
 	});
 }
