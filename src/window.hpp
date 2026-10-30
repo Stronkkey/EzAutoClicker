@@ -44,7 +44,6 @@ private:
 
 	Gtk::CheckButton *current_location_toggle;
 	Gtk::CheckButton *pick_location_toggle;
-	Gtk::Button *pick_location_button;
 	Gtk::SpinButton *x_position_entry;
 	Gtk::SpinButton *y_position_entry;
 
@@ -53,8 +52,6 @@ private:
 	Gtk::CheckButton *repeal_until_stopped_toggle;
 
 	bool sending_inputs;
-
-	void on_pick_location_button_pressed();
 
 	void update_mouse_button_option();
 	void update_click_type_option();

@@ -272,7 +272,6 @@ Double</property>
                                         <child>
                                           <object class="GtkListBoxRow">
                                             <property name="activatable">False</property>
-                                            <property name="halign">center</property>
                                             <property name="selectable">False</property>
                                             <child>
                                               <object class="GtkBox">
@@ -293,7 +292,6 @@ Double</property>
                                                   <object class="GtkLabel">
                                                     <property name="label">X</property>
                                                     <property name="margin-end">4</property>
-                                                    <property name="margin-start">21</property>
                                                   </object>
                                                 </child>
                                                 <child>
@@ -315,7 +313,6 @@ Double</property>
                                         <child>
                                           <object class="GtkListBoxRow">
                                             <property name="activatable">False</property>
-                                            <property name="halign">center</property>
                                             <property name="selectable">False</property>
                                             <child>
                                               <object class="GtkBox">
@@ -323,8 +320,8 @@ Double</property>
                                                   <object class="GtkCheckButton" id="pick_location_toggle"/>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkButton" id="pick_location_button">
-                                                    <property name="label">Pick Location</property>
+                                                  <object class="GtkLabel">
+                                                    <property name="label">Use position</property>
                                                     <property name="margin-end">8</property>
                                                     <property name="margin-start">4</property>
                                                   </object>
@@ -333,6 +330,7 @@ Double</property>
                                                   <object class="GtkLabel">
                                                     <property name="label">Y</property>
                                                     <property name="margin-end">4</property>
+                                                    <property name="margin-start">24</property>
                                                   </object>
                                                 </child>
                                                 <child>

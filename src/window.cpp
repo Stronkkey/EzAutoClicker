@@ -34,7 +34,6 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 
 	current_location_toggle = builder->get_widget<Gtk::CheckButton>("current_location_toggle");
 	pick_location_toggle = builder->get_widget<Gtk::CheckButton>("pick_location_toggle");
-	pick_location_button = builder->get_widget<Gtk::Button>("pick_location_button");
 	x_position_entry = builder->get_widget<Gtk::SpinButton>("x_position_entry");
 	y_position_entry = builder->get_widget<Gtk::SpinButton>("y_position_entry");
 
@@ -70,10 +69,6 @@ void EzAutoClicker::MainWindow::update_click_type_option() {
 		options.click_type = Input::ClickerOptions::ClickType::DOUBLE;
 }
 
-void EzAutoClicker::MainWindow::on_pick_location_button_pressed() {
-	// Intentionally left blank
-}
-
 void EzAutoClicker::MainWindow::update_repeating_mode() {
 	if (repeal_until_stopped_toggle->get_active())
 		options.repeat_mode = Input::ClickerOptions::RepeatMode::UNTIL_STOPPED;
@@ -107,10 +102,6 @@ void EzAutoClicker::MainWindow::connect_signals() {
 	stop_button->signal_clicked().connect([this]{
 		stop_clicker();
 	});
-
-	pick_location_button->signal_clicked().connect(
-		sigc::mem_fun(*this,
-		&MainWindow::on_pick_location_button_pressed));
 }
 
 void EzAutoClicker::MainWindow::start_clicker() {
