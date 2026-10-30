@@ -12,24 +12,42 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
 #pragma once
 
-#include <glibmm/dispatcher.h>
+#include <mutex>
+#include <thread>
+
+#include <X11/Xlib.h>
+
+#include <src/input/input_listener.hpp>
 
 namespace EzAutoClicker {
 
 namespace Input {
 
-class HotkeyListener {
-public:
-	virtual ~HotkeyListener() = default;
-	Glib::Dispatcher signal_pressed = {};
+class HotkeyListenerX11 final : public HotkeyListener {
+private:
+	Display *display = nullptr;
 
-	virtual bool is_reading() const =0;
-	virtual void start_reading() =0;
-	virtual void stop_reading() =0;
+	std::jthread worker_thread;
+	std::mutex mutex;
+	KeyCode key_code;
+	bool running;
+
+	void read_inputs(std::stop_token stop_token);
+public:
+	HotkeyListenerX11();
+	~HotkeyListenerX11();
+
+	bool is_reading_hotkey() const override;
+	void start_reading_hotkey() override;
+	void stop_reading_hotkey() override;
 };
 
 }
 
 }
+
+#endif

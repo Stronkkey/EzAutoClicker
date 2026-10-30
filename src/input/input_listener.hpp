@@ -14,28 +14,21 @@
  */
 #pragma once
 
-#include <memory>
+#include <glibmm/dispatcher.h>
 
 namespace EzAutoClicker {
 
 namespace Input {
 
-class HotkeyListener;
-class HotkeyListenerEvdev;
-class HotkeyListenerX11;
+class HotkeyListener {
+public:
+	virtual ~HotkeyListener() = default;
+	Glib::Dispatcher signal_pressed = {};
 
-namespace HotkeyListenerFactory {
-
-#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-std::unique_ptr<HotkeyListenerX11> create_hotkey_listener_x11();
-
-#endif
-
-std::unique_ptr<HotkeyListenerEvdev> create_hotkey_listener_evdev();
-std::unique_ptr<HotkeyListener> create_hotkey_listener();
-
-}
+	virtual bool is_reading_hotkey() const =0;
+	virtual void start_reading_hotkey() =0;
+	virtual void stop_reading_hotkey() =0;
+};
 
 }
 

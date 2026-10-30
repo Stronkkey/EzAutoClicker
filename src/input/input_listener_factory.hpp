@@ -14,41 +14,28 @@
  */
 #pragma once
 
-#include <vector>
-
-#include <libevdev/libevdev.h>
-
-#include <src/input/hotkey_listener.hpp>
+#include <memory>
 
 namespace EzAutoClicker {
 
 namespace Input {
 
-class HotkeyListenerEvdev final : public HotkeyListener {
-	std::vector<libevdev*> devices = {};
-	std::vector<sigc::connection> watches = {};
-	unsigned int key_code = 0;
+class HotkeyListener;
+class HotkeyListenerEvdev;
+class HotkeyListenerX11;
 
-	void for_input_device(const std::string_view &input_device_path);
-	bool device_has_key(libevdev *device) const;
+namespace HotkeyListenerFactory {
 
-	void handle_event(input_event &event);
-	bool listen_for_device(libevdev *device);
-public:
-	~HotkeyListenerEvdev();
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-	constexpr void set_key_code(unsigned int new_key_code) {
-		key_code = new_key_code;
-	}
+std::unique_ptr<HotkeyListenerX11> create_input_listener_x11();
 
-	constexpr unsigned int get_key_code() const {
-		return key_code;
-	}
+#endif
 
-	bool is_reading() const override;
-	void start_reading() override;
-	void stop_reading() override;
-};
+std::unique_ptr<HotkeyListenerEvdev> create_input_listener_evdev();
+std::unique_ptr<HotkeyListener> create_input_listener();
+
+}
 
 }
 

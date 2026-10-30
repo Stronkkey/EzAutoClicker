@@ -103,6 +103,9 @@ void EzAutoClicker::Input::ClickerUInput::send_click(const Click &click) {
 		synchronise_mouse_inputs();
 	}
 
+	if (click.only_move)
+		return;
+
 	send_mouse_input(EV_KEY, mouse_code, 1);
 	synchronise_mouse_inputs();
 	send_mouse_input(EV_KEY, mouse_code, 0);

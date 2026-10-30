@@ -14,7 +14,7 @@
  */
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/input_listener_x11.hpp>
 
 #include <poll.h>
 
@@ -47,7 +47,7 @@ EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), 
 }
 
 EzAutoClicker::Input::HotkeyListenerX11::~HotkeyListenerX11() {
-	stop_reading();
+	stop_reading_hotkey();
 	if (display) {
 		XUngrabKey(display, key_code, AnyModifier, DefaultRootWindow(display));
 		XCloseDisplay(display);
@@ -73,11 +73,11 @@ void EzAutoClicker::Input::HotkeyListenerX11::read_inputs(std::stop_token stop_t
 	}
 }
 
-bool EzAutoClicker::Input::HotkeyListenerX11::is_reading() const {
+bool EzAutoClicker::Input::HotkeyListenerX11::is_reading_hotkey() const {
 	return running;
 }
 
-void EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
+void EzAutoClicker::Input::HotkeyListenerX11::start_reading_hotkey() {
 	if (running)
 		return;
 
@@ -85,7 +85,7 @@ void EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
 	running = true;
 }
 
-void EzAutoClicker::Input::HotkeyListenerX11::stop_reading() {
+void EzAutoClicker::Input::HotkeyListenerX11::stop_reading_hotkey() {
 	if (!running)
 		return;
 

@@ -16,7 +16,7 @@
 
 #include <gtkmm.h>
 
-#include <src/input/hotkey_listener.hpp>
+#include <src/input/input_listener.hpp>
 #include <src/input/threaded_clicker.hpp>
 
 namespace EzAutoClicker {
@@ -26,8 +26,8 @@ private:
 	Input::ClickerOptions options;
 	Input::ThreadedClicker threaded_clicker;
 	std::unique_ptr<Input::Clicker> clicker;
-	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
-	sigc::connection hotkey_listener_connection;
+	std::unique_ptr<Input::HotkeyListener> input_listener;
+	sigc::connection input_listener_connection;
 
 	Gtk::Button *start_button;
 	Gtk::Button *stop_button;
@@ -72,7 +72,7 @@ public:
 	void toggle_clicker();
 
 	void set_clicker(std::unique_ptr<Input::Clicker> &&p_clicker);
-	void set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener);
+	void set_input_listener(std::unique_ptr<Input::HotkeyListener> &&p_input_listener);
 
 	void set_interval_ms(std::chrono::milliseconds interval);
 	void set_interval_s(std::chrono::seconds interval);

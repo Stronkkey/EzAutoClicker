@@ -16,9 +16,9 @@
 
 #include <src/app_constants.hpp>
 #include <src/input/clicker_factory.hpp>
-#include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/hotkey_listener_factory.hpp>
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/input_listener_evdev.hpp>
+#include <src/input/input_listener_factory.hpp>
+#include <src/input/input_listener_x11.hpp>
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 	set_id(APP_ID);
@@ -97,18 +97,18 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 		CLICKER_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
-		HOTKEY_LISTENER_LONG_NAME,
-		HOTKEY_LISTENER_SHORT_NAME,
-		HOTKEY_LISTENER_OPTION_DESCRIPTION,
-		HOTKEY_LISTENER_ARG_DESCRIPTION);
+		INPUT_LISTENER_LONG_NAME,
+		INPUT_LISTENER_SHORT_NAME,
+		INPUT_LISTENER_OPTION_DESCRIPTION,
+		INPUT_LISTENER_ARG_DESCRIPTION);
 }
 
 Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
-		std::unique_ptr<Input::Clicker> clicker, std::unique_ptr<Input::HotkeyListener> hotkey_listener)
+		std::unique_ptr<Input::Clicker> clicker, std::unique_ptr<Input::HotkeyListener> input_listener)
 {
 	auto app = Glib::make_refptr_for_instance(new EzAutoClickerApp());
 	app->clicker = std::move(clicker);
-	app->hotkey_listener = std::move(hotkey_listener);
+	app->input_listener = std::move(input_listener);
 
 	return app;
 }
@@ -153,8 +153,8 @@ int EzAutoClicker::EzAutoClickerApp::on_handle_local_options(const Glib::RefPtr<
 	if (options->lookup_value(CLICKER_LONG_NAME, string_value))
 		handle_clicker_option(string_value);
 
-	if (options->lookup_value(HOTKEY_LISTENER_LONG_NAME, string_value))
-		handle_hotkey_listener_option(string_value);
+	if (options->lookup_value(INPUT_LISTENER_LONG_NAME, string_value))
+		handle_input_listener_option(string_value);
 
 	return -1;
 }
@@ -213,11 +213,11 @@ void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring 
 		clicker = Input::ClickerFactory::create_clicker_uinput();
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
+void EzAutoClicker::EzAutoClickerApp::handle_input_listener_option(const Glib::ustring &value) {
 	if (value.lowercase() == "x11")
-		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_x11();
+		input_listener = Input::HotkeyListenerFactory::create_input_listener_x11();
 	else if (value.lowercase() == "evdev")
-		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+		input_listener = Input::HotkeyListenerFactory::create_input_listener_evdev();
 }
 
 void EzAutoClicker::EzAutoClickerApp::on_toggle() {
@@ -230,10 +230,10 @@ std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::EzAutoClickerApp::
 	return Input::ClickerFactory::create_compatible_clicker();
 }
 
-std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::EzAutoClickerApp::get_hotkey_listener() {
-	if (hotkey_listener)
-		return std::move(hotkey_listener);
-	return Input::HotkeyListenerFactory::create_hotkey_listener();
+std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::EzAutoClickerApp::get_input_listener() {
+	if (input_listener)
+		return std::move(input_listener);
+	return Input::HotkeyListenerFactory::create_input_listener();
 }
 
 void EzAutoClicker::EzAutoClickerApp::set_cli_options_on_main_window() {
@@ -285,7 +285,7 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
 	main_window->set_clicker(get_clicker());
-	main_window->set_hotkey_listener(get_hotkey_listener());
+	main_window->set_input_listener(get_input_listener());
 	main_window->set_title(APP_NAME);
 	add_window(*main_window);
 
