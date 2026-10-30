@@ -9,6 +9,9 @@
         <child>
           <object class="GtkListBoxRow">
             <property name="activatable">False</property>
+            <property name="margin-end">10</property>
+            <property name="margin-start">10</property>
+            <property name="margin-top">8</property>
             <property name="selectable">False</property>
             <child>
               <object class="GtkBox">
