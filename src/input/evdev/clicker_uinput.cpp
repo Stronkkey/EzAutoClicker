@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-#include <src/input/clicker_uinput.hpp>
+#include <src/input/evdev/clicker_uinput.hpp>
 
 #include <fcntl.h>
 #include <unistd.h>

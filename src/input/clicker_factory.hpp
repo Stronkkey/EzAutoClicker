@@ -16,8 +16,8 @@
 
 #include <memory>
 
-#include <src/input/clicker_uinput.hpp>
-#include <src/input/clicker_x11.hpp>
+#include <src/input/evdev/clicker_uinput.hpp>
+#include <src/input/x11/clicker_x11.hpp>
 
 namespace EzAutoClicker {
 

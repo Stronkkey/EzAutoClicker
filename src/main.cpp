@@ -18,7 +18,7 @@
 
 #include <src/app.hpp>
 #include <src/input/clicker_factory.hpp>
-#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/evdev/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
 
 /**

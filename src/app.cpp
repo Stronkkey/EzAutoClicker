@@ -16,9 +16,9 @@
 
 #include <src/app_constants.hpp>
 #include <src/input/clicker_factory.hpp>
-#include <src/input/hotkey_listener_evdev.hpp>
+#include <src/input/evdev/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/x11/hotkey_listener_x11.hpp>
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
 	set_id(APP_ID);

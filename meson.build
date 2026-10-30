@@ -10,12 +10,12 @@ sources = [
   'src/app.cpp',
   'src/main.cpp',
   'src/window.cpp',
-  'src/input/hotkey_listener_evdev.cpp',
+  'src/input/evdev/hotkey_listener_evdev.cpp',
   'src/input/hotkey_listener_factory.cpp',
-  'src/input/hotkey_listener_x11.cpp',
+  'src/input/x11/hotkey_listener_x11.cpp',
   'src/input/clicker_factory.cpp',
-  'src/input/clicker_uinput.cpp',
-  'src/input/clicker_x11.cpp',
+  'src/input/evdev/clicker_uinput.cpp',
+  'src/input/x11/clicker_x11.cpp',
   'src/input/threaded_clicker.cpp',
 ]
 

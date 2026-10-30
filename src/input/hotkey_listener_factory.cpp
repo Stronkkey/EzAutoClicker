@@ -16,8 +16,8 @@
 
 #include <fcntl.h>
 
-#include <src/input/hotkey_listener_evdev.hpp>
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/evdev/hotkey_listener_evdev.hpp>
+#include <src/input/x11/hotkey_listener_x11.hpp>
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 

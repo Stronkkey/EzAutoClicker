@@ -14,7 +14,7 @@
  */
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-#include <src/input/hotkey_listener_x11.hpp>
+#include <src/input/x11/hotkey_listener_x11.hpp>
 
 #include <poll.h>
 
