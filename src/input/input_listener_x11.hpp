@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <mutex>
 #include <thread>
 
 #include <X11/Xlib.h>
@@ -32,7 +31,6 @@ private:
 	Display *display = nullptr;
 
 	std::jthread worker_thread;
-	std::mutex mutex;
 	KeyCode key_code;
 	bool running;
 

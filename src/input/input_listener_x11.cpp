@@ -22,7 +22,7 @@
 
 #include <X11/keysym.h>
 
-EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), mutex(), key_code(0), running(false) {
+EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), key_code(0), running(false) {
 	if (XInitThreads() == 0)
 		return;
 
