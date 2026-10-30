@@ -17,6 +17,7 @@
 #include <linux/input-event-codes.h>
 
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
+	clicker = nullptr;
 	hotkey_listener = nullptr;
 	sending_inputs = false;
 	hotkey_listener_connection = {};
@@ -105,7 +106,7 @@ void EzAutoClicker::MainWindow::connect_signals() {
 }
 
 void EzAutoClicker::MainWindow::start_clicker() {
-	if (sending_inputs)
+	if (sending_inputs || !clicker)
 		return;
 
 	set_sending_inputs(true);
@@ -135,10 +136,14 @@ void EzAutoClicker::MainWindow::toggle_clicker() {
 }
 
 void EzAutoClicker::MainWindow::set_clicker(std::unique_ptr<Input::Clicker> &&p_clicker) {
-	clicker = std::move(p_clicker);
+	if (p_clicker)
+		clicker = std::move(p_clicker);
 }
 
 void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener) {
+	if (!p_hotkey_listener)
+		return;
+
 	if (hotkey_listener)
 		hotkey_listener->stop_reading();
 
