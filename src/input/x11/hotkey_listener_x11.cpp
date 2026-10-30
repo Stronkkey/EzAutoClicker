@@ -78,7 +78,7 @@ bool EzAutoClicker::Input::HotkeyListenerX11::is_reading() const {
 }
 
 void EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
-	if (running)
+	if (running || !display)
 		return;
 
 	worker_thread = std::jthread([this](std::stop_token stop_token) { read_inputs(stop_token); });
@@ -86,7 +86,7 @@ void EzAutoClicker::Input::HotkeyListenerX11::start_reading() {
 }
 
 void EzAutoClicker::Input::HotkeyListenerX11::stop_reading() {
-	if (!running)
+	if (!running || !display)
 		return;
 
 	running = false;
