@@ -446,6 +446,4 @@ Double</property>
       </object>
     </child>
   </object>
-  <object class="GtkShortcut"/>
-  <object class="GtkShortcutController"/>
 </interface>
