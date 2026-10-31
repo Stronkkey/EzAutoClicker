@@ -27,6 +27,7 @@ build_args = [
   '-Wall',
   '-Wextra',
   '-pedantic',
+  '-Werror',
 ]
 
 
