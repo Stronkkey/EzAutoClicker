@@ -1,1 +1,1 @@
-option('x11_input', type: 'feature', value: 'enabled')
+option('x11', type : 'feature', value : 'enabled', description : 'Add support for the X11 backend.')
