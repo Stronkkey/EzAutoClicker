@@ -93,6 +93,23 @@ void EzAutoClicker::MainWindow::update_options() {
 	options.repeat_count = click_repeat_counter->get_value_as_int();
 	options.add_random_offset = false;
 	options.random_offset_ms = 0;
+
+	auto surface = get_surface();
+	auto display = get_display();
+
+	if (!surface || !display)
+		return;
+
+	auto monitor = display->get_monitor_at_surface(surface);
+	
+	if (!monitor)
+		return;
+
+	Gdk::Rectangle geometry;
+	monitor->get_geometry(geometry);
+
+	options.click.screen_width = geometry.get_width();
+	options.click.screen_height = geometry.get_height();
 }
 
 void EzAutoClicker::MainWindow::connect_signals() {

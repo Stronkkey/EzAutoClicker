@@ -16,8 +16,11 @@
 
 #include <src/app_constants.hpp>
 #include <src/input/clicker_factory.hpp>
+#include <src/input/evdev/clicker_uinput.hpp>
 #include <src/input/evdev/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
+#include <src/input/wlr/clicker_wlr.hpp>
+#include <src/input/x11/clicker_x11.hpp>
 #include <src/input/x11/hotkey_listener_x11.hpp>
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(APP_ID) {
@@ -207,10 +210,16 @@ void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::us
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring &value) {
+	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 	if (value.lowercase() == "x11")
 		clicker = Input::ClickerFactory::create_clicker_x11();
-	else if (value.lowercase() == "uinput")
+	#endif
+	if (value.lowercase() == "uinput")
 		clicker = Input::ClickerFactory::create_clicker_uinput();
+	#if EZAUTOCLICKER_ENABLE_WLR
+	if (value.lowercase() == "wlr")
+		clicker = Input::ClickerFactory::create_clicker_wlr();
+	#endif
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
