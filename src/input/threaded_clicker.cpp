@@ -31,6 +31,9 @@ std::chrono::milliseconds EzAutoClicker::Input::ThreadedClicker::get_random_offs
 	static std::random_device device;
 	static std::mt19937_64 rng(device());
 
+	if (random_offset_ms < 1)
+		return std::chrono::milliseconds(0);
+
 	auto distribution = std::uniform_int_distribution<int>(
 		-random_offset_ms,
 		random_offset_ms);
