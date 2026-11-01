@@ -80,9 +80,8 @@ void drop_root_privileges() {
 		throw std::runtime_error("Couldn't find suitable user to drop privileges to. Try running the program with SUDO_UID=$(id -u).");
 
 	const passwd *pw = getpwuid(running_user_id);
-	if (pw == nullptr) {
+	if (pw == nullptr)
 		throw std::runtime_error(std::format("Failed to find user with the uid {0}.", running_user_id));
-	}
 
 	if (initgroups(pw->pw_name, pw->pw_gid) != 0)
 		throw std::runtime_error("Failed to remove supplementary groups.");
