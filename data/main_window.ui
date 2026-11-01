@@ -35,6 +35,7 @@
         <child>
           <object class="GtkFrame">
             <property name="label">Click interval</property>
+            <property name="vexpand">True</property>
             <child>
               <object class="GtkAspectFrame">
                 <property name="ratio">0.8</property>
@@ -172,16 +173,17 @@
           <object class="GtkFrame">
             <property name="focus-on-click">False</property>
             <property name="label">Click options</property>
+            <property name="vexpand">True</property>
             <child>
               <object class="GtkAspectFrame">
                 <property name="margin-bottom">16</property>
                 <child>
                   <object class="GtkBox">
                     <property name="halign">center</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">Mouse button:</property>
-                        <property name="margin-end">8</property>
                       </object>
                     </child>
                     <child>
@@ -200,10 +202,14 @@ Right</property>
                       </object>
                     </child>
                     <child>
+                      <object class="GtkSeparator">
+                        <property name="margin-end">16</property>
+                        <property name="margin-start">16</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkLabel">
                         <property name="label">Click type:</property>
-                        <property name="margin-end">8</property>
-                        <property name="margin-start">64</property>
                       </object>
                     </child>
                     <child>
@@ -229,6 +235,7 @@ Double</property>
         <child>
           <object class="GtkBox">
             <property name="homogeneous">True</property>
+            <property name="vexpand">True</property>
             <child>
               <object class="GtkFrame">
                 <property name="label">Cursor position</property>
@@ -236,13 +243,16 @@ Double</property>
                 <child>
                   <object class="GtkAspectFrame">
                     <property name="halign">center</property>
+                    <property name="valign">center</property>
                     <child>
                       <object class="GtkGrid">
                         <property name="column-spacing">4</property>
+                        <property name="halign">start</property>
                         <property name="margin-bottom">4</property>
                         <property name="margin-end">4</property>
                         <property name="margin-start">4</property>
                         <property name="row-spacing">4</property>
+                        <property name="valign">start</property>
                         <child>
                           <object class="GtkCheckButton" id="current_location_toggle">
                             <property name="active">True</property>
@@ -343,13 +353,16 @@ Double</property>
                 <child>
                   <object class="GtkAspectFrame">
                     <property name="halign">center</property>
+                    <property name="valign">center</property>
                     <child>
                       <object class="GtkGrid">
                         <property name="column-spacing">4</property>
+                        <property name="halign">start</property>
                         <property name="margin-bottom">4</property>
                         <property name="margin-end">4</property>
                         <property name="margin-start">4</property>
                         <property name="row-spacing">4</property>
+                        <property name="valign">start</property>
                         <child>
                           <object class="GtkCheckButton" id="repeal_until_stopped_toggle">
                             <property name="active">True</property>
