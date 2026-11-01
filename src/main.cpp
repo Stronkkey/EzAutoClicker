@@ -72,7 +72,7 @@ bool is_running_as_root() {
  * @see https://web.archive.org/web/20241226230125/https://unix.stackexchange.com/a/21290
  */
 void drop_root_privileges() {
-	if (geteuid() != 0)
+	if (!is_running_as_root())
 		return;
 
 	uid_t running_user_id = get_running_user_id();
