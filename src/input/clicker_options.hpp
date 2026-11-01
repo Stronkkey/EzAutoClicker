@@ -22,12 +22,12 @@ namespace Input {
 
 struct ClickerOptions {
         Click click;
-	unsigned long interval_ms;
-	unsigned long interval_s;
-	unsigned long interval_m;
-	unsigned long interval_h;
-	unsigned long random_offset_ms;
-	unsigned long repeat_count;
+	long interval_ms;
+	long interval_s;
+	long interval_m;
+	long interval_h;
+	long random_offset_ms;
+	long repeat_count;
 	bool add_random_offset;
 
 	enum class ClickType {
@@ -44,7 +44,7 @@ struct ClickerOptions {
 
 };
 
-constexpr unsigned long long get_clicker_options_total_interval_ms(const ClickerOptions &clicker_options) {
+constexpr long long get_clicker_options_total_interval_ms(const ClickerOptions &clicker_options) {
 	return clicker_options.interval_ms +
 		(clicker_options.interval_s * 1000) +
 		(clicker_options.interval_m * 1000 * 60) +

@@ -35,7 +35,7 @@ private:
 	std::jthread worker_thread;
 	bool running;
 
-	std::chrono::milliseconds get_random_offset(unsigned long random_offset_ms) const;
+	std::chrono::milliseconds get_random_offset(long random_offset_ms) const;
 
 	void run(std::stop_token stop_token, Clicker *clicker, const ClickerOptions &options);
 	void send_click(Clicker *clicker, const Click &click);

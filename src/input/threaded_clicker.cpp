@@ -27,7 +27,7 @@ EzAutoClicker::Input::ThreadedClicker::~ThreadedClicker() {
 	stop();
 }
 
-std::chrono::milliseconds EzAutoClicker::Input::ThreadedClicker::get_random_offset(unsigned long random_offset_ms) const {
+std::chrono::milliseconds EzAutoClicker::Input::ThreadedClicker::get_random_offset(long random_offset_ms) const {
 	static std::random_device device;
 	static std::mt19937_64 rng(device());
 
