@@ -74,7 +74,7 @@ std::unique_ptr<EzAutoClicker::Input::ClickerUInput> EzAutoClicker::Input::Click
 	return uinput_clicker;
 }
 
-std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFactory::create_compatible_clicker() {
+std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFactory::create_clicker() {
 	auto input_player_uinput = create_clicker_uinput();
 
 	if (input_player_uinput)

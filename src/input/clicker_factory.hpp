@@ -40,7 +40,7 @@ std::unique_ptr<ClickerX11> create_clicker_x11();
 #endif
 
 std::unique_ptr<ClickerUInput> create_clicker_uinput();
-std::unique_ptr<Clicker> create_compatible_clicker();
+std::unique_ptr<Clicker> create_clicker();
 
 }
 

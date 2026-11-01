@@ -236,7 +236,7 @@ void EzAutoClicker::EzAutoClickerApp::on_toggle() {
 std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::EzAutoClickerApp::get_clicker() {
 	if (clicker)
 		return std::move(clicker);
-	return Input::ClickerFactory::create_compatible_clicker();
+	return Input::ClickerFactory::create_clicker();
 }
 
 std::unique_ptr<EzAutoClicker::Input::HotkeyListener> EzAutoClicker::EzAutoClickerApp::get_hotkey_listener() {
