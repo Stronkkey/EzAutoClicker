@@ -5,32 +5,163 @@
   <requires lib="gtk" version="4.18"/>
   <object class="GtkApplicationWindow" id="main_window">
     <child>
-      <object class="GtkListBox">
+      <object class="GtkBox">
         <property name="margin-bottom">8</property>
-        <property name="margin-end">10</property>
-        <property name="margin-start">10</property>
+        <property name="margin-end">8</property>
+        <property name="margin-start">8</property>
         <property name="margin-top">8</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">8</property>
         <child>
-          <object class="GtkListBoxRow">
-            <property name="activatable">False</property>
-            <property name="margin-bottom">8</property>
-            <property name="selectable">False</property>
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
             <child>
-              <object class="GtkBox">
-                <property name="homogeneous">True</property>
+              <object class="GtkButton" id="start_button">
+                <property name="can-shrink">True</property>
+                <property name="label">Start</property>
+                <property name="margin-end">4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="stop_button">
+                <property name="can-shrink">True</property>
+                <property name="label">Stop</property>
+                <property name="margin-start">4</property>
+                <property name="sensitive">False</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkFrame">
+            <property name="label">Click interval</property>
+            <child>
+              <object class="GtkAspectFrame">
+                <property name="ratio">0.8</property>
                 <child>
-                  <object class="GtkButton" id="start_button">
-                    <property name="can-shrink">True</property>
-                    <property name="label">Start</property>
+                  <object class="GtkGrid">
+                    <property name="column-spacing">4</property>
+                    <property name="halign">center</property>
+                    <property name="margin-bottom">8</property>
                     <property name="margin-end">4</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="stop_button">
-                    <property name="can-shrink">True</property>
-                    <property name="label">Stop</property>
                     <property name="margin-start">4</property>
-                    <property name="sensitive">False</property>
+                    <property name="margin-top">4</property>
+                    <property name="row-spacing">4</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="halign">start</property>
+                        <property name="label">hours</property>
+                        <property name="margin-end">16</property>
+                        <layout>
+                          <property name="column">1</property>
+                          <property name="row">0</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="hours_entry">
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="step-increment">1.0</property>
+                            <property name="upper">999999.0</property>
+                          </object>
+                        </property>
+                        <property name="margin-end">4</property>
+                        <property name="numeric">True</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="column-span">1</property>
+                          <property name="row">0</property>
+                          <property name="row-span">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="seconds_entry">
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="step-increment">1.0</property>
+                            <property name="upper">999999.0</property>
+                          </object>
+                        </property>
+                        <property name="margin-end">4</property>
+                        <property name="numeric">True</property>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="column-span">1</property>
+                          <property name="row">1</property>
+                          <property name="row-span">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="halign">start</property>
+                        <property name="label">seconds</property>
+                        <property name="margin-end">16</property>
+                        <layout>
+                          <property name="column">1</property>
+                          <property name="column-span">1</property>
+                          <property name="row">1</property>
+                          <property name="row-span">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="minutes_entry">
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="step-increment">1.0</property>
+                            <property name="upper">999999.0</property>
+                          </object>
+                        </property>
+                        <property name="margin-end">4</property>
+                        <property name="numeric">True</property>
+                        <layout>
+                          <property name="column">2</property>
+                          <property name="row">0</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="halign">start</property>
+                        <property name="label">minutes</property>
+                        <layout>
+                          <property name="column">3</property>
+                          <property name="row">0</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="milliseconds_entry">
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="step-increment">1.0</property>
+                            <property name="upper">999999.0</property>
+                            <property name="value">100.0</property>
+                          </object>
+                        </property>
+                        <property name="margin-end">4</property>
+                        <property name="numeric">True</property>
+                        <layout>
+                          <property name="column">2</property>
+                          <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="halign">start</property>
+                        <property name="label">milliseconds</property>
+                        <property name="margin-end">4</property>
+                        <layout>
+                          <property name="column">3</property>
+                          <property name="row">1</property>
+                        </layout>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -38,31 +169,94 @@
           </object>
         </child>
         <child>
-          <object class="GtkListBoxRow">
-            <property name="activatable">False</property>
-            <property name="margin-bottom">4</property>
-            <property name="selectable">False</property>
+          <object class="GtkFrame">
+            <property name="focus-on-click">False</property>
+            <property name="label">Click options</property>
+            <child>
+              <object class="GtkAspectFrame">
+                <property name="margin-bottom">16</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Mouse button:</property>
+                        <property name="margin-end">8</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkDropDown" id="mouse_button_dropdown">
+                        <property name="model">
+                          <object class="GtkStringList">
+                            <property name="strings">Left
+Middle
+Right</property>
+                            <items>
+                              <item/>
+                            </items>
+                          </object>
+                        </property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Click type:</property>
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">64</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkDropDown" id="click_type_dropdown">
+                        <property name="model">
+                          <object class="GtkStringList">
+                            <property name="strings">Single
+Double</property>
+                            <items>
+                              <item/>
+                            </items>
+                          </object>
+                        </property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkFrame">
-                <property name="label">Click interval</property>
+                <property name="label">Cursor position</property>
+                <property name="margin-end">4</property>
                 <child>
                   <object class="GtkAspectFrame">
-                    <property name="ratio">0.8</property>
+                    <property name="halign">center</property>
                     <child>
                       <object class="GtkGrid">
                         <property name="column-spacing">4</property>
-                        <property name="halign">center</property>
-                        <property name="margin-bottom">8</property>
+                        <property name="margin-bottom">4</property>
                         <property name="margin-end">4</property>
                         <property name="margin-start">4</property>
-                        <property name="margin-top">4</property>
                         <property name="row-spacing">4</property>
-                        <property name="valign">center</property>
+                        <child>
+                          <object class="GtkCheckButton" id="current_location_toggle">
+                            <property name="active">True</property>
+                            <property name="group">pick_location_toggle</property>
+                            <layout>
+                              <property name="column">0</property>
+                              <property name="row">0</property>
+                            </layout>
+                          </object>
+                        </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="halign">start</property>
-                            <property name="label">hours</property>
-                            <property name="margin-end">16</property>
+                            <property name="label">Current location</property>
+                            <property name="margin-end">8</property>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">0</property>
@@ -70,64 +264,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="hours_entry">
-                            <property name="adjustment">
-                              <object class="GtkAdjustment">
-                                <property name="step-increment">1.0</property>
-                                <property name="upper">999999.0</property>
-                              </object>
-                            </property>
-                            <property name="margin-end">4</property>
-                            <property name="numeric">True</property>
-                            <layout>
-                              <property name="column">0</property>
-                              <property name="column-span">1</property>
-                              <property name="row">0</property>
-                              <property name="row-span">1</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkSpinButton" id="seconds_entry">
-                            <property name="adjustment">
-                              <object class="GtkAdjustment">
-                                <property name="step-increment">1.0</property>
-                                <property name="upper">999999.0</property>
-                              </object>
-                            </property>
-                            <property name="margin-end">4</property>
-                            <property name="numeric">True</property>
-                            <layout>
-                              <property name="column">0</property>
-                              <property name="column-span">1</property>
-                              <property name="row">1</property>
-                              <property name="row-span">1</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
                           <object class="GtkLabel">
-                            <property name="halign">start</property>
-                            <property name="label">seconds</property>
-                            <property name="margin-end">16</property>
-                            <layout>
-                              <property name="column">1</property>
-                              <property name="column-span">1</property>
-                              <property name="row">1</property>
-                              <property name="row-span">1</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkSpinButton" id="minutes_entry">
-                            <property name="adjustment">
-                              <object class="GtkAdjustment">
-                                <property name="step-increment">1.0</property>
-                                <property name="upper">999999.0</property>
-                              </object>
-                            </property>
-                            <property name="margin-end">4</property>
-                            <property name="numeric">True</property>
+                            <property name="halign">end</property>
+                            <property name="label">X</property>
                             <layout>
                               <property name="column">2</property>
                               <property name="row">0</property>
@@ -135,9 +274,14 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="halign">start</property>
-                            <property name="label">minutes</property>
+                          <object class="GtkSpinButton" id="x_position_entry">
+                            <property name="adjustment">
+                              <object class="GtkAdjustment">
+                                <property name="step-increment">1.0</property>
+                                <property name="upper">999999.0</property>
+                              </object>
+                            </property>
+                            <property name="numeric">True</property>
                             <layout>
                               <property name="column">3</property>
                               <property name="row">0</property>
@@ -145,18 +289,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="milliseconds_entry">
-                            <property name="adjustment">
-                              <object class="GtkAdjustment">
-                                <property name="step-increment">1.0</property>
-                                <property name="upper">999999.0</property>
-                                <property name="value">100.0</property>
-                              </object>
-                            </property>
-                            <property name="margin-end">4</property>
-                            <property name="numeric">True</property>
+                          <object class="GtkCheckButton" id="pick_location_toggle">
                             <layout>
-                              <property name="column">2</property>
+                              <property name="column">0</property>
                               <property name="row">1</property>
                             </layout>
                           </object>
@@ -164,8 +299,31 @@
                         <child>
                           <object class="GtkLabel">
                             <property name="halign">start</property>
-                            <property name="label">milliseconds</property>
-                            <property name="margin-end">4</property>
+                            <property name="label">Use position</property>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="row">1</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">Y</property>
+                            <layout>
+                              <property name="column">2</property>
+                              <property name="row">1</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="y_position_entry">
+                            <property name="adjustment">
+                              <object class="GtkAdjustment">
+                                <property name="step-increment">1.0</property>
+                                <property name="upper">999999.0</property>
+                              </object>
+                            </property>
+                            <property name="numeric">True</property>
                             <layout>
                               <property name="column">3</property>
                               <property name="row">1</property>
@@ -178,247 +336,79 @@
                 </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkListBoxRow">
-            <property name="activatable">False</property>
-            <property name="margin-bottom">4</property>
-            <property name="selectable">False</property>
             <child>
               <object class="GtkFrame">
-                <property name="focus-on-click">False</property>
-                <property name="label">Click options</property>
+                <property name="label">Click repeat</property>
+                <property name="margin-start">4</property>
                 <child>
                   <object class="GtkAspectFrame">
-                    <property name="margin-bottom">16</property>
+                    <property name="halign">center</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="halign">center</property>
+                      <object class="GtkGrid">
+                        <property name="column-spacing">4</property>
+                        <property name="margin-bottom">4</property>
+                        <property name="margin-end">4</property>
+                        <property name="margin-start">4</property>
+                        <property name="row-spacing">4</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="label">Mouse button:</property>
-                            <property name="margin-end">8</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="mouse_button_dropdown">
-                            <property name="model">
-                              <object class="GtkStringList">
-                                <property name="strings">Left
-Middle
-Right</property>
-                                <items>
-                                  <item/>
-                                </items>
-                              </object>
-                            </property>
-                            <property name="valign">center</property>
+                          <object class="GtkCheckButton" id="repeal_until_stopped_toggle">
+                            <property name="active">True</property>
+                            <property name="group">repeat_toggle</property>
+                            <layout>
+                              <property name="column">0</property>
+                              <property name="row">0</property>
+                            </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label">Click type:</property>
-                            <property name="margin-end">8</property>
-                            <property name="margin-start">64</property>
+                            <property name="halign">start</property>
+                            <property name="label">Repeat until stopped</property>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="row">0</property>
+                            </layout>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkDropDown" id="click_type_dropdown">
-                            <property name="model">
-                              <object class="GtkStringList">
-                                <property name="strings">Single
-Double</property>
-                                <items>
-                                  <item/>
-                                </items>
-                              </object>
-                            </property>
-                            <property name="valign">center</property>
+                          <object class="GtkCheckButton" id="repeat_toggle">
+                            <layout>
+                              <property name="column">0</property>
+                              <property name="row">1</property>
+                            </layout>
                           </object>
                         </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkListBoxRow">
-            <property name="activatable">False</property>
-            <property name="selectable">False</property>
-            <child>
-              <object class="GtkBox">
-                <property name="homogeneous">True</property>
-                <child>
-                  <object class="GtkFrame">
-                    <property name="label">Cursor position</property>
-                    <property name="margin-end">4</property>
-                    <child>
-                      <object class="GtkAspectFrame">
-                        <property name="halign">center</property>
                         <child>
-                          <object class="GtkListBox">
+                          <object class="GtkBox">
+                            <property name="spacing">4</property>
                             <child>
-                              <object class="GtkListBoxRow">
-                                <property name="activatable">False</property>
-                                <property name="selectable">False</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <child>
-                                      <object class="GtkCheckButton" id="current_location_toggle">
-                                        <property name="active">True</property>
-                                        <property name="group">pick_location_toggle</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">Current location</property>
-                                        <property name="margin-end">8</property>
-                                        <property name="margin-start">4</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">X</property>
-                                        <property name="margin-end">4</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSpinButton" id="x_position_entry">
-                                        <property name="adjustment">
-                                          <object class="GtkAdjustment">
-                                            <property name="step-increment">1.0</property>
-                                            <property name="upper">999999.0</property>
-                                          </object>
-                                        </property>
-                                        <property name="margin-end">4</property>
-                                        <property name="numeric">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow">
-                                <property name="activatable">False</property>
-                                <property name="selectable">False</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <child>
-                                      <object class="GtkCheckButton" id="pick_location_toggle"/>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">Use position</property>
-                                        <property name="margin-end">8</property>
-                                        <property name="margin-start">4</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">Y</property>
-                                        <property name="margin-end">4</property>
-                                        <property name="margin-start">24</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSpinButton" id="y_position_entry">
-                                        <property name="adjustment">
-                                          <object class="GtkAdjustment">
-                                            <property name="step-increment">1.0</property>
-                                            <property name="upper">999999.0</property>
-                                          </object>
-                                        </property>
-                                        <property name="margin-end">4</property>
-                                        <property name="numeric">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkFrame">
-                    <property name="label">Click repeat</property>
-                    <property name="margin-start">4</property>
-                    <child>
-                      <object class="GtkAspectFrame">
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkListBox">
-                            <child>
-                              <object class="GtkListBoxRow">
-                                <property name="activatable">False</property>
+                              <object class="GtkLabel">
                                 <property name="halign">start</property>
-                                <property name="selectable">False</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <child>
-                                      <object class="GtkCheckButton" id="repeal_until_stopped_toggle">
-                                        <property name="active">True</property>
-                                        <property name="group">repeat_toggle</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">Repeat until stopped</property>
-                                        <property name="margin-start">4</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
+                                <property name="label">Repeat</property>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkListBoxRow">
-                                <property name="activatable">False</property>
-                                <property name="halign">start</property>
-                                <property name="selectable">False</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <child>
-                                      <object class="GtkCheckButton" id="repeat_toggle"/>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">Repeat</property>
-                                        <property name="margin-end">4</property>
-                                        <property name="margin-start">4</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSpinButton" id="click_repeat_counter">
-                                        <property name="adjustment">
-                                          <object class="GtkAdjustment">
-                                            <property name="lower">1.0</property>
-                                            <property name="step-increment">1.0</property>
-                                            <property name="upper">999999.0</property>
-                                            <property name="value">1.0</property>
-                                          </object>
-                                        </property>
-                                        <property name="margin-end">4</property>
-                                        <property name="numeric">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label">times</property>
-                                      </object>
-                                    </child>
+                              <object class="GtkSpinButton" id="click_repeat_counter">
+                                <property name="adjustment">
+                                  <object class="GtkAdjustment">
+                                    <property name="lower">1.0</property>
+                                    <property name="step-increment">1.0</property>
+                                    <property name="upper">999999.0</property>
+                                    <property name="value">1.0</property>
                                   </object>
-                                </child>
+                                </property>
+                                <property name="numeric">True</property>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label">times</property>
+                              </object>
+                            </child>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="row">1</property>
+                            </layout>
                           </object>
                         </child>
                       </object>
