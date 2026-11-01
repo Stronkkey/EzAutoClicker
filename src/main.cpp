@@ -15,11 +15,18 @@
 #include <fcntl.h>
 #include <grp.h>
 #include <pwd.h>
-
+ 
 #include <src/app.hpp>
 #include <src/input/clicker_factory.hpp>
+#include <src/input/evdev/clicker_uinput.hpp>
 #include <src/input/evdev/hotkey_listener_evdev.hpp>
 #include <src/input/hotkey_listener_factory.hpp>
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+#include <X11/Xlib.h>
+
+#endif
 
 /**
  * @brief Gets the uid of the user who is actually running the program.

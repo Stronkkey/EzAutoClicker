@@ -18,6 +18,10 @@
  
 #include <optional>
 
+#include <src/input/evdev/clicker_uinput.hpp>
+#include <src/input/wlr/clicker_wlr.hpp>
+#include <src/input/x11/clicker_x11.hpp>
+
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
 std::unique_ptr<EzAutoClicker::Input::ClickerX11> EzAutoClicker::Input::ClickerFactory::create_clicker_x11() {
@@ -27,6 +31,19 @@ std::unique_ptr<EzAutoClicker::Input::ClickerX11> EzAutoClicker::Input::ClickerF
 	if (!input_player->is_connected())
 		return nullptr;
 	return input_player;
+}
+
+#endif
+
+#if EZAUTOCLICKER_ENABLE_WLR
+
+std::unique_ptr<EzAutoClicker::Input::ClickerWlr> EzAutoClicker::Input::ClickerFactory::create_clicker_wlr() {
+	auto clicker_wlr = std::make_unique<ClickerWlr>();
+	clicker_wlr->initialize();
+
+	if (!clicker_wlr->is_connected())
+		return nullptr;
+	return clicker_wlr;
 }
 
 #endif
@@ -62,6 +79,15 @@ std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFact
 
 	if (input_player_uinput)
 		return input_player_uinput;
+
+	#if EZAUTOCLICKER_ENABLE_WLR
+
+	auto clicker_wlr = create_clicker_wlr();
+
+	if (clicker_wlr)
+		return clicker_wlr;
+
+	#endif
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 

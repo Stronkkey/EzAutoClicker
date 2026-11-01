@@ -80,7 +80,7 @@ const Glib::ustring SET_REPEAT_COUNT_ARG_DESCRIPTION = "NUMBER";
 constexpr const char CLICKER_SHORT_NAME = NO_SHORT_NAME;
 const Glib::ustring CLICKER_LONG_NAME = "clicker";
 const Glib::ustring CLICKER_OPTION_DESCRIPTION = "Specifies the clicker backend.";
-const Glib::ustring CLICKER_ARG_DESCRIPTION = "x11|uinput|auto";
+const Glib::ustring CLICKER_ARG_DESCRIPTION = "x11|uinput|wlr|auto";
 
 constexpr const char HOTKEY_LISTENER_SHORT_NAME = NO_SHORT_NAME;
 const Glib::ustring HOTKEY_LISTENER_LONG_NAME = "hotkey-listener";

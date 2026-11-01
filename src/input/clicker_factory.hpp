@@ -16,18 +16,26 @@
 
 #include <memory>
 
-#include <src/input/evdev/clicker_uinput.hpp>
-#include <src/input/x11/clicker_x11.hpp>
-
 namespace EzAutoClicker {
 
 namespace Input {
+
+class Clicker;
+class ClickerUInput;
+class ClickerX11;
+class ClickerWlr;
 
 namespace ClickerFactory {
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED
 
 std::unique_ptr<ClickerX11> create_clicker_x11();
+
+#endif
+
+#if EZAUTOCLICKER_ENABLE_WLR
+
+std::unique_ptr<ClickerWlr> create_clicker_wlr();
 
 #endif
 

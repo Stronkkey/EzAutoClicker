@@ -33,6 +33,8 @@ struct Click {
 	bool set_mouse_location = false;
 	unsigned short x_position = 0;
 	unsigned short y_position = 0;
+	unsigned short screen_width = 0;
+	unsigned short screen_height = 0;
 };
 
 }
