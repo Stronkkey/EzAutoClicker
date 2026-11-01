@@ -31,10 +31,16 @@ struct Click {
 
 	MouseButton button;
 	bool set_mouse_location = false;
-	unsigned short x_position = 0;
-	unsigned short y_position = 0;
-	unsigned short screen_width = 0;
-	unsigned short screen_height = 0;
+
+	struct {
+		int x;
+		int y;
+	} position = {0, 0};
+
+	struct {
+		int width;
+		int height;
+	} screen_size = {1000, 1000};
 };
 
 }

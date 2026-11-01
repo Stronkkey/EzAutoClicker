@@ -88,8 +88,8 @@ void EzAutoClicker::MainWindow::update_options() {
 	update_repeating_mode();
 
 	options.click.set_mouse_location = pick_location_toggle->get_active();
-	options.click.x_position = x_position_entry->get_value_as_int();
-	options.click.y_position = y_position_entry->get_value_as_int();
+	options.click.position.x = x_position_entry->get_value_as_int();
+	options.click.position.y = y_position_entry->get_value_as_int();
 	options.repeat_count = click_repeat_counter->get_value_as_int();
 	options.add_random_offset = false;
 	options.random_offset_ms = 0;
@@ -108,8 +108,8 @@ void EzAutoClicker::MainWindow::update_options() {
 	Gdk::Rectangle geometry;
 	monitor->get_geometry(geometry);
 
-	options.click.screen_width = geometry.get_width();
-	options.click.screen_height = geometry.get_height();
+	options.click.screen_size.width = geometry.get_width();
+	options.click.screen_size.height = geometry.get_height();
 }
 
 void EzAutoClicker::MainWindow::connect_signals() {

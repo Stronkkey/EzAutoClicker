@@ -98,8 +98,8 @@ void EzAutoClicker::Input::ClickerUInput::send_click(const Click &click) {
 		send_mouse_input(EV_REL, REL_X, -9999);
 		send_mouse_input(EV_REL, REL_Y, -9999);
 		synchronise_mouse_inputs();
-		send_mouse_input(EV_REL, REL_X, click.x_position);
-		send_mouse_input(EV_REL, REL_Y, click.y_position);
+		send_mouse_input(EV_REL, REL_X, click.position.x);
+		send_mouse_input(EV_REL, REL_Y, click.position.y);
 		synchronise_mouse_inputs();
 	}
 

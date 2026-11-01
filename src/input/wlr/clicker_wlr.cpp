@@ -102,16 +102,13 @@ void EzAutoClicker::Input::ClickerWlr::send_click(const Click &click) {
 	uint32_t now_ms = get_time_ms().count();
 
 	if (click.set_mouse_location) {
-		int width = click.screen_width;
-		int height = click.screen_height;
-
 		zwlr_virtual_pointer_v1_motion_absolute(
 			pointer,
 			now_ms,
-			click.x_position,
-			click.y_position,
-			width,
-			height);
+			click.position.x,
+			click.position.y,
+			click.screen_size.width,
+			click.screen_size.height);
 		zwlr_virtual_pointer_v1_frame(pointer);
 		wl_display_flush(display);
 	}
