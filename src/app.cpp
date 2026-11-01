@@ -210,15 +210,15 @@ void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::us
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring &value) {
-	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-	if (value.lowercase() == "x11")
-		clicker = Input::ClickerFactory::create_clicker_x11();
-	#endif
 	if (value.lowercase() == "uinput")
 		clicker = Input::ClickerFactory::create_clicker_uinput();
 	#if EZAUTOCLICKER_ENABLE_WLR
 	if (value.lowercase() == "wlr")
 		clicker = Input::ClickerFactory::create_clicker_wlr();
+	#endif
+	#if EZAUTOCLICKER_X11_INPUT_ENABLED
+	if (value.lowercase() == "x11")
+		clicker = Input::ClickerFactory::create_clicker_x11();
 	#endif
 }
 

@@ -27,15 +27,15 @@ class ClickerWlr;
 
 namespace ClickerFactory {
 
-#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
-std::unique_ptr<ClickerX11> create_clicker_x11();
-
-#endif
-
 #if EZAUTOCLICKER_ENABLE_WLR
 
 std::unique_ptr<ClickerWlr> create_clicker_wlr();
+
+#endif
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+
+std::unique_ptr<ClickerX11> create_clicker_x11();
 
 #endif
 

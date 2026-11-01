@@ -17,10 +17,9 @@ sources = files(
   'src/input/evdev/clicker_uinput.cpp',
   'src/input/hotkey_listener_factory.cpp',
   'src/input/threaded_clicker.cpp',
-  'src/input/x11/hotkey_listener_x11.cpp',
-  'src/input/x11/clicker_x11.cpp',
-  'src/input/threaded_clicker.cpp',
   'src/input/wlr/clicker_wlr.cpp',
+  'src/input/x11/clicker_x11.cpp',
+  'src/input/x11/hotkey_listener_x11.cpp',
   'src/main.cpp',
   'src/window.cpp'
 )

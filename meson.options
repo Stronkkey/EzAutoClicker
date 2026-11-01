@@ -1,2 +1,2 @@
-option('x11', type : 'feature', value : 'enabled', description : 'Add support for the X11 backend.')
 option('wlr', type: 'feature', value: 'enabled')
+option('x11', type : 'feature', value : 'enabled', description : 'Add support for the X11 backend.')
