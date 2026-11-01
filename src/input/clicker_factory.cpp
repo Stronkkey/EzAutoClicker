@@ -38,12 +38,12 @@ std::unique_ptr<EzAutoClicker::Input::ClickerWlr> EzAutoClicker::Input::ClickerF
 #endif
 
 std::unique_ptr<EzAutoClicker::Input::ClickerX11> EzAutoClicker::Input::ClickerFactory::create_clicker_x11() {
-	auto input_player = std::make_unique<ClickerX11>();
-	input_player->initialize();
+	auto clicker_x11 = std::make_unique<ClickerX11>();
+	clicker_x11->initialize();
 
-	if (!input_player->is_connected())
+	if (!clicker_x11->is_connected())
 		return nullptr;
-	return input_player;
+	return clicker_x11;
 }
 
 #endif
@@ -75,10 +75,10 @@ std::unique_ptr<EzAutoClicker::Input::ClickerUInput> EzAutoClicker::Input::Click
 }
 
 std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFactory::create_clicker() {
-	auto input_player_uinput = create_clicker_uinput();
+	auto clicker_uinput = create_clicker_uinput();
 
-	if (input_player_uinput)
-		return input_player_uinput;
+	if (clicker_uinput)
+		return clicker_uinput;
 
 	#if EZAUTOCLICKER_ENABLE_WLR
 
@@ -91,9 +91,9 @@ std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::Input::ClickerFact
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 
-	auto input_player_x11 = create_clicker_x11();
-	if (input_player_x11)
-		return input_player_x11;
+	auto clicker_x11 = create_clicker_x11();
+	if (clicker_x11)
+		return clicker_x11;
 
 	#endif
 
