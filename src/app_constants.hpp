@@ -87,4 +87,15 @@ const Glib::ustring HOTKEY_LISTENER_LONG_NAME = "hotkey-listener";
 const Glib::ustring HOTKEY_LISTENER_OPTION_DESCRIPTION = "Specifies the hotkey listener backend.";
 const Glib::ustring HOTKEY_LISTENER_ARG_DESCRIPTION = "x11|evdev|auto";
 
+constexpr const char ALLOW_ROOT_SHORT_NAME = NO_SHORT_NAME;
+const Glib::ustring ALLOW_ROOT_LONG_NAME = "allow-root";
+const Glib::ustring ALLOW_ROOT_OPTION_DESCRIPTION = "Allows running the program as root.";
+
+/**
+ * @note This should have the same value as ALLOW_ROOT_LONG_NAME but suffixed with "--".
+ */
+constexpr std::string_view ALLOW_ROOT_FLAG = "--allow-root"; 
+constexpr std::string_view ALLOW_ROOT_ERROR =
+        "EzAutoClicker: error: this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.";
+
 }

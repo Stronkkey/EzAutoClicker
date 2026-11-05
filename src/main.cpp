@@ -13,6 +13,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 #include <src/app.hpp>
+#include <src/app_constants.hpp>
 #include <src/input/clicker_factory.hpp>
 #include <src/input/evdev/clicker_uinput.hpp>
 #include <src/input/evdev/hotkey_listener_evdev.hpp>
@@ -29,7 +30,19 @@ int main(int argc, char *argv[]) {
 	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;
 	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
+	bool allow_root = false;
+	for (int i = 1; i < argc; i++) {
+		std::string_view argument = argv[i];
+		if (argument == EzAutoClicker::ALLOW_ROOT_FLAG)
+			allow_root = true;
+	}
+
 	if (EzAutoClicker::Process::is_running_as_root()) {
+		if (!allow_root) {
+			g_print("%s\n", EzAutoClicker::ALLOW_ROOT_ERROR.data());
+			return EXIT_FAILURE;
+		}
+
 		// We intentionally only try to create a uinput clicker with root privileges
 		// as that is the only clicker that can make use of them. Other clickers
 		// shouldn't be created with root privileges as it can create security vulnerabilities
@@ -54,7 +67,7 @@ int main(int argc, char *argv[]) {
 
 		EzAutoClicker::Process::clear_environ_with_whitelist(required_variables);
 		EzAutoClicker::Process::set_env_from_user_env(required_variables);
-		
+
 		auto clicker_uinput= EzAutoClicker::Input::ClickerFactory::create_clicker_uinput();
 		if (clicker_uinput && clicker_uinput->is_connected())
 			clicker = std::move(clicker_uinput);

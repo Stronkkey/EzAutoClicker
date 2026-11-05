@@ -104,6 +104,14 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 		HOTKEY_LISTENER_SHORT_NAME,
 		HOTKEY_LISTENER_OPTION_DESCRIPTION,
 		HOTKEY_LISTENER_ARG_DESCRIPTION);
+
+	// This option is not handled here, but instead in the main function.
+	add_main_option_entry(Gio::Application::OptionType::BOOL,
+		ALLOW_ROOT_LONG_NAME,
+		ALLOW_ROOT_SHORT_NAME,
+		ALLOW_ROOT_OPTION_DESCRIPTION,
+		{},
+		Glib::OptionEntry::Flags::HIDDEN);
 }
 
 Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
