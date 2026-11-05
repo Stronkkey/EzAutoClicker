@@ -108,12 +108,9 @@ static void for_env_var(char *env_variable, const std::unordered_set<std::string
 		return;
 
 	auto env_name = std::string(current.substr(0, pos));
-	if (whitelist.contains(env_name)) {
-		printf("skipped %s\n", env_name.c_str());
+	if (whitelist.contains(env_name))
 		return;
-	}
 
-	printf("unset %s\n", env_name.c_str());
 	unsetenv(env_name.c_str());
 }
 
