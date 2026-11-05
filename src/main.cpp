@@ -33,13 +33,13 @@ int main(int argc, char *argv[]) {
 	bool allow_root = false;
 	for (int i = 1; i < argc; i++) {
 		std::string_view argument = argv[i];
-		if (argument == EzAutoClicker::ALLOW_ROOT_FLAG)
+		if (argument == EzAutoClicker::Constants::ALLOW_ROOT_FLAG)
 			allow_root = true;
 	}
 
 	if (EzAutoClicker::Process::is_running_as_root()) {
 		if (!allow_root) {
-			g_print("%s\n", EzAutoClicker::ALLOW_ROOT_ERROR.data());
+			g_print("%s\n", EzAutoClicker::Constants::ALLOW_ROOT_ERROR.data());
 			return EXIT_FAILURE;
 		}
 

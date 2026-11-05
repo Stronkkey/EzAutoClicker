@@ -18,6 +18,8 @@
 
 namespace EzAutoClicker {
 
+namespace Constants {
+
 const Glib::ustring APP_ID = "org.Stronkkey.EzAutoClicker";
 
 const Glib::ustring APP_NAME = "EzAutoClicker";
@@ -97,5 +99,7 @@ const Glib::ustring ALLOW_ROOT_OPTION_DESCRIPTION = "Allows running the program 
 constexpr std::string_view ALLOW_ROOT_FLAG = "--allow-root"; 
 constexpr std::string_view ALLOW_ROOT_ERROR =
         "EzAutoClicker: error: this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.";
+
+}
 
 }
