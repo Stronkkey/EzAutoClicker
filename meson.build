@@ -21,6 +21,7 @@ sources = files(
   'src/input/x11/clicker_x11.cpp',
   'src/input/x11/hotkey_listener_x11.cpp',
   'src/main.cpp',
+  'src/process.cpp',
   'src/window.cpp'
 )
 
