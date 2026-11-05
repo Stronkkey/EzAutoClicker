@@ -16,11 +16,15 @@
 
 #include <glibmm/dispatcher.h>
 
+#include <src/input/hotkey.hpp>
+
 namespace EzAutoClicker {
 
 namespace Input {
 
 class HotkeyListener {
+protected:
+	Hotkey hotkey = {};
 public:
 	virtual ~HotkeyListener() = default;
 	Glib::Dispatcher signal_pressed = {};
@@ -28,6 +32,9 @@ public:
 	virtual bool is_reading() const =0;
 	virtual void start_reading() =0;
 	virtual void stop_reading() =0;
+
+	virtual bool register_hotkey(const Hotkey &p_hotkey) =0;
+	virtual void unregister_hotkey() =0;
 };
 
 }

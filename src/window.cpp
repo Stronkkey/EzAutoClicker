@@ -171,6 +171,11 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::Hotke
 	auto slot = hotkey_listener->signal_pressed.connect([this] {
 		toggle_clicker();
 	});
+
+	auto hotkey = Input::Hotkey();
+	hotkey.key = KEY_LEFTBRACE;
+	hotkey.modifiers = Input::Hotkey::Modifier::CTRL;
+	hotkey_listener->register_hotkey(hotkey);
 }
 
 void EzAutoClicker::MainWindow::set_interval_ms(std::chrono::milliseconds interval) {

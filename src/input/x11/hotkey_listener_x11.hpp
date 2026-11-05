@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <mutex>
 #include <thread>
 
 #include <X11/Xlib.h>
@@ -31,7 +32,7 @@ private:
 	Display *display = nullptr;
 
 	std::jthread worker_thread;
-	KeyCode key_code;
+	std::mutex hotkey_mutex;
 	bool running;
 
 	void read_inputs(std::stop_token stop_token);
@@ -42,6 +43,9 @@ public:
 	bool is_reading() const override;
 	void start_reading() override;
 	void stop_reading() override;
+
+	bool register_hotkey(const Hotkey &p_hotkey) override;
+	void unregister_hotkey() override;
 };
 
 }

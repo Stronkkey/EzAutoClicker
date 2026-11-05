@@ -14,6 +14,7 @@
  */
 #pragma once
 
+#include <mutex>
 #include <vector>
 
 #include <libevdev/libevdev.h>
@@ -27,7 +28,8 @@ namespace Input {
 class HotkeyListenerEvdev final : public HotkeyListener {
 	std::vector<libevdev*> devices = {};
 	std::vector<sigc::connection> watches = {};
-	unsigned int key_code = 0;
+	std::mutex hotkey_mutex;
+	Hotkey::Modifier modifier_pressed = Hotkey::Modifier::NONE;
 
 	void for_input_device(const std::string_view &input_device_path);
 	bool device_has_key(libevdev *device) const;
@@ -37,17 +39,12 @@ class HotkeyListenerEvdev final : public HotkeyListener {
 public:
 	~HotkeyListenerEvdev();
 
-	constexpr void set_key_code(unsigned int new_key_code) {
-		key_code = new_key_code;
-	}
-
-	constexpr unsigned int get_key_code() const {
-		return key_code;
-	}
-
 	bool is_reading() const override;
 	void start_reading() override;
 	void stop_reading() override;
+
+	bool register_hotkey(const Hotkey &p_hotkey) override;
+	void unregister_hotkey() override;
 };
 
 }

@@ -56,7 +56,6 @@ bool EzAutoClicker::Input::HotkeyListenerEvdev::is_reading() const {
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
-	key_code = KEY_LEFTBRACE;
 	stop_reading();
 
 	if (!std::filesystem::exists("/dev/input"))
@@ -84,8 +83,64 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading() {
 	devices.clear();
 }
 
+bool EzAutoClicker::Input::HotkeyListenerEvdev::register_hotkey(const Hotkey &p_hotkey) {
+	auto lock = std::unique_lock(hotkey_mutex);
+	if (p_hotkey.key == 0)
+		return false;
+
+	hotkey = p_hotkey;
+	return true;
+}
+
+void EzAutoClicker::Input::HotkeyListenerEvdev::unregister_hotkey() {
+	auto lock = std::unique_lock(hotkey_mutex);
+	hotkey.key = 0;
+}
+
 void EzAutoClicker::Input::HotkeyListenerEvdev::handle_event(input_event &event) {
-	if (event.type == EV_KEY && event.code == key_code && event.value == 1)
+	if (event.type != EV_KEY)
+		return;
+
+	bool key_pressed = event.value == 1;
+	if (event.code == KEY_LEFTCTRL || event.code == KEY_RIGHTCTRL) {
+		if (key_pressed)
+			modifier_pressed = modifier_pressed | Hotkey::Modifier::CTRL;
+		else
+			modifier_pressed = modifier_pressed ^ Hotkey::Modifier::CTRL;
+		return;
+	}
+
+	if (event.code == KEY_LEFTSHIFT || event.code == KEY_RIGHTSHIFT) {
+		if (key_pressed)
+			modifier_pressed = modifier_pressed | Hotkey::Modifier::SHIFT;
+		else
+			modifier_pressed = modifier_pressed ^ Hotkey::Modifier::SHIFT;
+		return;
+	}
+
+	if (event.code == KEY_LEFTALT || event.code == KEY_RIGHTALT) {
+		if (key_pressed)
+			modifier_pressed = modifier_pressed | Hotkey::Modifier::ALT;
+		else
+			modifier_pressed = modifier_pressed ^ Hotkey::Modifier::ALT;
+		return;
+	}
+
+	if (event.code == KEY_LEFTMETA || event.code == KEY_RIGHTMETA) {
+		if (key_pressed)
+			modifier_pressed = modifier_pressed | Hotkey::Modifier::SUPER;
+		else
+			modifier_pressed = modifier_pressed ^ Hotkey::Modifier::SUPER;
+		return;
+	}
+
+	auto lock = std::unique_lock(hotkey_mutex);
+	bool is_hotkey_pressed = event.code == hotkey.key && key_pressed;
+	bool modifiers_match = modifier_pressed == hotkey.modifiers
+	                    || hotkey.modifiers == Hotkey::Modifier::ALL
+	                    || hotkey.has_modifiers_flag(modifier_pressed);
+
+	if (is_hotkey_pressed && modifiers_match)
 		signal_pressed.emit();
 }
 

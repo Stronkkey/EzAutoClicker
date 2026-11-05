@@ -22,7 +22,42 @@
 
 #include <X11/keysym.h>
 
-EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), key_code(0), running(false) {
+static constexpr KeyCode get_hotkey_x11_key(const EzAutoClicker::Input::Hotkey &hotkey) {
+	return hotkey.key + 8;
+}
+
+static constexpr Mask get_hotkey_x11_modifier(const EzAutoClicker::Input::Hotkey &hotkey) {
+	using Modifier = EzAutoClicker::Input::Hotkey::Modifier;
+	Mask mask = None;
+
+	if (hotkey.modifiers == Modifier::ALL)
+		return AnyModifier;
+
+	if (hotkey.has_modifiers_flag(Modifier::SHIFT))
+		mask = mask | ShiftMask;
+
+	if (hotkey.has_modifiers_flag(Modifier::ALT))
+		mask = mask | Mod1Mask;
+
+	if (hotkey.has_modifiers_flag(Modifier::CTRL))
+		mask = mask | ControlMask;
+
+	if (hotkey.has_modifiers_flag(Modifier::SUPER))
+		mask = mask | Mod4Mask;
+
+	return mask;
+}
+
+/**
+ * @brief Get an array of modifiers to ignore when grabbing a key.
+ * @details NumLock (Mod2) and CapsLock (Lock) change the modifier mask,
+ * so these mask should be ignored otherwise the hotkey fails when they're on.
+ */
+static constexpr std::array<Mask, 4> get_ignore_modifiers() {
+	return {None, LockMask, Mod2Mask, LockMask | Mod2Mask};
+}
+
+EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), running(false) {
 	if (XInitThreads() == 0)
 		return;
 
@@ -30,26 +65,13 @@ EzAutoClicker::Input::HotkeyListenerX11::HotkeyListenerX11() : worker_thread(), 
 	if (!display)
 		return;
 
-	Window root = DefaultRootWindow(display);
-	key_code = XKeysymToKeycode(display, XK_Escape);
-	unsigned int modifiers = ControlMask;
-
-	// NumLock (Mod2) and CapsLock (Lock) change the modifier mask,
-	// so grab every combination, otherwise the hotkey fails when they're on.
-	unsigned int ignored[] = {0, LockMask, Mod2Mask, LockMask | Mod2Mask};
-
-	for (unsigned int extra : ignored) {
-		XGrabKey(display, key_code, modifiers | extra, root,
-			False, GrabModeAsync, GrabModeAsync);
-	}
-
-	XSelectInput(display, root, KeyPressMask);
+	XSelectInput(display, DefaultRootWindow(display), KeyPressMask);
 }
 
 EzAutoClicker::Input::HotkeyListenerX11::~HotkeyListenerX11() {
 	stop_reading();
 	if (display) {
-		XUngrabKey(display, key_code, AnyModifier, DefaultRootWindow(display));
+		unregister_hotkey();
 		XCloseDisplay(display);
 	}
 }
@@ -64,7 +86,8 @@ void EzAutoClicker::Input::HotkeyListenerX11::read_inputs(std::stop_token stop_t
 	while (!stop_token.stop_requested()) {
 		while (XPending(display) > 0) {
 			XNextEvent(display, &event);
-			if (event.type == KeyPress && event.xkey.keycode == key_code)
+			auto lock = std::unique_lock(hotkey_mutex);
+			if (event.type == KeyPress && event.xkey.keycode == get_hotkey_x11_key(hotkey))
 				signal_pressed.emit();
 		}
 
@@ -91,6 +114,60 @@ void EzAutoClicker::Input::HotkeyListenerX11::stop_reading() {
 
 	running = false;
 	worker_thread.request_stop();
+}
+
+bool EzAutoClicker::Input::HotkeyListenerX11::register_hotkey(const Hotkey &p_hotkey) {
+	unregister_hotkey();
+	if (p_hotkey.key == 0 || !display)
+		return false;
+
+	auto lock = std::unique_lock(hotkey_mutex);
+	hotkey = p_hotkey;
+
+	KeyCode key_code = get_hotkey_x11_key(p_hotkey);
+	if (p_hotkey.modifiers == Hotkey::Modifier::ALL) {
+		XGrabKey(display,
+			key_code,
+			AnyModifier,
+			DefaultRootWindow(display),
+			False,
+			GrabModeAsync,
+			GrabModeAsync);
+		return true;
+	}
+
+	Mask modifiers = get_hotkey_x11_modifier(p_hotkey);
+	for (Mask ignore : get_ignore_modifiers())
+		XGrabKey(display,
+			key_code,
+			modifiers | ignore,
+			DefaultRootWindow(display),
+			False,
+			GrabModeAsync,
+			GrabModeAsync);
+
+	return true;
+}
+
+void EzAutoClicker::Input::HotkeyListenerX11::unregister_hotkey() {
+	if (hotkey.key == 0 || !display)
+		return;
+
+	KeyCode key_code = get_hotkey_x11_key(hotkey);
+	if (hotkey.modifiers == Hotkey::Modifier::ALL) {
+		XUngrabKey(display,
+			key_code,
+			AnyModifier,
+			DefaultRootWindow(display));
+		return;
+	}
+
+	Mask modifiers = get_hotkey_x11_modifier(hotkey);
+	for (Mask ignore : get_ignore_modifiers())
+		XUngrabKey(display,
+			key_code,
+			modifiers | ignore,
+			DefaultRootWindow(display));
 }
 
 
