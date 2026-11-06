@@ -231,9 +231,11 @@ void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring 
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
+	#if EZAUTOCLICKER_X11_INPUT_ENABLED
 	if (value.lowercase() == "x11")
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_x11();
-	else if (value.lowercase() == "evdev")
+	#endif
+	if (value.lowercase() == "evdev")
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
 }
 
