@@ -30,18 +30,22 @@ int main(int argc, char *argv[]) {
 	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;
 	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
+	#if EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT
 	bool allow_root = false;
 	for (int i = 1; i < argc; i++) {
 		std::string_view argument = argv[i];
 		if (argument == EzAutoClicker::Constants::ALLOW_ROOT_FLAG)
 			allow_root = true;
 	}
+	#endif
 
 	if (EzAutoClicker::Process::is_running_as_root()) {
+		#if EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT
 		if (!allow_root) {
 			g_printerr("%s\n", EzAutoClicker::Constants::ALLOW_ROOT_ERROR.data());
 			return EXIT_FAILURE;
 		}
+		
 
 		// We intentionally only try to create a uinput clicker with root privileges
 		// as that is the only clicker that can make use of them. Other clickers
@@ -77,6 +81,10 @@ int main(int argc, char *argv[]) {
 			hotkey_listener = std::move(hotkey_listener_evdev);
 
 		EzAutoClicker::Process::drop_root_privileges();
+		#else
+		g_printerr("%s\n", EzAutoClicker::Constants::UNALLOWED_ROOT_ERROR.data());
+		return EXIT_FAILURE;
+		#endif
 	}
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED

@@ -1,2 +1,3 @@
 option('wlr', type: 'feature', value: 'enabled')
 option('x11', type : 'feature', value : 'enabled', description : 'Add support for the X11 backend.')
+option('run_as_root', type : 'feature', value : 'auto', description : 'Allow the program to be be ran as root.')

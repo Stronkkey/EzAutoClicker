@@ -36,6 +36,7 @@ build_args = [
 features = []
 x11_feature = '-D EZAUTOCLICKER_X11_INPUT_ENABLED=1'
 wlr_feature = '-D EZAUTOCLICKER_ENABLE_WLR=1'
+run_as_root_feature = '-D EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT=1'
 
 
 libevdev_dep = dependency('libevdev')
@@ -95,6 +96,10 @@ if get_option('wlr').enabled()
     sources += client_header.process(xml)
     sources += private_code.process(xml)
   endforeach
+endif
+
+if get_option('run_as_root').allowed()
+  features += run_as_root_feature
 endif
 
 
