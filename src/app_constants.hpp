@@ -20,7 +20,7 @@ namespace EzAutoClicker {
 
 namespace Constants {
 
-const Glib::ustring APP_ID = "org.Stronkkey.EzAutoClicker";
+const Glib::ustring APP_ID = "io.github.Stronkkey.EzAutoClicker";
 
 const Glib::ustring APP_NAME = "EzAutoClicker";
 const Glib::ustring APP_VERSION = "1.0";
