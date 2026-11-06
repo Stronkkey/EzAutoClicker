@@ -22,8 +22,6 @@
 #include <src/input/wlr/clicker_wlr.hpp>
 #include <src/input/x11/clicker_x11.hpp>
 
-#if EZAUTOCLICKER_X11_INPUT_ENABLED
-
 #if EZAUTOCLICKER_ENABLE_WLR
 
 std::unique_ptr<EzAutoClicker::Input::ClickerWlr> EzAutoClicker::Input::ClickerFactory::create_clicker_wlr() {
@@ -36,6 +34,8 @@ std::unique_ptr<EzAutoClicker::Input::ClickerWlr> EzAutoClicker::Input::ClickerF
 }
 
 #endif
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
 
 std::unique_ptr<EzAutoClicker::Input::ClickerX11> EzAutoClicker::Input::ClickerFactory::create_clicker_x11() {
 	auto clicker_x11 = std::make_unique<ClickerX11>();
