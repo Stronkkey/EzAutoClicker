@@ -17,13 +17,22 @@ sources = files(
   'src/input/evdev/clicker_uinput.cpp',
   'src/input/hotkey_listener_factory.cpp',
   'src/input/threaded_clicker.cpp',
-  'src/input/wlr/clicker_wlr.cpp',
-  'src/input/x11/clicker_x11.cpp',
-  'src/input/x11/hotkey_listener_x11.cpp',
   'src/main.cpp',
   'src/process.cpp',
   'src/window.cpp'
 )
+
+extra_sources = files()
+
+x11_sources = files(
+  'src/input/x11/clicker_x11.cpp',
+  'src/input/x11/hotkey_listener_x11.cpp',
+)
+
+wlr_sources = files(
+  'src/input/wlr/clicker_wlr.cpp',
+)
+
 
 build_args = [
   '-Wall',
@@ -47,6 +56,19 @@ dependencies = [
   gtkmm4_dep,
 ]
 
+extra_dependencies = []
+
+x11_dependencies = [
+  dependency('x11', required : false),
+  dependency('xtst', required : false),
+]
+
+wlr_dependencies = [
+  dependency('wayland-client', required : false),
+  dependency('wayland-protocols', required: false),
+  dependency('wlr-protocols', required : false),
+]
+
 gnome = import('gnome')
 resources = gnome.compile_resources(
   'EzAutoClicker-Resources',
@@ -57,23 +79,20 @@ resources = gnome.compile_resources(
 
 
 if get_option('x11').enabled()
-  x11_dep = dependency('x11', required : true)
-  xtst_dep = dependency('xtst', required : true)
+  dependency('x11', required : true)
+  dependency('xtst', required : true)
 
-  dependencies += x11_dep
-  dependencies += xtst_dep
+  extra_dependencies += x11_dependencies
+  extra_sources += x11_sources
   features += x11_feature
 endif
 
 if get_option('wlr').enabled()
-  wayland_client_dep = dependency('wayland-client', required : true)
-  wayland_protocols_dep = dependency('wayland-protocols', required: true)
+  dependency('wayland-client', required : true)
+  dependency('wayland-protocols', required: true)
   wlr_protocols_dep = dependency('wlr-protocols', required : true)
   wayland_scanner_prog = find_program('wayland-scanner', required : true)
 
-  dependencies += wayland_client_dep
-  dependencies += wayland_protocols_dep
-  dependencies += wlr_protocols_dep
   features += wlr_feature
 
   wlr_dir = wlr_protocols_dep.get_variable('pkgdatadir')
@@ -93,9 +112,11 @@ if get_option('wlr').enabled()
   )
 
   foreach xml : protocol_xml
-    sources += client_header.process(xml)
-    sources += private_code.process(xml)
+    wlr_sources += client_header.process(xml)
+    wlr_sources += private_code.process(xml)
   endforeach
+  extra_dependencies += wlr_dependencies
+  extra_sources += wlr_sources
 endif
 
 if get_option('run_as_root').allowed()
@@ -104,17 +125,31 @@ endif
 
 
 sources += resources
-cpp_args = build_args + features
 
-
-ez_auto_clicker_exe = executable(
+main_exe = executable(
   'EzAutoClicker',
-  sources,
-  dependencies : dependencies,
+  sources + extra_sources,
+  dependencies : dependencies + extra_dependencies,
   install : false,
-  cpp_args : cpp_args,
+  cpp_args : build_args + features,
 )
 
-test('basic', ez_auto_clicker_exe, timeout: -1)
-test('TestX11', ez_auto_clicker_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
-test('Wlr', ez_auto_clicker_exe, timeout : -1, args : ['--clicker=wlr'])
+x11_exe = executable(
+  'TestX11',
+  sources + x11_sources,
+  dependencies : dependencies + x11_dependencies,
+  install : false,
+  cpp_args : build_args + x11_feature
+)
+
+wlr_exe = executable(
+  'TestWlr',
+  sources + wlr_sources,
+  dependencies : dependencies + wlr_dependencies,
+  install : false,
+  cpp_args : build_args + wlr_feature,
+)
+
+test('basic', main_exe, timeout: -1)
+test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
+test('TestWlr', wlr_exe, timeout : -1, args : ['--clicker=wlr'])
