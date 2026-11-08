@@ -137,8 +137,7 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::handle_event(input_event &event)
 	auto lock = std::unique_lock(hotkey_mutex);
 	bool is_hotkey_pressed = event.code == hotkey.key && key_pressed;
 	bool modifiers_match = modifier_pressed == hotkey.modifiers
-	                    || hotkey.modifiers == Hotkey::Modifier::ALL
-	                    || hotkey.has_modifiers_flag(modifier_pressed);
+	                    || hotkey.modifiers == Hotkey::Modifier::ALL;
 
 	if (is_hotkey_pressed && modifiers_match)
 		signal_pressed.emit();

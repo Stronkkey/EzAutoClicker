@@ -32,6 +32,9 @@ private:
 	Gtk::Button *start_button;
 	Gtk::Button *stop_button;
 
+	Gtk::Button *hotkey_button;
+	Glib::ustring hotkey_name = "";
+
 	Gtk::SpinButton *milliseconds_entry;
 	Gtk::SpinButton *seconds_entry;
 	Gtk::SpinButton *minutes_entry;
@@ -52,6 +55,7 @@ private:
 	Gtk::CheckButton *repeal_until_stopped_toggle;
 
 	bool sending_inputs;
+	bool capturing_key_presses;
 
 	void update_mouse_button_option();
 	void update_click_type_option();
@@ -59,10 +63,13 @@ private:
 	void update_options();
 	void connect_signals();
 
+	bool on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state);
+
 	void start_clicker();
 	void stop_clicker();
 
 	void set_sending_inputs(bool p_sending_inputs);
+	void set_capturing_keypresses(bool p_capturing_key_presses);
 public:
 	MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 

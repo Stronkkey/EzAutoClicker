@@ -20,10 +20,12 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 	clicker = nullptr;
 	hotkey_listener = nullptr;
 	sending_inputs = false;
+	capturing_key_presses = false;
 	hotkey_listener_connection = {};
 
 	start_button = builder->get_widget<Gtk::Button>("start_button");
 	stop_button = builder->get_widget<Gtk::Button>("stop_button");
+	hotkey_button = builder->get_widget<Gtk::Button>("hotkey_button");
 
 	milliseconds_entry = builder->get_widget<Gtk::SpinButton>("milliseconds_entry");
 	seconds_entry = builder->get_widget<Gtk::SpinButton>("seconds_entry");
@@ -120,6 +122,138 @@ void EzAutoClicker::MainWindow::connect_signals() {
 	stop_button->signal_clicked().connect([this]{
 		stop_clicker();
 	});
+
+	hotkey_button->signal_clicked().connect([this] {
+		set_capturing_keypresses(true);
+	});
+
+	auto controller = Gtk::EventControllerKey::create();
+	controller->signal_key_pressed().connect(sigc::mem_fun(
+			*this,
+			&MainWindow::on_key_pressed), false);
+	add_controller(controller);
+}
+
+/**
+ * @brief Converts a Gdk::ModifierType into a hotkey modifier.
+ * @note Unsupported Modifiers will be lost after conversion.
+ */
+static constexpr EzAutoClicker::Input::Hotkey::Modifier gdk_modifier_to_hotkey_modifier(Gdk::ModifierType modifier) {
+	using Modifier = EzAutoClicker::Input::Hotkey::Modifier;
+	if (modifier == Gdk::ModifierType::NO_MODIFIER_MASK)
+		return Modifier::NONE;
+
+	Modifier mod = Modifier::NONE;
+
+	if (static_cast<int>(modifier & Gdk::ModifierType::CONTROL_MASK) != 0)
+		mod = mod | Modifier::CTRL;
+
+	if (static_cast<int>(modifier & Gdk::ModifierType::SHIFT_MASK) != 0)
+		mod = mod | Modifier::SHIFT;
+	
+	if (static_cast<int>(modifier & Gdk::ModifierType::ALT_MASK) != 0)
+		mod = mod | Modifier::ALT;
+
+	if (static_cast<int>(modifier & Gdk::ModifierType::SUPER_MASK) != 0)
+		mod = mod | Modifier::SUPER;
+
+	return mod;
+}
+
+/**
+ * @brief Enum used to determine if a keyval is a modifier
+ * and should be shown to the user while setting a hotkey.
+ */
+enum class KeyValType {
+	KEY, ///< This valid key for the hotkey. Proceed to setting the hotkey.
+	MODIFIER, ///< Show modifier when setting hotkey. Wait until the user presses another key.
+	MODIFIER_NO_SHOW, ///< Don't show modifier when setting hotkey. Don't use a modifier.
+};
+
+/**
+ * @brief Determines what type a keyval is.
+ * @see @e KeyValType
+ */
+static constexpr KeyValType get_keyval_into_from_keyval(guint keyval) {
+	switch (keyval) {
+		case GDK_KEY_Control_L:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Control_R:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Shift_L:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Shift_R:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Caps_Lock:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Shift_Lock:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Meta_L:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Meta_R:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Alt_L:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Alt_R:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Super_L:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Super_R:
+			return KeyValType::MODIFIER;
+		case GDK_KEY_Hyper_L:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Hyper_R:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_Tab:
+			return KeyValType::MODIFIER_NO_SHOW;
+		// Fn key on laptops.
+		case GDK_KEY_WakeUp:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_ISO_Lock:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_ISO_Level2_Latch:
+			return KeyValType::MODIFIER_NO_SHOW;
+		case GDK_KEY_ISO_Level3_Shift:
+			return KeyValType::MODIFIER_NO_SHOW;
+	}
+
+	return KeyValType::KEY;
+}
+
+/**
+ * @note Converts a Gdk keycode into a hotkey key.
+ */
+static constexpr unsigned gdk_keycode_to_hotkey_key(guint keycode) {
+	return keycode - 8;
+}
+
+bool EzAutoClicker::MainWindow::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {	
+	if (!capturing_key_presses)
+		return false;
+
+	if (keyval == GDK_KEY_Escape) {
+		set_capturing_keypresses(false);
+		return true;
+	}
+
+	Glib::ustring key_description = Gtk::Accelerator::get_label(keyval, state);
+	KeyValType type = get_keyval_into_from_keyval(keyval);
+	if (type != KeyValType::KEY) {
+		if (type == KeyValType::MODIFIER)
+			hotkey_button->set_label(key_description);
+		return true;
+	}
+
+	Input::Hotkey hotkey;
+	hotkey.key = gdk_keycode_to_hotkey_key(keycode);
+	hotkey.modifiers = gdk_modifier_to_hotkey_modifier(state);
+
+	if (hotkey_listener)
+		hotkey_listener->register_hotkey(hotkey);
+
+	hotkey_name = std::move(key_description);
+	set_capturing_keypresses(false);
+	return true;
 }
 
 void EzAutoClicker::MainWindow::start_clicker() {
@@ -143,6 +277,14 @@ void EzAutoClicker::MainWindow::set_sending_inputs(bool p_sending_inputs) {
 	sending_inputs = p_sending_inputs;
 	start_button->set_sensitive(!p_sending_inputs);
 	stop_button->set_sensitive(p_sending_inputs);
+}
+
+void EzAutoClicker::MainWindow::set_capturing_keypresses(bool p_capturing_key_presses) {
+	capturing_key_presses = p_capturing_key_presses;
+	if (p_capturing_key_presses)
+		hotkey_button->set_label("Press a key...");
+	else
+		hotkey_button->set_label(hotkey_name);
 }
 
 void EzAutoClicker::MainWindow::toggle_clicker() {
@@ -169,12 +311,15 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::Hotke
 
 	hotkey_listener = std::move(p_hotkey_listener);
 	auto slot = hotkey_listener->signal_pressed.connect([this] {
-		toggle_clicker();
+		if (!capturing_key_presses)
+			toggle_clicker();
 	});
 
-	auto hotkey = Input::Hotkey();
-	hotkey.key = KEY_LEFTBRACE;
-	hotkey.modifiers = Input::Hotkey::Modifier::CTRL;
+	auto hotkey = Input::Hotkey{.key = KEY_F5,
+	                            .modifiers = Input::Hotkey::Modifier::NONE};
+	hotkey_name = Gtk::Accelerator::get_label(GDK_KEY_F5,
+	                            Gdk::ModifierType::NO_MODIFIER_MASK);
+	hotkey_button->set_label(hotkey_name);
 	hotkey_listener->register_hotkey(hotkey);
 }
 
