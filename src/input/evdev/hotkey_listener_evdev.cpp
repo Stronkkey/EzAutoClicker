@@ -34,9 +34,23 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::stri
 		return;
 
 	libevdev *device;
-	libevdev_new_from_fd(fd, &device);
+	int evdev_intialized = libevdev_new_from_fd(fd, &device) == 0;
+
+	if (fd < 0) {
+		if (evdev_intialized)
+			libevdev_free(device);
+		return;
+	}
+
+	if (!evdev_intialized) {
+		if (fd > -1)
+			close(fd);
+		return;
+	}
+
 	if (!device_has_key(device)) {
-		close(fd);
+		if (fd > -1)
+			close(fd);
 		libevdev_free(device);
 		return;
 	}
