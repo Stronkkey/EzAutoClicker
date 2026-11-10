@@ -23,7 +23,7 @@
 #include <fstream>
 
 std::optional<pid_t> EzAutoClicker::Process::get_ppid_of_process(pid_t pid) {
-	std::filesystem::path path = std::format("/proc/{0}/stat", std::to_string(pid));
+	std::filesystem::path path = "/proc/" + std::to_string(pid) + "/stat";
 	auto file = std::ifstream(path);
 
 	if (!file)
@@ -43,7 +43,7 @@ std::optional<pid_t> EzAutoClicker::Process::get_ppid_of_process(pid_t pid) {
 
 std::optional<uid_t> EzAutoClicker::Process::get_euid_of_process(pid_t pid) {
 	struct stat attr;
-	std::filesystem::path path = std::format("/proc/{0}", pid);
+	std::filesystem::path path = "/proc/" + std::to_string(pid);
 
 	if (stat(path.c_str(), &attr) == -1)
 		return std::nullopt;
@@ -51,7 +51,7 @@ std::optional<uid_t> EzAutoClicker::Process::get_euid_of_process(pid_t pid) {
 }
 
 std::optional<std::unordered_map<std::string, std::string>> EzAutoClicker::Process::get_environ_for_process(pid_t pid) {
-	auto file = std::ifstream(std::format("/proc/{0}/environ", pid));
+	auto file = std::ifstream("/proc/" + std::to_string(pid) + "/environ");
 
 	if (!file)
 		return std::nullopt;
@@ -60,8 +60,8 @@ std::optional<std::unordered_map<std::string, std::string>> EzAutoClicker::Proce
 	std::unordered_map<std::string, std::string> process_environ = {};
 	constexpr const char delimiter[1] = {'\0'};
 
-	for (const auto &entry : std::views::split(file_content, delimiter)) {
-		auto view = std::string_view(entry);
+	for (const auto &entry : std::ranges::split_view(file_content, delimiter)) {
+		auto view = std::string_view(entry.data());
 		size_t pos = view.find('=');
 		if (pos != std::string_view::npos)
 			process_environ.insert_or_assign(
@@ -73,7 +73,7 @@ std::optional<std::unordered_map<std::string, std::string>> EzAutoClicker::Proce
 }
 
 std::optional<pid_t> EzAutoClicker::Process::get_process_running_as_uid(uid_t target_uid) {
-	uid_t uid = 0;
+	uid_t uid = geteuid();
 	pid_t ppid = getpid();
 
 	while (uid != target_uid && ppid > 1) {
@@ -158,7 +158,7 @@ void EzAutoClicker::Process::drop_root_privileges() {
 
 	const passwd *pw = getpwuid(running_user_id);
 	if (!pw)
-		throw std::runtime_error(std::format("Failed to find user with the uid {0}.", running_user_id));
+		throw std::runtime_error("Failed to find user with the uid " + std::to_string(running_user_id) + ".");
 
 	const bool set_initgroups_failed = initgroups(pw->pw_name, pw->pw_gid) != 0;
 	if (set_initgroups_failed)

@@ -26,7 +26,7 @@ EzAutoClicker::Input::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::string_view &input_device_path) {
-	if (!input_device_path.contains("event"))
+	if (input_device_path.find("event") != std::string_view::npos)
 		return;
 
 	int fd = open(input_device_path.data(), O_RDONLY | O_NONBLOCK);
