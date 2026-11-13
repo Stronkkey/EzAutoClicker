@@ -25,6 +25,9 @@ constexpr const char *APP_ID = "io.github.Stronkkey.EzAutoClicker";
 constexpr const char *APP_NAME = "EzAutoClicker";
 constexpr const char *APP_VERSION = "1.0";
 
+constexpr const char *CONTEXT_SUMMARY = "EzAutoClicker - automate mouse clicks at fixed intervals.";
+constexpr const char *OPTION_CONTEXT_DESCRIPTION = "Press the configured hotkey (default F5) to start or stop clicking.";
+
 constexpr const char NO_SHORT_NAME = '\0';
 
 constexpr const char TOGGLE_SHORT_NAME = 't';

@@ -26,6 +26,8 @@
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(Constants::APP_ID) {
 	set_id(Constants::APP_ID);
 	set_version(Constants::APP_VERSION);
+	set_option_context_summary(Constants::CONTEXT_SUMMARY);
+	set_option_context_description(Constants::OPTION_CONTEXT_DESCRIPTION);
 	add_option_entries();
 
 	// Exported action, callable from other processes
