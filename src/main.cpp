@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 		EzAutoClicker::Process::drop_root_privileges();
 		#else
-		g_printerr("%s\n", EzAutoClicker::Constants::UNALLOWED_ROOT_ERROR.data());
+		g_printerr("%s\n", EzAutoClicker::Constants::UNALLOWED_ROOT_ERROR);
 		return EXIT_FAILURE;
 		#endif
 	}
