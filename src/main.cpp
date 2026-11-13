@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	if (EzAutoClicker::Process::is_running_as_root()) {
 		#if EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT
 		if (!allow_root) {
-			g_printerr("%s\n", EzAutoClicker::Constants::ALLOW_ROOT_ERROR.data());
+			g_printerr("%s\n", EzAutoClicker::Constants::ALLOW_ROOT_ERROR);
 			return EXIT_FAILURE;
 		}
 		

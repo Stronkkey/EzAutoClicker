@@ -178,7 +178,7 @@ void EzAutoClicker::EzAutoClickerApp::handle_toggle_option() {
 	}
 
 	if (!is_remote()) {
-		g_printerr("%s is not running. Start it first.\n", Constants::APP_NAME.c_str());
+		g_printerr("%s is not running. Start it first.\n", Constants::APP_NAME);
 		return;
 	}
 
