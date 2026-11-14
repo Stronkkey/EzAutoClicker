@@ -55,7 +55,7 @@ sudo apt install -y --no-install-recommends \
 ##### Arch Linux
 
 ```sh
-sudo pacman -S --needed --no-confirm \
+sudo pacman -S --needed --noconfirm \
   base-devel \
   gtkmm-4.0 \
   libevdev \
