@@ -65,8 +65,6 @@ x11_dependencies = [
 
 wlr_dependencies = [
   dependency('wayland-client', required : false),
-  dependency('wayland-protocols', required: false),
-  dependency('wlr-protocols', required : false),
 ]
 
 gnome = import('gnome')
@@ -89,17 +87,12 @@ endif
 
 if get_option('wlr').enabled()
   dependency('wayland-client', required : true)
-  dependency('wayland-protocols', required: true)
-  wlr_protocols_dep = dependency('wlr-protocols', required : true)
   wayland_scanner_prog = find_program('wayland-scanner', required : true)
 
   features += wlr_feature
-
-  wlr_dir = wlr_protocols_dep.get_variable('pkgdatadir')
-
-  protocol_xml = [
-    wlr_dir / 'unstable/wlr-virtual-pointer-unstable-v1.xml',
-  ]
+  protocol_xml = files(
+    'protocols/unstable/wlr-virtual-pointer-unstable-v1.xml',
+  )
 
   client_header = generator(wayland_scanner_prog,
     output: '@BASENAME@-client-protocol.h',
