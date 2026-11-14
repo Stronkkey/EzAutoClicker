@@ -90,7 +90,7 @@ sudo meson install -C build # Usually installs to /usr
 ## Usage
 
 ```text
-$ EzAutoClicker
+$ EzAutoClicker --help
 Usage:
   EzAutoClicker [OPTION…]
 
