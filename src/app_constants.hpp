@@ -96,14 +96,16 @@ constexpr const char ALLOW_ROOT_SHORT_NAME = NO_SHORT_NAME;
 constexpr const char *ALLOW_ROOT_LONG_NAME = "allow-root";
 constexpr const char *ALLOW_ROOT_OPTION_DESCRIPTION = "Allows running the program as root.";
 
+constexpr const char *ERROR_MESSAGE_TEMPLATE = "EzAutoClicker: error:";
+
 /**
  * @note This is only used by main because GLib doesn't work as root.
  */
 constexpr const char *ALLOW_ROOT_FLAG = "--allow-root"; 
 constexpr const char *ALLOW_ROOT_ERROR =
-        "EzAutoClicker: error: this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.";
+        "this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.";
 constexpr const char *UNALLOWED_ROOT_ERROR =
-        "EzAutoClicker: error: this program cannot be ran as root. exiting.";
+        "this program cannot be ran as root. exiting.";
 
 }
 

@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	if (EzAutoClicker::Process::is_running_as_root()) {
 		#if EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT
 		if (!allow_root) {
-			g_printerr("%s\n", EzAutoClicker::Constants::ALLOW_ROOT_ERROR);
+			g_printerr("%s %s\n", EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE, EzAutoClicker::Constants::ALLOW_ROOT_ERROR);
 			return EXIT_FAILURE;
 		}
 		
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 		EzAutoClicker::Process::drop_root_privileges();
 		#else
-		g_printerr("%s\n", EzAutoClicker::Constants::UNALLOWED_ROOT_ERROR);
+		g_printerr("%s %s\n", EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE, EzAutoClicker::Constants::UNALLOWED_ROOT_ERROR);
 		return EXIT_FAILURE;
 		#endif
 	}
