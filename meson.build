@@ -60,6 +60,9 @@ x11_feature = '-D EZAUTOCLICKER_X11_INPUT_ENABLED=1'
 wlr_feature = '-D EZAUTOCLICKER_ENABLE_WLR=1'
 run_as_root_feature = '-D EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT=1'
 
+use_x11 = get_option('x11').enabled()
+use_wlr = get_option('wlr').enabled()
+allow_root = get_option('run_as_root').allowed()
 
 libevdev_dep = dependency('libevdev')
 gtkmm4_dep = dependency('gtkmm-4.0')
@@ -72,12 +75,12 @@ dependencies = [
 extra_dependencies = []
 
 x11_dependencies = [
-  dependency('x11', required : false),
-  dependency('xtst', required : false),
+  dependency('x11', required : use_x11),
+  dependency('xtst', required : use_x11),
 ]
 
 wlr_dependencies = [
-  dependency('wayland-client', required : false),
+  dependency('wayland-client', required : use_wlr),
 ]
 
 gnome = import('gnome')
@@ -89,17 +92,13 @@ resources = gnome.compile_resources(
 )
 
 
-if get_option('x11').enabled()
-  dependency('x11', required : true)
-  dependency('xtst', required : true)
-
+if use_x11
   extra_dependencies += x11_dependencies
   extra_sources += x11_sources
   features += x11_feature
 endif
 
-if get_option('wlr').enabled()
-  dependency('wayland-client', required : true)
+if use_wlr
   wayland_scanner_prog = find_program('wayland-scanner', required : true)
 
   features += wlr_feature
@@ -125,7 +124,7 @@ if get_option('wlr').enabled()
   extra_sources += wlr_sources
 endif
 
-if get_option('run_as_root').allowed()
+if allow_root
   features += run_as_root_feature
 endif
 
