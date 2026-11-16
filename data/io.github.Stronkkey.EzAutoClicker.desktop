@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=EzAutoClicker
+GenericName=Mouse automation tool
+Comment=Automate mouse clicks at fixed intervals. Works on both X11 and Wayland. 
+TryExec=EzAutoClicker
+Exec=EzAutoClicker
+Icon=io.github.Stronkkey.EzAutoClicker
+Terminal=false
+Categories=Utility;GTK;
+Keywords=click;mouse;macro;
+Actions=Toggle;
+
+[Desktop Action Toggle]
+Name=Start/Stop Clicking
+Exec=EzAutoClicker --toggle

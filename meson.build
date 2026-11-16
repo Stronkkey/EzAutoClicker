@@ -9,9 +9,13 @@ project(
     ],
 )
 
+app_name = meson.project_name()
+app_id = 'io.github.Stronkkey.' + app_name
+app_desktop_name = app_id + '.desktop'
+
 config_hpp = configuration_data()
-config_hpp.set('app_id', 'io.github.Stronkkey.EzAutoClicker')
-config_hpp.set('app_name', meson.project_name())
+config_hpp.set('app_name', app_name)
+config_hpp.set('app_id', app_id)
 config_hpp.set('app_version', meson.project_version())
 
 configure_file(
@@ -125,6 +129,15 @@ if get_option('run_as_root').allowed()
   features += run_as_root_feature
 endif
 
+install_data(
+  'data' / app_desktop_name,
+  install_dir : get_option('datadir') / 'applications',
+)
+
+install_data(
+  meson.current_build_dir() / 'EzAutoClicker',
+  install_dir : get_option('bindir')
+)
 
 sources += resources
 
@@ -151,6 +164,11 @@ wlr_exe = executable(
   install : false,
   cpp_args : build_args + wlr_feature,
 )
+
+desktop_file_validate = find_program('desktop-file-validate', required : false)
+if desktop_file_validate.found()
+  test('Validate desktop file', desktop_file_validate, args : files('data' / app_desktop_name))
+endif
 
 test('basic', main_exe, timeout: -1)
 test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
