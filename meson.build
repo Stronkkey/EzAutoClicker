@@ -63,6 +63,8 @@ run_as_root_feature = '-D EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT=1'
 use_x11 = get_option('x11').enabled()
 use_wlr = get_option('wlr').enabled()
 allow_root = get_option('run_as_root').allowed()
+build_tests = get_option('tests').enabled()
+enable_validate_tests = get_option('validation_tests').allowed()
 
 libevdev_dep = dependency('libevdev')
 gtkmm4_dep = dependency('gtkmm-4.0')
@@ -138,34 +140,37 @@ main_exe = executable(
   cpp_args : build_args + features,
 )
 
-test('basic', main_exe, timeout: -1)
+if build_tests
+  test('basic', main_exe, timeout: -1)
 
-if use_x11
-  x11_exe = executable(
-    'TestX11',
-    sources + x11_sources,
-    dependencies : dependencies + x11_dependencies,
-    install : false,
-    cpp_args : build_args + x11_feature
-  )
+  if use_x11
+    x11_exe = executable(
+      'TestX11',
+      sources + x11_sources,
+      dependencies : dependencies + x11_dependencies,
+      install : false,
+      cpp_args : build_args + x11_feature
+    )
 
-  test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
-endif
+    test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
+  endif
 
-if use_wlr
-  wlr_exe = executable(
-    'TestWlr',
-    sources + wlr_sources,
-    dependencies : dependencies + wlr_dependencies,
-    install : false,
-    cpp_args : build_args + wlr_feature,
-  )
+  if use_wlr
+    wlr_exe = executable(
+      'TestWlr',
+      sources + wlr_sources,
+      dependencies : dependencies + wlr_dependencies,
+      install : false,
+      cpp_args : build_args + wlr_feature,
+    )
 
-  test('TestWlr', wlr_exe, timeout : -1, args : ['--clicker=wlr'])
+    test('TestWlr', wlr_exe, timeout : -1, args : ['--clicker=wlr'])
+  endif
+
 endif
 
 desktop_file_validate = find_program('desktop-file-validate', required : false)
-if desktop_file_validate.found()
+if enable_validate_tests
   test('Validate desktop file', desktop_file_validate, args : app_desktop_file)
 endif
 
