@@ -220,25 +220,50 @@ void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::us
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring &value) {
-	if (value.lowercase() == "uinput")
+	Glib::ustring lower = value.lowercase();
+	if (lower == "uinput") {
 		clicker = Input::ClickerFactory::create_clicker_uinput();
+		cli_options.clicker_set = true;
+	}
+
 	#if EZAUTOCLICKER_ENABLE_WLR
-	if (value.lowercase() == "wlr")
+	if (lower == "wlr") {
 		clicker = Input::ClickerFactory::create_clicker_wlr();
+		cli_options.clicker_set = true;
+	}
 	#endif
+
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-	if (value.lowercase() == "x11")
+	if (lower == "x11") {
 		clicker = Input::ClickerFactory::create_clicker_x11();
+		cli_options.clicker_set = true;
+	}
 	#endif
+
+	if (!cli_options.clicker_set && !cli_options.fail_initialization) {
+		g_printerr("%s \"%s\" is not a valid clicker backend.\n", Constants::ERROR_MESSAGE_TEMPLATE, value.c_str());
+		cli_options.fail_initialization = true;
+	}
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
+	Glib::ustring lower = value.lowercase();
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-	if (value.lowercase() == "x11")
+	if (lower == "x11") {
+		cli_options.hotkey_listener_set = true;
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_x11();
+	}
 	#endif
-	if (value.lowercase() == "evdev")
+
+	if (lower == "evdev") {
+		cli_options.hotkey_listener_set = true;
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
+	}
+
+	if (!cli_options.hotkey_listener_set && !cli_options.fail_initialization) {
+		g_printerr("%s \"%s\" is not a valid hotkey listener backend.\n", Constants::ERROR_MESSAGE_TEMPLATE, value.c_str());
+		cli_options.fail_initialization = true;
+	}
 }
 
 void EzAutoClicker::EzAutoClickerApp::on_toggle() {
@@ -246,7 +271,7 @@ void EzAutoClicker::EzAutoClickerApp::on_toggle() {
 }
 
 std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::EzAutoClickerApp::get_clicker() {
-	if (clicker)
+	if (cli_options.clicker_set)
 		return std::move(clicker);
 	return Input::ClickerFactory::create_clicker();
 }
@@ -299,6 +324,11 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 	auto windows = get_windows();
 	if (!windows.empty()) {
 		windows.front()->present();
+		return;
+	}
+
+	if (cli_options.fail_initialization) {
+		quit();
 		return;
 	}
 

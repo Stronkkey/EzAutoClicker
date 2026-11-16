@@ -46,6 +46,9 @@ private:
 		std::optional<Input::Click::MouseButton> button = std::nullopt;
 		unsigned short mouse_x_position = 0;
 		unsigned short mouse_y_position = 0;
+		bool clicker_set = false;
+		bool hotkey_listener_set = false;
+		bool fail_initialization = false;
 		std::optional<gint32> interval_ms = std::nullopt;
 		std::optional<gint32> interval_s = std::nullopt;
 		std::optional<gint32> interval_m = std::nullopt;
