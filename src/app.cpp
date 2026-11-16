@@ -14,7 +14,7 @@
  */
 #include <src/app.hpp>
 
-#include <src/app_constants.hpp>
+#include <config.hpp>
 #include <src/app_cli_constants.hpp>
 #include <src/input/clicker_factory.hpp>
 #include <src/input/evdev/clicker_uinput.hpp>

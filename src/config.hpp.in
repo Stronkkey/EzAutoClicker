@@ -18,9 +18,23 @@ namespace EzAutoClicker {
 
 namespace Constants {
 
-constexpr const char *VERSION = "@version@";
-constexpr const bool X11_FEATURE = EZAUTOCLICKER_X11_INPUT_ENABLED;
-constexpr const bool WLR_FEATURE = EZAUTOCLICKER_ENABLE_WLR;
+constexpr const char *APP_ID = "@app_id@";
+constexpr const char *APP_NAME = "@app_name@";
+constexpr const char *APP_VERSION = "@app_version@";
+
+constexpr const char *ERROR_MESSAGE_TEMPLATE = "@app_name@: error:";
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+constexpr const bool X11_FEATURE = true;
+#else
+constexpr const bool X11_FEATURE = false;
+#endif
+
+#if EZAUTOCLICKER_ENABLE_WLR
+constexpr const bool WLR_FEATURE = true;
+#else
+constexpr const bool WLR_FEATURE = false;
+#endif
 
 }
 

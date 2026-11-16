@@ -12,9 +12,9 @@
  * You should have received a copy of the GNU General Public License along with EzAutoClicker.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+#include <config.hpp>
 #include <src/app.hpp>
 #include <src/app_cli_constants.hpp>
-#include <src/app_constants.hpp>
 #include <src/input/clicker_factory.hpp>
 #include <src/input/evdev/clicker_uinput.hpp>
 #include <src/input/evdev/hotkey_listener_evdev.hpp>

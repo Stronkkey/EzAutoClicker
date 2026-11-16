@@ -10,7 +10,9 @@ project(
 )
 
 config_hpp = configuration_data()
-config_hpp.set('version', meson.project_version())
+config_hpp.set('app_id', 'io.github.Stronkkey.EzAutoClicker')
+config_hpp.set('app_name', meson.project_name())
+config_hpp.set('app_version', meson.project_version())
 
 configure_file(
   input : 'src/config.hpp.in',
