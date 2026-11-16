@@ -11,7 +11,7 @@ project(
 
 app_name = meson.project_name()
 app_id = 'io.github.Stronkkey.' + app_name
-app_desktop_name = app_id + '.desktop'
+app_desktop_file = files('data' / app_id + '.desktop')
 
 config_hpp = configuration_data()
 config_hpp.set('app_name', app_name)
@@ -140,7 +140,7 @@ main_exe = executable(
 )
 
 install_data(
-  'data' / app_desktop_name,
+  app_desktop_file,
   install_dir : get_option('datadir') / 'applications',
 )
 
@@ -167,7 +167,7 @@ wlr_exe = executable(
 
 desktop_file_validate = find_program('desktop-file-validate', required : false)
 if desktop_file_validate.found()
-  test('Validate desktop file', desktop_file_validate, args : files('data' / app_desktop_name))
+  test('Validate desktop file', desktop_file_validate, args : app_desktop_file)
 endif
 
 test('basic', main_exe, timeout: -1)
