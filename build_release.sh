@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mkdir build-release
+mkdir -p build-release
 docker build -t ez-auto-clicker-builder .
 
 docker run --rm --userns=keep-id \
