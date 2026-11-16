@@ -78,12 +78,30 @@ constexpr const char *SET_REPEAT_COUNT_ARG_DESCRIPTION = "REPEAT_COUNT";
 constexpr const char CLICKER_SHORT_NAME = NO_SHORT_NAME;
 constexpr const char *CLICKER_LONG_NAME = "clicker";
 constexpr const char *CLICKER_OPTION_DESCRIPTION = "The clicker backend used to send clicks.";
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
+#if EZAUTOCLICKER_ENABLE_WLR
 constexpr const char *CLICKER_ARG_DESCRIPTION = "uinput|wlr|x11|auto";
+#else
+constexpr const char *CLICKER_ARG_DESCRIPTION = "uinput|x11|auto";
+#endif
+#else
+#if EZAUTOCLICKER_ENABLE_WLR
+constexpr const char *CLICKER_ARG_DESCRIPTION = "uinput|wlr|auto";
+#else
+constexpr const char *CLICKER_ARG_DESCRIPTION = "uinput|auto";
+#endif
+#endif
 
 constexpr const char HOTKEY_LISTENER_SHORT_NAME = NO_SHORT_NAME;
 constexpr const char *HOTKEY_LISTENER_LONG_NAME = "hotkey-listener";
 constexpr const char *HOTKEY_LISTENER_OPTION_DESCRIPTION = "The hotkey listener backend used to listen for the hotkey.";
+
+#if EZAUTOCLICKER_X11_INPUT_ENABLED
 constexpr const char *HOTKEY_LISTENER_ARG_DESCRIPTION = "x11|evdev|auto";
+#else
+constexpr const char *HOTKEY_LISTENER_ARG_DESCRIPTION = "evdev|auto";
+#endif
 
 constexpr const char ALLOW_ROOT_SHORT_NAME = NO_SHORT_NAME;
 constexpr const char *ALLOW_ROOT_LONG_NAME = "allow-root";
