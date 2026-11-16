@@ -135,18 +135,13 @@ main_exe = executable(
   'EzAutoClicker',
   sources + extra_sources,
   dependencies : dependencies + extra_dependencies,
-  install : false,
+  install : true,
   cpp_args : build_args + features,
 )
 
 install_data(
   app_desktop_file,
   install_dir : get_option('datadir') / 'applications',
-)
-
-install_data(
-  files(main_exe.full_path()),
-  install_dir : get_option('bindir')
 )
 
 x11_exe = executable(
