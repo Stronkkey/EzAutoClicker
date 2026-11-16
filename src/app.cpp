@@ -333,7 +333,7 @@ void EzAutoClicker::EzAutoClickerApp::on_activate() {
 		return;
 	}
 
-	auto builder = Gtk::Builder::create_from_resource("/org/Stronkkey/EzAutoClicker/main_window.ui");
+	auto builder = Gtk::Builder::create_from_resource("/io/github/Stronkkey/EzAutoClicker/main_window.ui");
 
 	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
 	main_window->set_clicker(get_clicker());
