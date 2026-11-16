@@ -64,7 +64,6 @@ use_x11 = get_option('x11').enabled()
 use_wlr = get_option('wlr').enabled()
 allow_root = get_option('run_as_root').allowed()
 build_tests = get_option('tests').enabled()
-enable_validate_tests = get_option('validation_tests').allowed()
 
 libevdev_dep = dependency('libevdev')
 gtkmm4_dep = dependency('gtkmm-4.0')
@@ -170,7 +169,7 @@ if build_tests
 endif
 
 desktop_file_validate = find_program('desktop-file-validate', required : false)
-if enable_validate_tests
+if desktop_file_validate.found()
   test('Validate desktop file', desktop_file_validate, args : app_desktop_file)
 endif
 
