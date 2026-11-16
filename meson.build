@@ -129,16 +129,6 @@ if get_option('run_as_root').allowed()
   features += run_as_root_feature
 endif
 
-install_data(
-  'data' / app_desktop_name,
-  install_dir : get_option('datadir') / 'applications',
-)
-
-install_data(
-  meson.current_build_dir() / 'EzAutoClicker',
-  install_dir : get_option('bindir')
-)
-
 sources += resources
 
 main_exe = executable(
@@ -147,6 +137,16 @@ main_exe = executable(
   dependencies : dependencies + extra_dependencies,
   install : false,
   cpp_args : build_args + features,
+)
+
+install_data(
+  'data' / app_desktop_name,
+  install_dir : get_option('datadir') / 'applications',
+)
+
+install_data(
+  files(main_exe.full_path()),
+  install_dir : get_option('bindir')
 )
 
 x11_exe = executable(
