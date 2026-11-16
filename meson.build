@@ -138,32 +138,35 @@ main_exe = executable(
   cpp_args : build_args + features,
 )
 
-install_data(
-  app_desktop_file,
-  install_dir : get_option('datadir') / 'applications',
-)
+test('basic', main_exe, timeout: -1)
 
-x11_exe = executable(
-  'TestX11',
-  sources + x11_sources,
-  dependencies : dependencies + x11_dependencies,
-  install : false,
-  cpp_args : build_args + x11_feature
-)
+if use_x11
+  x11_exe = executable(
+    'TestX11',
+    sources + x11_sources,
+    dependencies : dependencies + x11_dependencies,
+    install : false,
+    cpp_args : build_args + x11_feature
+  )
 
-wlr_exe = executable(
-  'TestWlr',
-  sources + wlr_sources,
-  dependencies : dependencies + wlr_dependencies,
-  install : false,
-  cpp_args : build_args + wlr_feature,
-)
+  test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
+endif
+
+if use_wlr
+  wlr_exe = executable(
+    'TestWlr',
+    sources + wlr_sources,
+    dependencies : dependencies + wlr_dependencies,
+    install : false,
+    cpp_args : build_args + wlr_feature,
+  )
+
+  test('TestWlr', wlr_exe, timeout : -1, args : ['--clicker=wlr'])
+endif
 
 desktop_file_validate = find_program('desktop-file-validate', required : false)
 if desktop_file_validate.found()
   test('Validate desktop file', desktop_file_validate, args : app_desktop_file)
 endif
 
-test('basic', main_exe, timeout: -1)
-test('TestX11', x11_exe, timeout: -1, args: ['--clicker=x11', '--hotkey-listener=x11'])
-test('TestWlr', wlr_exe, timeout : -1, args : ['--clicker=wlr'])
+install_data(app_desktop_file, install_dir : get_option('datadir') / 'applications')
