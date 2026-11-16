@@ -19,16 +19,10 @@ namespace EzAutoClicker {
 namespace Constants {
 
 constexpr const char *APP_ID = "io.github.Stronkkey.EzAutoClicker";
-
 constexpr const char *APP_NAME = "EzAutoClicker";
 constexpr const char *APP_VERSION = "1.0";
 
 constexpr const char *ERROR_MESSAGE_TEMPLATE = "EzAutoClicker: error:";
-
-constexpr const char *ALLOW_ROOT_ERROR =
-        "this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.";
-constexpr const char *UNALLOWED_ROOT_ERROR =
-        "this program cannot be ran as root. exiting.";
 
 }
 
