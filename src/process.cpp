@@ -22,6 +22,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include <glibmm/i18n.h>
+
 std::optional<pid_t> EzAutoClicker::Process::get_ppid_of_process(pid_t pid) {
 	std::filesystem::path path = "/proc/" + std::to_string(pid) + "/stat";
 	auto file = std::ifstream(path);
@@ -154,30 +156,30 @@ void EzAutoClicker::Process::drop_root_privileges() {
 	uid_t running_user_id = get_running_user_id();
 	const bool found_running_user = running_user_id != 0;
 	if (!found_running_user)
-		throw std::runtime_error("Couldn't find suitable user to drop privileges to. Try running the program with SUDO_UID=$(id -u).");
+		throw std::runtime_error(_("Couldn't find suitable user to drop privileges to. Try running the program with SUDO_UID=$(id -u)."));
 
 	const passwd *pw = getpwuid(running_user_id);
 	if (!pw)
-		throw std::runtime_error("Failed to find user with the uid " + std::to_string(running_user_id) + ".");
+		throw std::runtime_error(_("Failed to find user with the uid ") + std::to_string(running_user_id) + ".");
 
 	const bool set_initgroups_failed = initgroups(pw->pw_name, pw->pw_gid) != 0;
 	if (set_initgroups_failed)
-		throw std::runtime_error("Failed to remove supplementary groups.");
+		throw std::runtime_error(_("Failed to remove supplementary groups."));
 
 	const bool setresgid_failed = setresgid(pw->pw_gid, pw->pw_gid, pw->pw_gid) != 0;
 	if (setresgid_failed)
-		throw std::runtime_error("Failed to set gid.");
+		throw std::runtime_error(_("Failed to set gid."));
 
 	const bool setresuid_failed = setresuid(pw->pw_uid, pw->pw_uid, pw->pw_uid) != 0;
 	if (setresuid_failed)
-		throw std::runtime_error("Failed to set uid.");
+		throw std::runtime_error(_("Failed to set uid."));
 
 	const bool privileges_escalated = setuid(0) != -1 || setgid(0) != -1;
 	if (privileges_escalated)
-		throw std::runtime_error("Was able to regain root.");
+		throw std::runtime_error(_("Was able to regain root."));
 
 	const bool uid_gid_mismatch = getuid() != pw->pw_uid || geteuid() != pw->pw_uid ||
 		getgid() != pw->pw_gid || getegid() != pw->pw_gid;
 	if (uid_gid_mismatch)
-		throw std::runtime_error("uid/gid mismatch after privilege drop");
+		throw std::runtime_error(_("uid/gid mismatch after privilege drop"));
 }

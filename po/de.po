@@ -1,0 +1,150 @@
+# German translation file for EzAutoClicker
+# Copyright (C) 2026 Stronkkey
+# This file is distributed under the same license as the EzAutoClicker package.
+# Stronkkey <notatgamingg@protonmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: EzAutoClicker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-17 19:53+0100\n"
+"PO-Revision-Date: 2026-11-17 19:56+0100\n"
+"Last-Translator: Stronkkey <notatgamingg@protonmail.com>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/main_window.ui:21
+msgid "Start"
+msgstr "Starten"
+
+#: data/main_window.ui:32
+msgid "Stop"
+msgstr "Stoppen"
+
+#: data/main_window.ui:41
+msgid "Click interval"
+msgstr "Klick Abstand"
+
+#: data/main_window.ui:59
+msgid "hours"
+msgstr "Stunde(n)"
+
+#: data/main_window.ui:106
+msgid "seconds"
+msgstr "Sekunde(n)"
+
+#: data/main_window.ui:135
+msgid "minutes"
+msgstr "Minute(n)"
+
+#: data/main_window.ui:162
+msgid "milliseconds"
+msgstr "Millisekunde(n)"
+
+#: data/main_window.ui:179
+msgid "Click options"
+msgstr "Klick Optionen"
+
+#: data/main_window.ui:190
+msgid "Mouse button:"
+msgstr "Maustaste:"
+
+#: data/main_window.ui:216
+msgid "Click type:"
+msgstr "Klicktyp:"
+
+#: data/main_window.ui:245
+msgid "Cursor position"
+msgstr "Klick position"
+
+#: data/main_window.ui:272
+msgid "Current location"
+msgstr "Jetziger Standort"
+
+#: data/main_window.ui:283
+msgid "X"
+msgstr "X"
+
+#: data/main_window.ui:316
+msgid "Use position"
+msgstr "Verwende position"
+
+#: data/main_window.ui:325
+msgid "Y"
+msgstr "Y"
+
+#: data/main_window.ui:355
+msgid "Click repeat"
+msgstr "Klick Wiederholung"
+
+#: data/main_window.ui:383
+msgid "Repeat until stopped"
+msgstr "Widerholen, bis gestoppt wird"
+
+#: data/main_window.ui:404
+msgid "Repeat"
+msgstr "Klick Wiederholung"
+
+#: data/main_window.ui:422
+msgid "times"
+msgstr "mal"
+
+#: src/main.cpp:53
+#, c-format
+msgid ""
+"%s this program cannot be ran as root. Use the --allow-root option to launch "
+"as root user anyways. exiting.\n"
+msgstr ""
+"%s Dieses Programm kann nicht als root-Nutzer ausgeführt werden. Verwende "
+"die --allow-root Flagge um trotzdem als root-Nutzer zu starten. Programm "
+"wird beendet.\n"
+
+#: src/main.cpp:93
+#, c-format
+msgid "%s this program cannot be ran as root. exiting.\n"
+msgstr ""
+"%s Dieses Programm kann nicht als root-Nutzer ausgeführt werden. Programm "
+"wird beendet.\n"
+
+#: src/process.cpp:159
+msgid ""
+"Couldn't find suitable user to drop privileges to. Try running the program "
+"with SUDO_UID=$(id -u)."
+msgstr ""
+"Konnte kein passenden Nutzer finden. Versuche das Programm mit SUDO_UID=$(id "
+"-u) zu laufen."
+
+#: src/process.cpp:163
+msgid "Failed to find user with the uid "
+msgstr "Nutzer mit folgender uid nicht gefunden: "
+
+#: src/process.cpp:167
+msgid "Failed to remove supplementary groups."
+msgstr "Zusätzliche Gruppen konnten nicht entfernt werden."
+
+#: src/process.cpp:171
+msgid "Failed to set gid."
+msgstr "Gid konnte nicht gesetzt werden."
+
+#: src/process.cpp:175
+msgid "Failed to set uid."
+msgstr "Uid konnte nicht gesetzt werden."
+
+#: src/process.cpp:179
+msgid "Was able to regain root."
+msgstr "Root-rechte konnten wieder hergestellt werden."
+
+#: src/process.cpp:184
+msgid "uid/gid mismatch after privilege drop"
+msgstr "uid/gid sind nicht gleich"
+
+#: src/window.cpp:287
+msgid "Press a key..."
+msgstr "Drücke eine Taste..."
+
+#~ msgid "test"
+#~ msgstr "lolol"

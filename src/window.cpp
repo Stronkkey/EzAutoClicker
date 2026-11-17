@@ -16,6 +16,8 @@
 
 #include <linux/input-event-codes.h>
 
+#include <glibmm/i18n.h>
+
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	clicker = nullptr;
 	hotkey_listener = nullptr;
@@ -282,7 +284,7 @@ void EzAutoClicker::MainWindow::set_sending_inputs(bool p_sending_inputs) {
 void EzAutoClicker::MainWindow::set_capturing_keypresses(bool p_capturing_key_presses) {
 	capturing_key_presses = p_capturing_key_presses;
 	if (p_capturing_key_presses)
-		hotkey_button->set_label("Press a key...");
+		hotkey_button->set_label(_("Press a key..."));
 	else
 		hotkey_button->set_label(hotkey_name);
 }

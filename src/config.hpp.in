@@ -22,6 +22,8 @@ constexpr const char *APP_ID = "@app_id@";
 constexpr const char *APP_NAME = "@app_name@";
 constexpr const char *APP_VERSION = "@app_version@";
 
+constexpr const char *LOCALEDIR = "@localedir@";
+
 constexpr const char *ERROR_MESSAGE_TEMPLATE = "@app_name@: error:";
 
 #if EZAUTOCLICKER_X11_INPUT_ENABLED

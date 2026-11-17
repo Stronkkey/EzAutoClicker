@@ -9,6 +9,8 @@ project(
     ],
 )
 
+subdir('po')
+
 app_name = meson.project_name()
 app_id = 'io.github.Stronkkey.' + app_name
 app_desktop_file = files('data' / app_id + '.desktop')
@@ -17,6 +19,7 @@ config_hpp = configuration_data()
 config_hpp.set('app_name', app_name)
 config_hpp.set('app_id', app_id)
 config_hpp.set('app_version', meson.project_version())
+config_hpp.set('localedir', get_option('prefix') / get_option('localedir'))
 
 configure_file(
   input : 'src/config.hpp.in',

@@ -18,7 +18,7 @@
               <object class="GtkButton" id="start_button">
                 <property name="can-shrink">True</property>
                 <property name="hexpand">True</property>
-                <property name="label">Start</property>
+                <property name="label" translatable="yes">Start</property>
                 <property name="margin-end">4</property>
               </object>
             </child>
@@ -29,7 +29,7 @@
               <object class="GtkButton" id="stop_button">
                 <property name="can-shrink">True</property>
                 <property name="hexpand">True</property>
-                <property name="label">Stop</property>
+                <property name="label" translatable="yes">Stop</property>
                 <property name="margin-start">4</property>
                 <property name="sensitive">False</property>
               </object>
@@ -38,7 +38,7 @@
         </child>
         <child>
           <object class="GtkFrame">
-            <property name="label">Click interval</property>
+            <property name="label" translatable="yes">Click interval</property>
             <property name="vexpand">True</property>
             <child>
               <object class="GtkAspectFrame">
@@ -56,7 +56,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="halign">start</property>
-                        <property name="label">hours</property>
+                        <property name="label" translatable="yes">hours</property>
                         <property name="margin-end">16</property>
                         <layout>
                           <property name="column">1</property>
@@ -103,7 +103,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="halign">start</property>
-                        <property name="label">seconds</property>
+                        <property name="label" translatable="yes">seconds</property>
                         <property name="margin-end">16</property>
                         <layout>
                           <property name="column">1</property>
@@ -132,7 +132,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="halign">start</property>
-                        <property name="label">minutes</property>
+                        <property name="label" translatable="yes">minutes</property>
                         <layout>
                           <property name="column">3</property>
                           <property name="row">0</property>
@@ -159,7 +159,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="halign">start</property>
-                        <property name="label">milliseconds</property>
+                        <property name="label" translatable="yes">milliseconds</property>
                         <property name="margin-end">4</property>
                         <layout>
                           <property name="column">3</property>
@@ -176,7 +176,7 @@
         <child>
           <object class="GtkFrame">
             <property name="focus-on-click">False</property>
-            <property name="label">Click options</property>
+            <property name="label" translatable="yes">Click options</property>
             <property name="vexpand">True</property>
             <child>
               <object class="GtkAspectFrame">
@@ -187,7 +187,7 @@
                     <property name="spacing">8</property>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">Mouse button:</property>
+                        <property name="label" translatable="yes">Mouse button:</property>
                       </object>
                     </child>
                     <child>
@@ -198,7 +198,7 @@
 Middle
 Right</property>
                             <items>
-                              <item/>
+                              <item>dada</item>
                             </items>
                           </object>
                         </property>
@@ -213,7 +213,7 @@ Right</property>
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">Click type:</property>
+                        <property name="label" translatable="yes">Click type:</property>
                       </object>
                     </child>
                     <child>
@@ -242,7 +242,7 @@ Double</property>
             <property name="vexpand">True</property>
             <child>
               <object class="GtkFrame">
-                <property name="label">Cursor position</property>
+                <property name="label" translatable="yes">Cursor position</property>
                 <property name="margin-end">4</property>
                 <child>
                   <object class="GtkAspectFrame">
@@ -269,7 +269,7 @@ Double</property>
                         </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label">Current location</property>
+                            <property name="label" translatable="yes">Current location</property>
                             <property name="margin-end">8</property>
                             <layout>
                               <property name="column">1</property>
@@ -280,7 +280,7 @@ Double</property>
                         <child>
                           <object class="GtkLabel">
                             <property name="halign">end</property>
-                            <property name="label">X</property>
+                            <property name="label" translatable="yes">X</property>
                             <layout>
                               <property name="column">2</property>
                               <property name="row">0</property>
@@ -313,7 +313,7 @@ Double</property>
                         <child>
                           <object class="GtkLabel">
                             <property name="halign">start</property>
-                            <property name="label">Use position</property>
+                            <property name="label" translatable="yes">Use position</property>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">1</property>
@@ -322,7 +322,7 @@ Double</property>
                         </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label">Y</property>
+                            <property name="label" translatable="yes">Y</property>
                             <layout>
                               <property name="column">2</property>
                               <property name="row">1</property>
@@ -352,7 +352,7 @@ Double</property>
             </child>
             <child>
               <object class="GtkFrame">
-                <property name="label">Click repeat</property>
+                <property name="label" translatable="yes">Click repeat</property>
                 <property name="margin-start">4</property>
                 <child>
                   <object class="GtkAspectFrame">
@@ -380,7 +380,7 @@ Double</property>
                         <child>
                           <object class="GtkLabel">
                             <property name="halign">start</property>
-                            <property name="label">Repeat until stopped</property>
+                            <property name="label" translatable="yes">Repeat until stopped</property>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">0</property>
@@ -401,7 +401,7 @@ Double</property>
                             <child>
                               <object class="GtkLabel">
                                 <property name="halign">start</property>
-                                <property name="label">Repeat</property>
+                                <property name="label" translatable="yes">Repeat</property>
                               </object>
                             </child>
                             <child>
@@ -419,7 +419,7 @@ Double</property>
                             </child>
                             <child>
                               <object class="GtkLabel">
-                                <property name="label">times</property>
+                                <property name="label" translatable="yes">times</property>
                               </object>
                             </child>
                             <layout>

@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/main_window.ui
+src/app.cpp
+src/app_cli_constants.hpp
+src/main.cpp
+src/process.cpp
+src/window.cpp

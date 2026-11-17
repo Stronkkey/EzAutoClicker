@@ -27,7 +27,13 @@
 
 #endif
 
+#include <glibmm/i18n.h>
+
 int main(int argc, char *argv[]) {
+	bindtextdomain(EzAutoClicker::Constants::APP_NAME, EzAutoClicker::Constants::LOCALEDIR);
+	bind_textdomain_codeset(EzAutoClicker::Constants::APP_NAME, "UTF-8");
+	textdomain(EzAutoClicker::Constants::APP_NAME);
+
 	std::unique_ptr<EzAutoClicker::Input::Clicker> clicker = nullptr;
 	std::unique_ptr<EzAutoClicker::Input::HotkeyListener> hotkey_listener = nullptr;
 
@@ -43,7 +49,8 @@ int main(int argc, char *argv[]) {
 	if (EzAutoClicker::Process::is_running_as_root()) {
 		#if EZAUTOCLICKER_ALLOW_RUNNING_AS_ROOT
 		if (!allow_root) {
-			g_printerr("%s this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.\n", EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE);
+			std::locale::global(std::locale(""));
+			g_printerr(_("%s this program cannot be ran as root. Use the --allow-root option to launch as root user anyways. exiting.\n"), EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE);
 			return EXIT_FAILURE;
 		}
 		
@@ -83,7 +90,8 @@ int main(int argc, char *argv[]) {
 
 		EzAutoClicker::Process::drop_root_privileges();
 		#else
-		g_printerr("%s this program cannot be ran as root. exiting.\n", EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE);
+		std::locale::global(std::locale(""));
+		g_printerr(_("%s this program cannot be ran as root. exiting.\n"), EzAutoClicker::Constants::ERROR_MESSAGE_TEMPLATE);
 		return EXIT_FAILURE;
 		#endif
 	}
