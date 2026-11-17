@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-17 20:45+0100\n"
-"PO-Revision-Date: 2026-11-17 20:47+0100\n"
+"PO-Revision-Date: 2026-11-17 20:57+0100\n"
 "Last-Translator: Stronkkey <notatgamingg@protonmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 51.0\n"
 
 #: data/main_window.ui:21
 msgid "Start"
@@ -83,7 +84,7 @@ msgstr "Klick position"
 
 #: data/main_window.ui:270
 msgid "Current location"
-msgstr "Jetziger Standort"
+msgstr "Bestehende Mausposition"
 
 #: data/main_window.ui:281
 msgid "X"
@@ -91,7 +92,7 @@ msgstr "X"
 
 #: data/main_window.ui:314
 msgid "Use position"
-msgstr "Verwende position"
+msgstr "Verwende Position"
 
 #: data/main_window.ui:323
 msgid "Y"
@@ -103,11 +104,11 @@ msgstr "Klick Wiederholung"
 
 #: data/main_window.ui:381
 msgid "Repeat until stopped"
-msgstr "Widerholen, bis gestoppt wird"
+msgstr "Widerhole, bis gestoppt wird"
 
 #: data/main_window.ui:402
 msgid "Repeat"
-msgstr "Klick Wiederholung"
+msgstr "Wiederhole"
 
 #: data/main_window.ui:420
 msgid "times"
@@ -161,7 +162,7 @@ msgstr "STUNDEN"
 
 #: src/app_cli_constants.hpp:54
 msgid "Mouse button which is clicked."
-msgstr "Maustaste die gedrückt wird."
+msgstr "Maustaste, die gedrückt wird."
 
 #: src/app_cli_constants.hpp:59
 msgid ""
@@ -173,15 +174,15 @@ msgstr ""
 
 #: src/app_cli_constants.hpp:64
 msgid "Send clicks at the current mouse position."
-msgstr "Klickt bei der bestehenden Maus Position."
+msgstr "Klickt bei der bestehenden Mausposition."
 
 #: src/app_cli_constants.hpp:68
 msgid ""
 "Send clicks at given screen position. Overrides the use-current-location "
 "option."
 msgstr ""
-"Klickt bei einer gegebenen Bildschirm Position. Hat Vorrang zur use-current-"
-"location Flagge."
+"Klickt bei einer angegebenen Bildschirm Position. Hat Vorrang zur use-"
+"current-location Flagge."
 
 #: src/app_cli_constants.hpp:69
 msgid "X,Y"
@@ -192,30 +193,30 @@ msgid ""
 "Sets Clicker to only stop when manually stopped. Overrides repeat-count "
 "argument."
 msgstr ""
-"Klicker stoppt nur, wenn es manuell gestoppt wird. Hat Vorrang zur repeat-"
+"Klicker stoppt nur, wenn er manuell gestoppt wird. Hat Vorrang zur repeat-"
 "count Flagge."
 
 #: src/app_cli_constants.hpp:77
 msgid "Amount of times to repeat before automatically stopping clicker."
 msgstr ""
-"Wie viele Klicks der Klicker schickt bevor der Klicker automatisch gestoppt "
-"wird."
+"Wie viele Klicks der Klicker schickt, bevor er automatisch gestoppt wird."
 
 #: src/app_cli_constants.hpp:78
 msgid "REPEAT_COUNT"
-msgstr "WIEDERHOL_ZAHL"
+msgstr "WIEDERHOL_ANZAHL"
 
 #: src/app_cli_constants.hpp:82
 msgid "The clicker backend used to send clicks."
-msgstr "Der Backend der für den Klicker verwendet wird."
+msgstr "Der Backend, der für den Klicker verwendet wird."
 
 #: src/app_cli_constants.hpp:100
 msgid "The hotkey listener backend used to listen for the hotkey."
-msgstr "Der Backend der für das lesen der Tastenkombination verwendet wird."
+msgstr ""
+"Der Backend, der für das erfassen der Tastenkombination verwendet wird."
 
 #: src/app_cli_constants.hpp:110
 msgid "Allows running the program as root."
-msgstr "Erlaubt das Programm als root-Nutzer zu laufen."
+msgstr "Erlaubt das Programm mit root-Rechten zu laufen."
 
 #: src/main.cpp:53
 #, c-format
@@ -223,8 +224,8 @@ msgid ""
 "%s this program cannot be ran as root. Use the --allow-root option to launch "
 "as root user anyways. exiting.\n"
 msgstr ""
-"%s Dieses Programm kann nicht als root-Nutzer ausgeführt werden. Verwende "
-"die --allow-root Flagge um trotzdem als root-Nutzer zu starten. Programm "
+"%s Dieses Programm kann nicht mit root-Rechten ausgeführt werden. Verwende "
+"die --allow-root Flagge um trotzdem mit root-Rechten zu starten. Programm "
 "wird beendet.\n"
 
 #: src/main.cpp:94
@@ -239,8 +240,8 @@ msgid ""
 "Couldn't find suitable user to drop privileges to. Try running the program "
 "with SUDO_UID=$(id -u)."
 msgstr ""
-"Konnte kein passenden Nutzer finden. Versuche das Programm mit SUDO_UID=$(id "
-"-u) zu laufen."
+"Konnte kein passenden nicht-root Nutzer finden. Versuche das Programm mit "
+"SUDO_UID=$(id -u) zu laufen."
 
 #: src/process.cpp:163
 msgid "Failed to find user with the uid "
@@ -260,11 +261,13 @@ msgstr "Uid konnte nicht gesetzt werden."
 
 #: src/process.cpp:179
 msgid "Was able to regain root."
-msgstr "Root-rechte konnten wieder hergestellt werden."
+msgstr ""
+"Root-rechte konnten trotz Entfernung der root-Rechte wieder hergestellt "
+"werden."
 
 #: src/process.cpp:184
 msgid "uid/gid mismatch after privilege drop"
-msgstr "uid/gid sind nicht gleich"
+msgstr "uid/gid sind nicht gleich nach der Entfernung von root-Rechten"
 
 #: src/window.cpp:287
 msgid "Press a key..."
