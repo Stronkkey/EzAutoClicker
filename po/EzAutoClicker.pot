@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:53+0100\n"
+"POT-Creation-Date: 2026-11-17 20:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,6 +93,100 @@ msgstr ""
 msgid "times"
 msgstr ""
 
+#: src/app_cli_constants.hpp:23
+msgid "EzAutoClicker - automate mouse clicks at fixed intervals."
+msgstr ""
+
+#: src/app_cli_constants.hpp:24
+msgid "Press the configured hotkey (default F5) to start or stop clicking."
+msgstr ""
+
+#: src/app_cli_constants.hpp:30
+msgid "Start or stop the autoclicker in a running instance."
+msgstr ""
+
+#: src/app_cli_constants.hpp:34
+msgid "Click interval in milliseconds."
+msgstr ""
+
+#: src/app_cli_constants.hpp:35
+msgid "MILLISECONDS"
+msgstr ""
+
+#: src/app_cli_constants.hpp:39
+msgid "Click interval in seconds."
+msgstr ""
+
+#: src/app_cli_constants.hpp:40
+msgid "SECONDS"
+msgstr ""
+
+#: src/app_cli_constants.hpp:44
+msgid "Click interval in minutes."
+msgstr ""
+
+#: src/app_cli_constants.hpp:45
+msgid "MINUTES"
+msgstr ""
+
+#: src/app_cli_constants.hpp:49
+msgid "Click interval in hours."
+msgstr ""
+
+#: src/app_cli_constants.hpp:50
+msgid "HOURS"
+msgstr ""
+
+#: src/app_cli_constants.hpp:54
+msgid "Mouse button which is clicked."
+msgstr ""
+
+#: src/app_cli_constants.hpp:59
+msgid ""
+"Single (default) sends only one click. Double sends two clicks at the same "
+"times."
+msgstr ""
+
+#: src/app_cli_constants.hpp:64
+msgid "Send clicks at the current mouse position."
+msgstr ""
+
+#: src/app_cli_constants.hpp:68
+msgid ""
+"Send clicks at given screen position. Overrides the use-current-location "
+"option."
+msgstr ""
+
+#: src/app_cli_constants.hpp:69
+msgid "X,Y"
+msgstr ""
+
+#: src/app_cli_constants.hpp:73
+msgid ""
+"Sets Clicker to only stop when manually stopped. Overrides repeat-count "
+"argument."
+msgstr ""
+
+#: src/app_cli_constants.hpp:77
+msgid "Amount of times to repeat before automatically stopping clicker."
+msgstr ""
+
+#: src/app_cli_constants.hpp:78
+msgid "REPEAT_COUNT"
+msgstr ""
+
+#: src/app_cli_constants.hpp:82
+msgid "The clicker backend used to send clicks."
+msgstr ""
+
+#: src/app_cli_constants.hpp:100
+msgid "The hotkey listener backend used to listen for the hotkey."
+msgstr ""
+
+#: src/app_cli_constants.hpp:110
+msgid "Allows running the program as root."
+msgstr ""
+
 #: src/main.cpp:53
 #, c-format
 msgid ""
@@ -100,7 +194,7 @@ msgid ""
 "as root user anyways. exiting.\n"
 msgstr ""
 
-#: src/main.cpp:93
+#: src/main.cpp:94
 #, c-format
 msgid "%s this program cannot be ran as root. exiting.\n"
 msgstr ""

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:53+0100\n"
-"PO-Revision-Date: 2026-11-17 19:56+0100\n"
+"POT-Creation-Date: 2026-11-17 20:24+0100\n"
+"PO-Revision-Date: 2026-11-17 20:29+0100\n"
 "Last-Translator: Stronkkey <notatgamingg@protonmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -93,6 +93,110 @@ msgstr "Klick Wiederholung"
 msgid "times"
 msgstr "mal"
 
+#: src/app_cli_constants.hpp:23
+msgid "EzAutoClicker - automate mouse clicks at fixed intervals."
+msgstr "EzAutoClicker - automiere Maus Klicks mit festen Abständen."
+
+#: src/app_cli_constants.hpp:24
+msgid "Press the configured hotkey (default F5) to start or stop clicking."
+msgstr ""
+"Drücke die konfigurierte Tastenkombination (Standardwert F5) um den Klicker "
+"zu starten/stoppen."
+
+#: src/app_cli_constants.hpp:30
+msgid "Start or stop the autoclicker in a running instance."
+msgstr "Starte/Stoppe den Klicker in einer laufenden Instanz."
+
+#: src/app_cli_constants.hpp:34
+msgid "Click interval in milliseconds."
+msgstr "Klick Abstand."
+
+#: src/app_cli_constants.hpp:35
+msgid "MILLISECONDS"
+msgstr "MILLISEKUNDEN"
+
+#: src/app_cli_constants.hpp:39
+msgid "Click interval in seconds."
+msgstr "Klick Abstand in Sekunden."
+
+#: src/app_cli_constants.hpp:40
+msgid "SECONDS"
+msgstr "SEKUNDEN"
+
+#: src/app_cli_constants.hpp:44
+msgid "Click interval in minutes."
+msgstr "Klick Abstand in Minuten."
+
+#: src/app_cli_constants.hpp:45
+msgid "MINUTES"
+msgstr "MINUTEN"
+
+#: src/app_cli_constants.hpp:49
+msgid "Click interval in hours."
+msgstr "Klick Abstand in Stunden."
+
+#: src/app_cli_constants.hpp:50
+msgid "HOURS"
+msgstr "STUNDEN"
+
+#: src/app_cli_constants.hpp:54
+msgid "Mouse button which is clicked."
+msgstr "Maustaste die gedrückt wird."
+
+#: src/app_cli_constants.hpp:59
+msgid ""
+"Single (default) sends only one click. Double sends two clicks at the same "
+"times."
+msgstr ""
+"single (Standartwert) schickt nur ein Klick. double schickt zwei Klicks "
+"gleichzeitig."
+
+#: src/app_cli_constants.hpp:64
+msgid "Send clicks at the current mouse position."
+msgstr "Klickt bei der bestehenden Maus Position."
+
+#: src/app_cli_constants.hpp:68
+msgid ""
+"Send clicks at given screen position. Overrides the use-current-location "
+"option."
+msgstr ""
+"Klickt bei einer gegebenen Bildschirm Position. Hat Vorrang zur use-current-"
+"location Flagge."
+
+#: src/app_cli_constants.hpp:69
+msgid "X,Y"
+msgstr "X,Y"
+
+#: src/app_cli_constants.hpp:73
+msgid ""
+"Sets Clicker to only stop when manually stopped. Overrides repeat-count "
+"argument."
+msgstr ""
+"Klicker stoppt nur, wenn es manuell gestoppt wird. Hat Vorrang zur repeat-"
+"count Flagge."
+
+#: src/app_cli_constants.hpp:77
+msgid "Amount of times to repeat before automatically stopping clicker."
+msgstr ""
+"Wie viele Klicks der Klicker schickt bevor der Klicker automatisch gestoppt "
+"wird."
+
+#: src/app_cli_constants.hpp:78
+msgid "REPEAT_COUNT"
+msgstr "WIEDERHOL_ZAHL"
+
+#: src/app_cli_constants.hpp:82
+msgid "The clicker backend used to send clicks."
+msgstr "Der Backend der für den Klicker verwendet wird."
+
+#: src/app_cli_constants.hpp:100
+msgid "The hotkey listener backend used to listen for the hotkey."
+msgstr "Der Backend der für das lesen der Tastenkombination verwendet wird."
+
+#: src/app_cli_constants.hpp:110
+msgid "Allows running the program as root."
+msgstr "Erlaubt das Programm als root-Nutzer zu laufen."
+
 #: src/main.cpp:53
 #, c-format
 msgid ""
@@ -103,7 +207,7 @@ msgstr ""
 "die --allow-root Flagge um trotzdem als root-Nutzer zu starten. Programm "
 "wird beendet.\n"
 
-#: src/main.cpp:93
+#: src/main.cpp:94
 #, c-format
 msgid "%s this program cannot be ran as root. exiting.\n"
 msgstr ""
@@ -145,6 +249,10 @@ msgstr "uid/gid sind nicht gleich"
 #: src/window.cpp:287
 msgid "Press a key..."
 msgstr "Drücke eine Taste..."
+
+#, fuzzy
+#~ msgid "repeat-until-stopped"
+#~ msgstr "Widerholen, bis gestoppt wird"
 
 #~ msgid "test"
 #~ msgstr "lolol"

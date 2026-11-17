@@ -27,8 +27,8 @@
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(Constants::APP_ID) {
 	set_id(Constants::APP_ID);
 	set_version(Constants::APP_VERSION);
-	set_option_context_summary(Constants::CONTEXT_SUMMARY);
-	set_option_context_description(Constants::OPTION_CONTEXT_DESCRIPTION);
+	set_option_context_summary(EZAUTOCLICKER_CONTEXT_SUMMARY);
+	set_option_context_description(EZAUTOCLICKER_OPTION_CONTEXT_DESCRIPTION);
 	add_option_entries();
 
 	// Exported action, callable from other processes
@@ -41,78 +41,78 @@ void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
 	add_main_option_entry(Gio::Application::OptionType::BOOL,
 		Constants::TOGGLE_LONG_NAME,
 		Constants::TOGGLE_SHORT_NAME,
-		Constants::TOGGLE_OPTION_DESCRIPTION);
+		EZAUTOCLICKER_TOGGLE_OPTION_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::INT,
 		Constants::INTERVAL_MS_LONG_NAME,
 		Constants::INTERVAL_MS_SHORT_NAME,
-		Constants::INTERVAL_MS_OPTION_DESCRIPTION,
-		Constants::INTERVAL_MS_ARG_DESCRIPTION);
+		EZAUTOCLICKER_INTERVAL_MS_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_INTERVAL_MS_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::INT,
 		Constants::INTERVAL_S_LONG_NAME,
 		Constants::INTERVAL_S_SHORT_NAME,
-		Constants::INTERVAL_S_OPTION_DESCRIPTION,
-		Constants::INTERVAL_S_ARG_DESCRIPTION);
+		EZAUTOCLICKER_INTERVAL_S_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_INTERVAL_S_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::INT,
 		Constants::INTERVAL_M_LONG_NAME,
 		Constants::INTERVAL_M_SHORT_NAME,
-		Constants::INTERVAL_M_OPTION_DESCRIPTION,
-		Constants::INTERVAL_M_ARG_DESCRIPTION);
+		EZAUTOCLICKER_INTERVAL_M_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_INTERVAL_M_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::INT,
 		Constants::INTERVAL_H_LONG_NAME,
 		Constants::INTERVAL_H_SHORT_NAME,
-		Constants::INTERVAL_H_OPTION_DESCRIPTION,
-		Constants::INTERVAL_H_ARG_DESCRIPTION);
+		EZAUTOCLICKER_INTERVAL_H_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_INTERVAL_H_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
 		Constants::MOUSE_BUTTON_LONG_NAME,
 		Constants::MOUSE_BUTTON_SHORT_NAME,
-		Constants::MOUSE_BUTTON_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_MOUSE_BUTTON_OPTION_DESCRIPTION,
 		Constants::MOUSE_BUTTON_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
 		Constants::CLICK_TYPE_LONG_NAME,
 		Constants::CLICK_TYPE_SHORT_NAME,
-		Constants::CLICK_TYPE_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_CLICK_TYPE_OPTION_DESCRIPTION,
 		Constants::CLICK_TYPE_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
 		Constants::PICK_LOCATION_LONG_NAME,
 		Constants::PICK_LOCATION_SHORT_NAME,
-		Constants::PICK_LOCATION_OPTION_DESCRIPTION,
-		Constants::PICK_LOCATION_ARG_DESCRIPTION);
+		EZAUTOCLICKER_PICK_LOCATION_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_PICK_LOCATION_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::BOOL,
 		Constants::REPEAT_UNTIL_STOPPED_LONG_NAME,
 		Constants::REPEAT_UNTIL_STOPPED_SHORT_NAME,
-		Constants::REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION);
+		EZAUTOCLICKER_REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::INT,
 		Constants::SET_REPEAT_COUNT_LONG_NAME,
 		Constants::SET_REPEAT_COUNT_SHORT_NAME,
-		Constants::SET_REPEAT_COUNT_OPTION_DESCRIPTION,
-		Constants::SET_REPEAT_COUNT_ARG_DESCRIPTION);
+		EZAUTOCLICKER_SET_REPEAT_COUNT_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_SET_REPEAT_COUNT_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
 		Constants::CLICKER_LONG_NAME,
 		Constants::CLICKER_SHORT_NAME,
-		Constants::CLICKER_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_CLICKER_OPTION_DESCRIPTION,
 		Constants::CLICKER_ARG_DESCRIPTION);
 
 	add_main_option_entry(Gio::Application::OptionType::STRING,
 		Constants::HOTKEY_LISTENER_LONG_NAME,
 		Constants::HOTKEY_LISTENER_SHORT_NAME,
-		Constants::HOTKEY_LISTENER_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_HOTKEY_LISTENER_OPTION_DESCRIPTION,
 		Constants::HOTKEY_LISTENER_ARG_DESCRIPTION);
 
 	// This option is not handled here, but instead in the main function.
 	add_main_option_entry(Gio::Application::OptionType::BOOL,
 		Constants::ALLOW_ROOT_LONG_NAME,
 		Constants::ALLOW_ROOT_SHORT_NAME,
-		Constants::ALLOW_ROOT_OPTION_DESCRIPTION,
+		EZAUTOCLICKER_ALLOW_ROOT_OPTION_DESCRIPTION,
 		{},
 		Glib::OptionEntry::Flags::HIDDEN);
 }
