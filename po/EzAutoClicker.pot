@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 20:24+0100\n"
+"POT-Creation-Date: 2026-11-17 20:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,43 +53,63 @@ msgstr ""
 msgid "Mouse button:"
 msgstr ""
 
-#: data/main_window.ui:216
+#: data/main_window.ui:198
+msgid "Left"
+msgstr ""
+
+#: data/main_window.ui:199
+msgid "Middle"
+msgstr ""
+
+#: data/main_window.ui:200
+msgid "Right"
+msgstr ""
+
+#: data/main_window.ui:215
 msgid "Click type:"
 msgstr ""
 
-#: data/main_window.ui:245
+#: data/main_window.ui:223
+msgid "Single"
+msgstr ""
+
+#: data/main_window.ui:224
+msgid "Double"
+msgstr ""
+
+#: data/main_window.ui:243
 msgid "Cursor position"
 msgstr ""
 
-#: data/main_window.ui:272
+#: data/main_window.ui:270
 msgid "Current location"
 msgstr ""
 
-#: data/main_window.ui:283
+#: data/main_window.ui:281
 msgid "X"
 msgstr ""
 
-#: data/main_window.ui:316
+#: data/main_window.ui:314
 msgid "Use position"
 msgstr ""
 
-#: data/main_window.ui:325
+#: data/main_window.ui:323
 msgid "Y"
 msgstr ""
 
-#: data/main_window.ui:355
+#: data/main_window.ui:353
 msgid "Click repeat"
 msgstr ""
 
-#: data/main_window.ui:383
+#: data/main_window.ui:381
 msgid "Repeat until stopped"
 msgstr ""
 
-#: data/main_window.ui:404
+#: data/main_window.ui:402
 msgid "Repeat"
 msgstr ""
 
-#: data/main_window.ui:422
+#: data/main_window.ui:420
 msgid "times"
 msgstr ""
 

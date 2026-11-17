@@ -194,11 +194,10 @@
                       <object class="GtkDropDown" id="mouse_button_dropdown">
                         <property name="model">
                           <object class="GtkStringList">
-                            <property name="strings">Left
-Middle
-Right</property>
                             <items>
-                              <item>dada</item>
+                              <item translatable="yes">Left</item>
+                              <item translatable="yes">Middle</item>
+                              <item translatable="yes">Right</item>
                             </items>
                           </object>
                         </property>
@@ -220,10 +219,9 @@ Right</property>
                       <object class="GtkDropDown" id="click_type_dropdown">
                         <property name="model">
                           <object class="GtkStringList">
-                            <property name="strings">Single
-Double</property>
                             <items>
-                              <item/>
+                              <item translatable="yes">Single</item>
+                              <item translatable="yes">Double</item>
                             </items>
                           </object>
                         </property>
