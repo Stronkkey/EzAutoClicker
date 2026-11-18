@@ -65,6 +65,18 @@ sudo pacman -S --needed --noconfirm \
   wayland
 ```
 
+##### Fedora
+
+```sh
+sudo dnf install \
+  @c-development \
+  gtkmm4.0-devel \
+  meson \
+  libevdev-devel \
+  libXtst \
+  wayland-devel
+```
+
 ### Compiling
 
 Setup the build directory and run `meson compile`.
