@@ -94,10 +94,14 @@ void EzAutoClicker::Process::set_env_from_user_env(const std::unordered_set<std:
 	if (!user_process)
 		return;
 
-	std::unordered_map<std::string, std::string> process_environ = get_environ_for_process(*user_process).value_or({});
+	std::optional<std::unordered_map<std::string, std::string>> process_environ = get_environ_for_process(*user_process);
+
+	if (!process_environ)
+		return;
+
 	for (const auto &var : env) {
-		auto it = process_environ.find(var);
-		if (it != process_environ.end())
+		auto it = process_environ->find(var);
+		if (it != process_environ->end())
 			setenv(it->first.c_str(), it->second.c_str(), 1);
 	}	
 }

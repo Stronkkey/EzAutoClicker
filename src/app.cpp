@@ -26,7 +26,11 @@
 
 EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(Constants::APP_ID) {
 	set_id(Constants::APP_ID);
+
+	#if GLIBMM_MAJOR_VERSION >= 2 && GLIBMM_MINOR_VERSION >= 80
 	set_version(Constants::APP_VERSION);
+	#endif
+
 	set_option_context_summary(EZAUTOCLICKER_CONTEXT_SUMMARY);
 	set_option_context_description(EZAUTOCLICKER_OPTION_CONTEXT_DESCRIPTION);
 	add_option_entries();

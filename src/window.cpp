@@ -137,12 +137,28 @@ void EzAutoClicker::MainWindow::connect_signals() {
 }
 
 /**
+ * @brief Checks if the modifier is equal to Gdk::ModifierType::NO_MODIFIER_MASK.
+ * @details Use this function over directly comparing (==) the modifier with
+ * Gdk::ModifierType::NO_MODIFIER_MASK as that enum was only added in gtkmm 4.14.
+ * @return true if the modifier equals to
+ * Gdk::ModifierType::NO_MODIFIER_MASK (>= gtkmm 4.14)
+ * or 0 (< gtkmm 4.14), false otherwise.
+ */
+static constexpr bool is_gdk_modifier_no_modifier(Gdk::ModifierType modifier) {
+	#if GTKMM_MAJOR_VERSION >= 4 && GTKMM_MINOR_VERSION >= 14
+	return modifier == Gdk::ModifierType::NO_MODIFIER_MASK;
+	#else
+	return static_cast<int>(modifier) == 0;
+	#endif
+}
+
+/**
  * @brief Converts a Gdk::ModifierType into a hotkey modifier.
  * @note Unsupported Modifiers will be lost after conversion.
  */
 static constexpr EzAutoClicker::Input::Hotkey::Modifier gdk_modifier_to_hotkey_modifier(Gdk::ModifierType modifier) {
 	using Modifier = EzAutoClicker::Input::Hotkey::Modifier;
-	if (modifier == Gdk::ModifierType::NO_MODIFIER_MASK)
+	if (is_gdk_modifier_no_modifier(modifier))
 		return Modifier::NONE;
 
 	Modifier mod = Modifier::NONE;
@@ -320,7 +336,7 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::Hotke
 	auto hotkey = Input::Hotkey{.key = KEY_F5,
 	                            .modifiers = Input::Hotkey::Modifier::NONE};
 	hotkey_name = Gtk::Accelerator::get_label(GDK_KEY_F5,
-	                            Gdk::ModifierType::NO_MODIFIER_MASK);
+	                            static_cast<Gdk::ModifierType>(0));
 	hotkey_button->set_label(hotkey_name);
 	hotkey_listener->register_hotkey(hotkey);
 }

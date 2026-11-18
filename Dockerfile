@@ -1,6 +1,4 @@
-# TODO: Set version 24.04.
-# Compilation fails on 24.04, even though the glibc version should be compatible?
-FROM ubuntu:26.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
