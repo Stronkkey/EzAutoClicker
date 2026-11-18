@@ -33,7 +33,7 @@ bool EzAutoClicker::Input::ClickerX11::initialize() {
 	display = XOpenDisplay(nullptr);
 	if (display) {
 		int unused;
-		if (!XTestQueryExtension(display, &unused, &unused, &unused, &unused))
+		if (XTestQueryExtension(display, &unused, &unused, &unused, &unused))
 			return true;
 
 		XCloseDisplay(display);
