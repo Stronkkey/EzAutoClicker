@@ -14,6 +14,7 @@ subdir('po')
 app_name = meson.project_name()
 app_id = 'io.github.Stronkkey.' + app_name
 app_desktop_file = files('data' / app_id + '.desktop')
+app_icon_file = files('data' / app_id + '.svg')
 
 config_hpp = configuration_data()
 config_hpp.set('app_name', app_name)
@@ -176,4 +177,5 @@ if desktop_file_validate.found()
   test('Validate desktop file', desktop_file_validate, args : app_desktop_file)
 endif
 
+install_data(app_icon_file, install_dir : get_option('datadir') / 'icons/hicolor/scalable/apps/')
 install_data(app_desktop_file, install_dir : get_option('datadir') / 'applications')
