@@ -18,12 +18,32 @@
 
 #include <glibmm/i18n.h>
 
+#include <config.hpp>
+
 EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	clicker = nullptr;
 	hotkey_listener = nullptr;
 	sending_inputs = false;
 	capturing_key_presses = false;
 	hotkey_listener_connection = {};
+
+	about_dialog = builder->get_widget<Gtk::AboutDialog>("about_dialog");
+	about_dialog->set_version(Constants::APP_VERSION);
+	about_dialog->set_program_name(Constants::APP_NAME);
+	about_dialog->signal_close_request().connect([this]{
+		about_dialog->hide();
+		return true;
+	}, false);
+
+	auto header_bar = builder->get_widget<Gtk::HeaderBar>("header_bar");
+	set_titlebar(*header_bar);
+
+	auto about_action = Gio::SimpleAction::create("about");
+	about_action->signal_activate().connect([this](const Glib::VariantBase&){
+		about_dialog->present();
+	});
+
+	add_action(about_action);
 
 	start_button = builder->get_widget<Gtk::Button>("start_button");
 	stop_button = builder->get_widget<Gtk::Button>("stop_button");

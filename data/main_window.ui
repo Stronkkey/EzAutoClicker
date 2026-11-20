@@ -2,8 +2,33 @@
 <!-- Created with Cambalache 1.2.0 -->
 <interface>
   <!-- interface-name main_window.ui -->
+  <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.18"/>
   <object class="GtkApplicationWindow" id="main_window">
+    <child>
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="use-native-controls">True</property>
+        <child type="end">
+          <object class="GtkMenuButton">
+            <property name="icon-name">xsi-open-menu-symbolic</property>
+            <property name="menu-model">settings_menu_model</property>
+            <property name="valign">center</property>
+            <child>
+              <menu id="settings_menu_model">
+                <item>
+                  <attribute name="action">app.open_settings</attribute>
+                  <attribute name="label" translatable="yes">Settings</attribute>
+                </item>
+                <item>
+                  <attribute name="action">win.about</attribute>
+                  <attribute name="label" translatable="yes">About EzAutoClicker</attribute>
+                </item>
+              </menu>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="margin-bottom">8</property>
@@ -436,5 +461,18 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAboutDialog" id="about_dialog">
+    <property name="authors">Stronkkey https://github.com/Stronkkey</property>
+    <property name="copyright">© 2026 Stronkkey</property>
+    <property name="license-type">gpl-3-0</property>
+    <property name="logo">
+      <object class="GtkSvg">
+        <property name="resource">/io/github/Stronkkey/EzAutoClicker/io.github.Stronkkey.EzAutoClicker.svg</property>
+      </object>
+    </property>
+    <property name="program-name">[App Name]</property>
+    <property name="version">[Version]</property>
+    <property name="website">https://github.com/Stronkkey/EzAutoClicker</property>
   </object>
 </interface>

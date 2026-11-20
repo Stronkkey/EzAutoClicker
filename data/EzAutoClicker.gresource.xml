@@ -3,4 +3,7 @@
   <gresource prefix="/io/github/Stronkkey/EzAutoClicker">
     <file>main_window.ui</file>
   </gresource>
+  <gresource prefix="/io/github/Stronkkey/EzAutoClicker">
+    <file>io.github.Stronkkey.EzAutoClicker.svg</file>
+  </gresource>
 </gresources>

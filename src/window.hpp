@@ -29,6 +29,8 @@ private:
 	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
 	sigc::connection hotkey_listener_connection;
 
+	Gtk::AboutDialog *about_dialog;
+
 	Gtk::Button *start_button;
 	Gtk::Button *stop_button;
 

@@ -39,6 +39,9 @@ EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(Constants
 	add_action(Constants::TOGGLE_LONG_NAME,
 		sigc::mem_fun(*this,
 		&EzAutoClickerApp::on_toggle));
+
+	auto open_about_accel = Gtk::Accelerator::get_label(GDK_KEY_F1, Gdk::ModifierType(0));
+	set_accel_for_action("win.about", open_about_accel);
 }
 
 void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
