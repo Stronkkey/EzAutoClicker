@@ -132,4 +132,4 @@ Press the configured hotkey (default F5) to start or stop clicking.
 
 ## License
 
-GPLv3. See [LICENSE](LICENSE).
+GPL v3. See [LICENSE](LICENSE).
