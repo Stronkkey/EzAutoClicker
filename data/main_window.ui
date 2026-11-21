@@ -466,7 +466,7 @@
     <property name="license-type">gpl-3-0</property>
     <property name="logo">
       <object class="GtkSvg">
-        <property name="resource">/io/github/Stronkkey/EzAutoClicker/io.github.Stronkkey.EzAutoClicker.svg</property>
+        <property name="resource">/io/github/Stronkkey/EzAutoClicker/logo.svg</property>
       </object>
     </property>
     <property name="program-name">[App Name]</property>

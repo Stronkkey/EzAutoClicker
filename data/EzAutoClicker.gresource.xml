@@ -4,6 +4,6 @@
     <file>main_window.ui</file>
   </gresource>
   <gresource prefix="/io/github/Stronkkey/EzAutoClicker">
-    <file>io.github.Stronkkey.EzAutoClicker.svg</file>
+    <file>logo.svg</file>
   </gresource>
 </gresources>
