@@ -71,3 +71,11 @@ Testing/
 .vscode
 repo
 *.cmb
+
+AppImageBuild
+AppDir
+
+# From PKGBUILD
+pkg
+ezautoclicker
+ezautoclicker*.pkg.tar.zst
