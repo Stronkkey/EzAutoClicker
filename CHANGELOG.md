@@ -16,7 +16,7 @@ Initial stable release.
 * Click with left, middle, and right mouse button
 * Single clicking and double clicking
 * Setting click position or using current mouse position
-* Setting the amount of times to click.
+* Setting the number of times to click.
 * Setting hotkey
 * Wlr, X11, and uinput clicker backends
 * X11 and evdev hotkey listener backends
