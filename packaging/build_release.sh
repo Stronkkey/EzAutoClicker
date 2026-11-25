@@ -15,5 +15,4 @@ meson setup build-release \
   -Dprefix=/usr
 meson compile -C build-release
 strip build-release/EzAutoClicker
-meson install -C build-release --strip --destdir ezautoclicker
 cd "$ORIGINAL_PWD"
