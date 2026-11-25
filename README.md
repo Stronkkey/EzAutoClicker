@@ -1,6 +1,6 @@
 # EzAutoClicker
 
-EzAutoClicker - automate mouse clicks at fixed intervals.
+Automate mouse clicks at fixed intervals.
 Works on both X11 and Wayland. Inspired by [OP Auto Clicker](https://www.opautoclicker.com/).
 
 ## Quick Start
@@ -106,7 +106,7 @@ $ EzAutoClicker --help
 Usage:
   EzAutoClicker [OPTION…]
 
-EzAutoClicker - automate mouse clicks at fixed intervals.
+Automate mouse clicks at fixed intervals.
 
 Help Options:
   -h, --help                           Show help options

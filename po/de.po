@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 20:45+0100\n"
-"PO-Revision-Date: 2026-11-17 20:57+0100\n"
+"POT-Creation-Date: 2026-11-25 18:30+0100\n"
+"PO-Revision-Date: 2026-11-25 17:56+0100\n"
 "Last-Translator: Stronkkey <notatgamingg@protonmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -18,105 +18,113 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 51.0\n"
 
-#: data/main_window.ui:21
+#: data/main_window.ui:18
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: data/main_window.ui:22
+msgid "About EzAutoClicker"
+msgstr "Über EzAutoClicker"
+
+#: data/main_window.ui:44
 msgid "Start"
 msgstr "Starten"
 
-#: data/main_window.ui:32
+#: data/main_window.ui:55
 msgid "Stop"
 msgstr "Stoppen"
 
-#: data/main_window.ui:41
+#: data/main_window.ui:64
 msgid "Click interval"
 msgstr "Klick Abstand"
 
-#: data/main_window.ui:59
+#: data/main_window.ui:82
 msgid "hours"
 msgstr "Stunde(n)"
 
-#: data/main_window.ui:106
+#: data/main_window.ui:129
 msgid "seconds"
 msgstr "Sekunde(n)"
 
-#: data/main_window.ui:135
+#: data/main_window.ui:158
 msgid "minutes"
 msgstr "Minute(n)"
 
-#: data/main_window.ui:162
+#: data/main_window.ui:185
 msgid "milliseconds"
 msgstr "Millisekunde(n)"
 
-#: data/main_window.ui:179
+#: data/main_window.ui:202
 msgid "Click options"
 msgstr "Klick Optionen"
 
-#: data/main_window.ui:190
+#: data/main_window.ui:213
 msgid "Mouse button:"
 msgstr "Maustaste:"
 
-#: data/main_window.ui:198
+#: data/main_window.ui:221
 msgid "Left"
 msgstr "Linke"
 
-#: data/main_window.ui:199
+#: data/main_window.ui:222
 msgid "Middle"
 msgstr "Mittlere"
 
-#: data/main_window.ui:200
+#: data/main_window.ui:223
 msgid "Right"
 msgstr "Rechte"
 
-#: data/main_window.ui:215
+#: data/main_window.ui:238
 msgid "Click type:"
 msgstr "Klicktyp:"
 
-#: data/main_window.ui:223
+#: data/main_window.ui:246
 msgid "Single"
 msgstr "Einfach"
 
-#: data/main_window.ui:224
+#: data/main_window.ui:247
 msgid "Double"
 msgstr "Doppelt"
 
-#: data/main_window.ui:243
+#: data/main_window.ui:266
 msgid "Cursor position"
 msgstr "Klick position"
 
-#: data/main_window.ui:270
+#: data/main_window.ui:293
 msgid "Current location"
 msgstr "Bestehende Mausposition"
 
-#: data/main_window.ui:281
+#: data/main_window.ui:304
 msgid "X"
 msgstr "X"
 
-#: data/main_window.ui:314
+#: data/main_window.ui:337
 msgid "Use position"
 msgstr "Verwende Position"
 
-#: data/main_window.ui:323
+#: data/main_window.ui:346
 msgid "Y"
 msgstr "Y"
 
-#: data/main_window.ui:353
+#: data/main_window.ui:376
 msgid "Click repeat"
 msgstr "Klick Wiederholung"
 
-#: data/main_window.ui:381
+#: data/main_window.ui:404
 msgid "Repeat until stopped"
 msgstr "Widerhole, bis gestoppt wird"
 
-#: data/main_window.ui:402
+#: data/main_window.ui:425
 msgid "Repeat"
 msgstr "Wiederhole"
 
-#: data/main_window.ui:420
+#: data/main_window.ui:443
 msgid "times"
 msgstr "mal"
 
 #: src/app_cli_constants.hpp:23
-msgid "EzAutoClicker - automate mouse clicks at fixed intervals."
-msgstr "EzAutoClicker - automiere Maus Klicks mit festen Abständen."
+msgid "Automate mouse clicks at fixed intervals."
+msgstr "Automatisiere Maus Klicks mit festen Abständen."
 
 #: src/app_cli_constants.hpp:24
 msgid "Press the configured hotkey (default F5) to start or stop clicking."
@@ -218,7 +226,7 @@ msgstr ""
 msgid "Allows running the program as root."
 msgstr "Erlaubt das Programm mit root-Rechten zu laufen."
 
-#: src/main.cpp:53
+#: src/main.cpp:54
 #, c-format
 msgid ""
 "%s this program cannot be ran as root. Use the --allow-root option to launch "
@@ -228,14 +236,14 @@ msgstr ""
 "die --allow-root Flagge um trotzdem mit root-Rechten zu starten. Programm "
 "wird beendet.\n"
 
-#: src/main.cpp:94
+#: src/main.cpp:95
 #, c-format
 msgid "%s this program cannot be ran as root. exiting.\n"
 msgstr ""
 "%s Dieses Programm kann nicht als root-Nutzer ausgeführt werden. Programm "
 "wird beendet.\n"
 
-#: src/process.cpp:159
+#: src/process.cpp:163
 msgid ""
 "Couldn't find suitable user to drop privileges to. Try running the program "
 "with SUDO_UID=$(id -u)."
@@ -243,33 +251,33 @@ msgstr ""
 "Konnte kein passenden nicht-root Nutzer finden. Versuche das Programm mit "
 "SUDO_UID=$(id -u) zu laufen."
 
-#: src/process.cpp:163
+#: src/process.cpp:167
 msgid "Failed to find user with the uid "
 msgstr "Nutzer mit folgender uid nicht gefunden: "
 
-#: src/process.cpp:167
+#: src/process.cpp:171
 msgid "Failed to remove supplementary groups."
 msgstr "Zusätzliche Gruppen konnten nicht entfernt werden."
 
-#: src/process.cpp:171
+#: src/process.cpp:175
 msgid "Failed to set gid."
 msgstr "Gid konnte nicht gesetzt werden."
 
-#: src/process.cpp:175
+#: src/process.cpp:179
 msgid "Failed to set uid."
 msgstr "Uid konnte nicht gesetzt werden."
 
-#: src/process.cpp:179
+#: src/process.cpp:183
 msgid "Was able to regain root."
 msgstr ""
 "Root-rechte konnten trotz Entfernung der root-Rechte wieder hergestellt "
 "werden."
 
-#: src/process.cpp:184
+#: src/process.cpp:188
 msgid "uid/gid mismatch after privilege drop"
 msgstr "uid/gid sind nicht gleich nach der Entfernung von root-Rechten"
 
-#: src/window.cpp:287
+#: src/window.cpp:323
 msgid "Press a key..."
 msgstr "Drücke eine Taste..."
 

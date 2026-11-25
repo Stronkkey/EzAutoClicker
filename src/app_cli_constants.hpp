@@ -20,7 +20,7 @@ namespace EzAutoClicker {
 
 namespace Constants {
 
-#define EZAUTOCLICKER_CONTEXT_SUMMARY _("EzAutoClicker - automate mouse clicks at fixed intervals.")
+#define EZAUTOCLICKER_CONTEXT_SUMMARY _("Automate mouse clicks at fixed intervals.")
 #define EZAUTOCLICKER_OPTION_CONTEXT_DESCRIPTION _("Press the configured hotkey (default F5) to start or stop clicking.")
 
 constexpr const char NO_SHORT_NAME = '\0';

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 20:45+0100\n"
+"POT-Creation-Date: 2026-11-25 18:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,104 +17,112 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/main_window.ui:21
+#: data/main_window.ui:18
+msgid "Settings"
+msgstr ""
+
+#: data/main_window.ui:22
+msgid "About EzAutoClicker"
+msgstr ""
+
+#: data/main_window.ui:44
 msgid "Start"
 msgstr ""
 
-#: data/main_window.ui:32
+#: data/main_window.ui:55
 msgid "Stop"
 msgstr ""
 
-#: data/main_window.ui:41
+#: data/main_window.ui:64
 msgid "Click interval"
 msgstr ""
 
-#: data/main_window.ui:59
+#: data/main_window.ui:82
 msgid "hours"
 msgstr ""
 
-#: data/main_window.ui:106
+#: data/main_window.ui:129
 msgid "seconds"
 msgstr ""
 
-#: data/main_window.ui:135
+#: data/main_window.ui:158
 msgid "minutes"
 msgstr ""
 
-#: data/main_window.ui:162
+#: data/main_window.ui:185
 msgid "milliseconds"
 msgstr ""
 
-#: data/main_window.ui:179
+#: data/main_window.ui:202
 msgid "Click options"
 msgstr ""
 
-#: data/main_window.ui:190
+#: data/main_window.ui:213
 msgid "Mouse button:"
 msgstr ""
 
-#: data/main_window.ui:198
+#: data/main_window.ui:221
 msgid "Left"
 msgstr ""
 
-#: data/main_window.ui:199
+#: data/main_window.ui:222
 msgid "Middle"
 msgstr ""
 
-#: data/main_window.ui:200
+#: data/main_window.ui:223
 msgid "Right"
 msgstr ""
 
-#: data/main_window.ui:215
+#: data/main_window.ui:238
 msgid "Click type:"
 msgstr ""
 
-#: data/main_window.ui:223
+#: data/main_window.ui:246
 msgid "Single"
 msgstr ""
 
-#: data/main_window.ui:224
+#: data/main_window.ui:247
 msgid "Double"
 msgstr ""
 
-#: data/main_window.ui:243
+#: data/main_window.ui:266
 msgid "Cursor position"
 msgstr ""
 
-#: data/main_window.ui:270
+#: data/main_window.ui:293
 msgid "Current location"
 msgstr ""
 
-#: data/main_window.ui:281
+#: data/main_window.ui:304
 msgid "X"
 msgstr ""
 
-#: data/main_window.ui:314
+#: data/main_window.ui:337
 msgid "Use position"
 msgstr ""
 
-#: data/main_window.ui:323
+#: data/main_window.ui:346
 msgid "Y"
 msgstr ""
 
-#: data/main_window.ui:353
+#: data/main_window.ui:376
 msgid "Click repeat"
 msgstr ""
 
-#: data/main_window.ui:381
+#: data/main_window.ui:404
 msgid "Repeat until stopped"
 msgstr ""
 
-#: data/main_window.ui:402
+#: data/main_window.ui:425
 msgid "Repeat"
 msgstr ""
 
-#: data/main_window.ui:420
+#: data/main_window.ui:443
 msgid "times"
 msgstr ""
 
 #: src/app_cli_constants.hpp:23
-msgid "EzAutoClicker - automate mouse clicks at fixed intervals."
+msgid "Automate mouse clicks at fixed intervals."
 msgstr ""
 
 #: src/app_cli_constants.hpp:24
@@ -207,48 +215,48 @@ msgstr ""
 msgid "Allows running the program as root."
 msgstr ""
 
-#: src/main.cpp:53
+#: src/main.cpp:54
 #, c-format
 msgid ""
 "%s this program cannot be ran as root. Use the --allow-root option to launch "
 "as root user anyways. exiting.\n"
 msgstr ""
 
-#: src/main.cpp:94
+#: src/main.cpp:95
 #, c-format
 msgid "%s this program cannot be ran as root. exiting.\n"
 msgstr ""
 
-#: src/process.cpp:159
+#: src/process.cpp:163
 msgid ""
 "Couldn't find suitable user to drop privileges to. Try running the program "
 "with SUDO_UID=$(id -u)."
 msgstr ""
 
-#: src/process.cpp:163
+#: src/process.cpp:167
 msgid "Failed to find user with the uid "
 msgstr ""
 
-#: src/process.cpp:167
+#: src/process.cpp:171
 msgid "Failed to remove supplementary groups."
 msgstr ""
 
-#: src/process.cpp:171
+#: src/process.cpp:175
 msgid "Failed to set gid."
 msgstr ""
 
-#: src/process.cpp:175
+#: src/process.cpp:179
 msgid "Failed to set uid."
 msgstr ""
 
-#: src/process.cpp:179
+#: src/process.cpp:183
 msgid "Was able to regain root."
 msgstr ""
 
-#: src/process.cpp:184
+#: src/process.cpp:188
 msgid "uid/gid mismatch after privilege drop"
 msgstr ""
 
-#: src/window.cpp:287
+#: src/window.cpp:323
 msgid "Press a key..."
 msgstr ""
