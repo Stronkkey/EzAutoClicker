@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-25 18:30+0100\n"
-"PO-Revision-Date: 2026-11-25 17:56+0100\n"
+"PO-Revision-Date: 2026-11-25 18:46+0100\n"
 "Last-Translator: Stronkkey <notatgamingg@protonmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -36,7 +36,7 @@ msgstr "Stoppen"
 
 #: data/main_window.ui:64
 msgid "Click interval"
-msgstr "Klick Abstand"
+msgstr "Klickabstand"
 
 #: data/main_window.ui:82
 msgid "hours"
@@ -56,7 +56,7 @@ msgstr "Millisekunde(n)"
 
 #: data/main_window.ui:202
 msgid "Click options"
-msgstr "Klick Optionen"
+msgstr "Klickoptionen"
 
 #: data/main_window.ui:213
 msgid "Mouse button:"
@@ -88,7 +88,7 @@ msgstr "Doppelt"
 
 #: data/main_window.ui:266
 msgid "Cursor position"
-msgstr "Klick position"
+msgstr "Klickposition"
 
 #: data/main_window.ui:293
 msgid "Current location"
@@ -100,7 +100,7 @@ msgstr "X"
 
 #: data/main_window.ui:337
 msgid "Use position"
-msgstr "Verwende Position"
+msgstr "Verwende Koordinaten"
 
 #: data/main_window.ui:346
 msgid "Y"
@@ -108,11 +108,11 @@ msgstr "Y"
 
 #: data/main_window.ui:376
 msgid "Click repeat"
-msgstr "Klick Wiederholung"
+msgstr "Klickwiederholung"
 
 #: data/main_window.ui:404
 msgid "Repeat until stopped"
-msgstr "Widerhole, bis gestoppt wird"
+msgstr "Wiederhole, bis gestoppt wird"
 
 #: data/main_window.ui:425
 msgid "Repeat"
@@ -124,7 +124,7 @@ msgstr "mal"
 
 #: src/app_cli_constants.hpp:23
 msgid "Automate mouse clicks at fixed intervals."
-msgstr "Automatisiere Maus Klicks mit festen Abständen."
+msgstr "Automatisiere Mausklicks mit festen Abständen."
 
 #: src/app_cli_constants.hpp:24
 msgid "Press the configured hotkey (default F5) to start or stop clicking."
@@ -138,7 +138,7 @@ msgstr "Starte/Stoppe den Klicker in einer laufenden Instanz."
 
 #: src/app_cli_constants.hpp:34
 msgid "Click interval in milliseconds."
-msgstr "Klick Abstand."
+msgstr "Klickabstand in Millisekunden."
 
 #: src/app_cli_constants.hpp:35
 msgid "MILLISECONDS"
@@ -146,7 +146,7 @@ msgstr "MILLISEKUNDEN"
 
 #: src/app_cli_constants.hpp:39
 msgid "Click interval in seconds."
-msgstr "Klick Abstand in Sekunden."
+msgstr "Klickabstand in Sekunden."
 
 #: src/app_cli_constants.hpp:40
 msgid "SECONDS"
@@ -162,7 +162,7 @@ msgstr "MINUTEN"
 
 #: src/app_cli_constants.hpp:49
 msgid "Click interval in hours."
-msgstr "Klick Abstand in Stunden."
+msgstr "Klickabstand in Stunden."
 
 #: src/app_cli_constants.hpp:50
 msgid "HOURS"
@@ -189,7 +189,7 @@ msgid ""
 "Send clicks at given screen position. Overrides the use-current-location "
 "option."
 msgstr ""
-"Klickt bei einer angegebenen Bildschirm Position. Hat Vorrang zur use-"
+"Klickt bei einer angegebenen Bildschirm Koordinate. Hat Vorrang zur use-"
 "current-location Flagge."
 
 #: src/app_cli_constants.hpp:69
@@ -211,7 +211,7 @@ msgstr ""
 
 #: src/app_cli_constants.hpp:78
 msgid "REPEAT_COUNT"
-msgstr "WIEDERHOL_ANZAHL"
+msgstr "WIEDERHOLUNGS_ANZAHL"
 
 #: src/app_cli_constants.hpp:82
 msgid "The clicker backend used to send clicks."
@@ -248,7 +248,7 @@ msgid ""
 "Couldn't find suitable user to drop privileges to. Try running the program "
 "with SUDO_UID=$(id -u)."
 msgstr ""
-"Konnte kein passenden nicht-root Nutzer finden. Versuche das Programm mit "
+"Konnte kein passenden nicht-root-Nutzer finden. Versuche das Programm mit "
 "SUDO_UID=$(id -u) zu laufen."
 
 #: src/process.cpp:167
@@ -270,7 +270,7 @@ msgstr "Uid konnte nicht gesetzt werden."
 #: src/process.cpp:183
 msgid "Was able to regain root."
 msgstr ""
-"Root-rechte konnten trotz Entfernung der root-Rechte wieder hergestellt "
+"Root-rechte konnten trotz Entfernung von root-Rechten wieder hergestellt "
 "werden."
 
 #: src/process.cpp:188
