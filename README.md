@@ -87,10 +87,10 @@ meson compile -C build
 ```
 
 Building with [docker](https://www.docker.com/) is also possible.
-Run `build_release.sh` to build with docker.
+Run `build_docker.sh` to build with docker.
 
 ```sh
-./build_release.sh
+./build_docker.sh
 ```
 
 You can also install EzAutoClicker system-wide.
