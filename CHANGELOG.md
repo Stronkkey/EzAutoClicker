@@ -4,7 +4,7 @@ All notable changes to this project are documented here.
 
 ## [1.0]
 
-Release date: todo
+Release date: 25-11-2026
 
 Initial stable release.
 
