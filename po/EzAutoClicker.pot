@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EzAutoClicker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 18:30+0100\n"
+"POT-Creation-Date: 2026-11-27 23:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,14 +215,14 @@ msgstr ""
 msgid "Allows running the program as root."
 msgstr ""
 
-#: src/main.cpp:54
+#: src/main.cpp:53
 #, c-format
 msgid ""
 "%s this program cannot be ran as root. Use the --allow-root option to launch "
 "as root user anyways. exiting.\n"
 msgstr ""
 
-#: src/main.cpp:95
+#: src/main.cpp:94
 #, c-format
 msgid "%s this program cannot be ran as root. exiting.\n"
 msgstr ""
@@ -257,6 +257,6 @@ msgstr ""
 msgid "uid/gid mismatch after privilege drop"
 msgstr ""
 
-#: src/window.cpp:323
+#: src/window.cpp:354
 msgid "Press a key..."
 msgstr ""

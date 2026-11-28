@@ -14,27 +14,28 @@
  */
 #pragma once
 
-#include <gtkmm.h>
+#include <gtk/gtk.h>
 
-#include <src/window.hpp>
 #include <src/input/hotkey_listener.hpp>
 #include <src/input/clicker.hpp>
+#include <src/window.hpp>
 
 namespace EzAutoClicker {
 
-class EzAutoClickerApp : public Gtk::Application {
+class EzAutoClickerApp {
 private:
 	void add_option_entries();
-	int on_handle_local_options(const Glib::RefPtr<Glib::VariantDict> &options) override;
+	static gint on_handle_local_options(GApplication*, GVariantDict *options, gpointer data);
 
 	void handle_toggle_option();
-	void handle_mouse_button_option(const Glib::ustring &value);
-	void handle_click_type_option(const Glib::ustring &value);
-	void handle_pick_location_option(const Glib::ustring &value);
-	void handle_clicker_option(const Glib::ustring &value);
-	void handle_hotkey_listener_option(const Glib::ustring &value);
-	void on_toggle();
+	void handle_mouse_button_option(const std::string &value);
+	void handle_click_type_option(const std::string &value);
+	void handle_pick_location_option(const std::string &value);
+	void handle_clicker_option(const std::string &value);
+	void handle_hotkey_listener_option(const std::string &value);
+	static void on_toggle(GSimpleAction*, GVariant*, gpointer data);
 
+	GtkApplication *application;
 	MainWindow *main_window;
 	std::unique_ptr<Input::Clicker> clicker;
 	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
@@ -61,14 +62,14 @@ private:
 	} cli_options;
 
 	void set_cli_options_on_main_window();
-protected:
-	EzAutoClickerApp();
-
-	void on_activate() override;
+	static void on_activate(GtkApplication*, gpointer user_data);
 public:
-	static Glib::RefPtr<EzAutoClickerApp> create(
-		std::unique_ptr<Input::Clicker> clicker = nullptr,
-		std::unique_ptr<Input::HotkeyListener> hotkey_listener = nullptr);
+	EzAutoClickerApp();
+	~EzAutoClickerApp();
+	int run(int argc, char *argv[]);
+
+	void set_clicker(std::unique_ptr<Input::Clicker> &&p_clicker);
+	void set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener);
 };
 
 }

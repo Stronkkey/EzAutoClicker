@@ -19,8 +19,7 @@
 #include <mutex>
 #include <thread>
 
-#include <glibmm/dispatcher.h>
-
+#include <src/dispatcher.hpp>
 #include <src/input/clicker.hpp>
 #include <src/input/clicker_options.hpp>
 
@@ -40,7 +39,7 @@ private:
 	void run(std::stop_token stop_token, Clicker *clicker, const ClickerOptions &options);
 	void send_click(Clicker *clicker, const Click &click);
 public:
-	Glib::Dispatcher on_autostopping;
+	Dispatcher on_autostopping;
 
 	ThreadedClicker();
 	~ThreadedClicker();

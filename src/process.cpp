@@ -22,7 +22,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include <glibmm/i18n.h>
+#include <glib/gi18n.h>
 
 std::optional<pid_t> EzAutoClicker::Process::get_ppid_of_process(pid_t pid) {
 	std::filesystem::path path = "/proc/" + std::to_string(pid) + "/stat";

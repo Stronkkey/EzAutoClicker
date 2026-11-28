@@ -27,7 +27,7 @@ namespace Input {
 
 class HotkeyListenerEvdev final : public HotkeyListener {
 	std::vector<libevdev*> devices = {};
-	std::vector<sigc::connection> watches = {};
+	//std::vector<sigc::connection> watches = {};
 	std::mutex hotkey_mutex;
 	Hotkey::Modifier modifier_pressed = Hotkey::Modifier::NONE;
 

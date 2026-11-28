@@ -19,10 +19,20 @@
 
 #include <filesystem>
 
-#include <glibmm/main.h>
+#include <glib-unix.h>
 
 EzAutoClicker::Input::HotkeyListenerEvdev::~HotkeyListenerEvdev() {
 	stop_reading();
+}
+
+struct DeviceData {
+	std::function<bool(libevdev *device)> listen_function;
+	libevdev *device;
+};
+
+static gboolean on_io_device_event(gint, GIOCondition, gpointer data) {
+	DeviceData device_data = *static_cast<DeviceData*>(data);
+	return static_cast<gboolean>(device_data.listen_function(device_data.device));
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::string_view &input_device_path) {
@@ -55,10 +65,19 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::for_input_device(const std::stri
 		return;
 	}
 
+	constexpr const GIOCondition io_condition = static_cast<GIOCondition>(G_IO_IN | G_IO_HUP | G_IO_ERR);
 	devices.push_back(device);
-	watches.push_back(Glib::signal_io().connect(
-		[this, device](Glib::IOCondition) { return listen_for_device(device); },
-		fd, Glib::IOCondition::IO_IN));
+	g_unix_fd_add_full(
+		G_PRIORITY_DEFAULT,
+		fd,
+		io_condition,
+		on_io_device_event,
+		new DeviceData{.listen_function = [this](libevdev *device){
+			return listen_for_device(device);
+		}, .device = device},
+		[](gpointer data) {
+		        delete static_cast<DeviceData*>(data);
+		});
 }
 
 bool EzAutoClicker::Input::HotkeyListenerEvdev::device_has_key(libevdev *device) const {
@@ -83,9 +102,9 @@ void EzAutoClicker::Input::HotkeyListenerEvdev::start_reading() {
 }
 
 void EzAutoClicker::Input::HotkeyListenerEvdev::stop_reading() {
-	for (auto &watch : watches)
+	/*for (auto &watch : watches)
 		watch.disconnect();
-	watches.clear();
+	watches.clear();*/
 
 	for (libevdev *device: devices) {
 		int fd = libevdev_get_fd(device);

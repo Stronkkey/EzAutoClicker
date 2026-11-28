@@ -27,7 +27,7 @@
 
 #endif
 
-#include <glibmm/i18n.h>
+#include <glib/gi18n.h>
 
 int main(int argc, char *argv[]) {
 	bindtextdomain(EzAutoClicker::Constants::APP_NAME, EzAutoClicker::Constants::LOCALEDIR);
@@ -100,8 +100,6 @@ int main(int argc, char *argv[]) {
 	XInitThreads();
 	#endif
 
-	auto app = EzAutoClicker::EzAutoClickerApp::create(
-		std::move(clicker),
-		std::move(hotkey_listener));
-	return app->run(argc, argv);
+	auto app = EzAutoClicker::EzAutoClickerApp();
+	return app.run(argc, argv);
 }

@@ -19,8 +19,6 @@
 #include <chrono>
 #include <string_view>
 
-#include <gtkmm.h>
-
 #include <linux/input-event-codes.h>
 
 #include <src/input/click.hpp>
