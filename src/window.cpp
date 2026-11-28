@@ -16,55 +16,90 @@
 
 #include <linux/input-event-codes.h>
 
-#include <glibmm/i18n.h>
+#include <glib/gi18n.h>
 
 #include <config.hpp>
 
-EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
+namespace EzAutoClicker {
+
+class MainWindowSignalHandler {
+public:
+	MainWindowSignalHandler() = delete;
+	~MainWindowSignalHandler() = delete;
+
+	void operator=(MainWindowSignalHandler&) = delete;
+	void operator=(const MainWindowSignalHandler&) = delete;
+
+	static void on_start_button_clicked(GtkButton*, gpointer data) {
+		MainWindow *main_window = static_cast<MainWindow*>(data);
+		main_window->start_clicker();
+	}
+
+	static void on_stop_button_clicked(GtkButton*, gpointer data) {
+		MainWindow *main_window = static_cast<MainWindow*>(data);
+		main_window->stop_clicker();
+	}
+
+	static void on_hotkey_button_clicked(GtkButton*, gpointer data) {
+		MainWindow *main_window = static_cast<MainWindow*>(data);
+		main_window->set_capturing_keypresses(true);
+	}
+
+	static gboolean on_key_pressed(GtkEventController*, guint keyval, guint keycode, GdkModifierType modifier, gpointer data) {
+		MainWindow *main_window = static_cast<MainWindow*>(data);
+		return main_window->on_key_pressed(keyval, keycode, modifier);
+	}
+};
+
+}
+
+static gboolean on_about_dialog_close_request(GtkWindow *about_dialog, gpointer) {
+	gtk_widget_set_visible(GTK_WIDGET(about_dialog), false);
+	return true;
+}
+
+static void on_about_dialog_action_activate(GSimpleAction*, GVariant*, gpointer data) {
+	GtkAboutDialog *about_dialog = static_cast<GtkAboutDialog*>(data);
+	gtk_window_present(GTK_WINDOW(about_dialog));
+} 
+
+EzAutoClicker::MainWindow::MainWindow(GtkBuilder *builder) {//BaseObjectType *gobject, const Glib::RefPtr<Gtk::Builder> &builder) : Gtk::ApplicationWindow(gobject) {
 	clicker = nullptr;
 	hotkey_listener = nullptr;
 	sending_inputs = false;
 	capturing_key_presses = false;
-	hotkey_listener_connection = {};
 
-	about_dialog = builder->get_widget<Gtk::AboutDialog>("about_dialog");
-	about_dialog->set_version(Constants::APP_VERSION);
-	about_dialog->set_program_name(Constants::APP_NAME);
-	about_dialog->signal_close_request().connect([this]{
-		about_dialog->hide();
-		return true;
-	}, false);
+	application_window = GTK_APPLICATION_WINDOW(gtk_builder_get_object(builder, "main_window"));
+	gtk_window_set_title(GTK_WINDOW(application_window), Constants::APP_NAME);
 
-	auto header_bar = builder->get_widget<Gtk::HeaderBar>("header_bar");
-	set_titlebar(*header_bar);
+	about_dialog = GTK_ABOUT_DIALOG(gtk_builder_get_object(builder, "about_dialog"));
+	gtk_about_dialog_set_version(about_dialog, Constants::APP_VERSION);
+	gtk_about_dialog_set_program_name(about_dialog, Constants::APP_NAME);
 
-	auto about_action = Gio::SimpleAction::create("about");
-	about_action->signal_activate().connect([this](const Glib::VariantBase&){
-		about_dialog->present();
-	});
+	GtkHeaderBar *header_bar = GTK_HEADER_BAR(gtk_builder_get_object(builder, "header_bar"));
+	gtk_header_bar_set_show_title_buttons(header_bar, TRUE);
+	gtk_window_set_titlebar(GTK_WINDOW(application_window), GTK_WIDGET(header_bar));
 
-	add_action(about_action);
+	start_button = GTK_BUTTON(gtk_builder_get_object(builder, "start_button"));
+	stop_button = GTK_BUTTON(gtk_builder_get_object(builder, "stop_button"));
+	hotkey_button = GTK_BUTTON(gtk_builder_get_object(builder, "hotkey_button"));
 
-	start_button = builder->get_widget<Gtk::Button>("start_button");
-	stop_button = builder->get_widget<Gtk::Button>("stop_button");
-	hotkey_button = builder->get_widget<Gtk::Button>("hotkey_button");
+	milliseconds_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "milliseconds_entry"));
+	seconds_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "seconds_entry"));
+	minutes_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "minutes_entry"));
+	hours_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "hours_entry"));
 
-	milliseconds_entry = builder->get_widget<Gtk::SpinButton>("milliseconds_entry");
-	seconds_entry = builder->get_widget<Gtk::SpinButton>("seconds_entry");
-	minutes_entry = builder->get_widget<Gtk::SpinButton>("minutes_entry");
-	hours_entry = builder->get_widget<Gtk::SpinButton>("hours_entry");
+	mouse_button_dropdown = GTK_DROP_DOWN(gtk_builder_get_object(builder, "mouse_button_dropdown"));
+	click_type_dropdown = GTK_DROP_DOWN(gtk_builder_get_object(builder, "click_type_dropdown"));
 
-	mouse_button_dropdown = builder->get_widget<Gtk::DropDown>("mouse_button_dropdown");
-	click_type_dropdown = builder->get_widget<Gtk::DropDown>("click_type_dropdown");
+	current_location_toggle = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "current_location_toggle"));
+	pick_location_toggle = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "pick_location_toggle"));
+	x_position_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "x_position_entry"));
+	y_position_entry = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "y_position_entry"));
 
-	current_location_toggle = builder->get_widget<Gtk::CheckButton>("current_location_toggle");
-	pick_location_toggle = builder->get_widget<Gtk::CheckButton>("pick_location_toggle");
-	x_position_entry = builder->get_widget<Gtk::SpinButton>("x_position_entry");
-	y_position_entry = builder->get_widget<Gtk::SpinButton>("y_position_entry");
-
-	repeal_until_stopped_toggle = builder->get_widget<Gtk::CheckButton>("repeal_until_stopped_toggle");
-	click_repeat_counter = builder->get_widget<Gtk::SpinButton>("click_repeat_counter");
-	repeat_toggle = builder->get_widget<Gtk::CheckButton>("repeat_toggle");
+	repeal_until_stopped_toggle = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "repeal_until_stopped_toggle"));
+	click_repeat_counter = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "click_repeat_counter"));
+	repeat_toggle = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "repeat_toggle"));
 
 	threaded_clicker.on_autostopping.connect([this]{
 		set_sending_inputs(false);
@@ -74,8 +109,12 @@ EzAutoClicker::MainWindow::MainWindow(BaseObjectType *gobject, const Glib::RefPt
 	connect_signals();
 }
 
+EzAutoClicker::MainWindow::~MainWindow() {
+	gtk_window_destroy(GTK_WINDOW(application_window));
+}
+
 void EzAutoClicker::MainWindow::update_mouse_button_option() {
-	guint pos = mouse_button_dropdown->get_selected();
+	guint pos = gtk_drop_down_get_selected(mouse_button_dropdown);
 
 	if (pos == 0)
 		options.click.button = Input::Click::MouseButton::LEFT;
@@ -86,7 +125,7 @@ void EzAutoClicker::MainWindow::update_mouse_button_option() {
 }
 
 void EzAutoClicker::MainWindow::update_click_type_option() {
-	guint pos = click_type_dropdown->get_selected();
+	guint pos = gtk_drop_down_get_selected(click_type_dropdown);
 
 	if (pos == 0)
 		options.click_type = Input::ClickerOptions::ClickType::SINGLE;
@@ -95,78 +134,73 @@ void EzAutoClicker::MainWindow::update_click_type_option() {
 }
 
 void EzAutoClicker::MainWindow::update_repeating_mode() {
-	if (repeal_until_stopped_toggle->get_active())
+	if (gtk_check_button_get_active(repeal_until_stopped_toggle))
 		options.repeat_mode = Input::ClickerOptions::RepeatMode::UNTIL_STOPPED;
 	else
 		options.repeat_mode = Input::ClickerOptions::RepeatMode::REPEAT_X_TIMES;
 }
 
 void EzAutoClicker::MainWindow::update_options() {
-	options.interval_ms = milliseconds_entry->get_value_as_int();
-	options.interval_s = seconds_entry->get_value_as_int();
-	options.interval_m = minutes_entry->get_value_as_int();
-	options.interval_h = hours_entry->get_value_as_int();
+	options.interval_ms = gtk_spin_button_get_value_as_int(milliseconds_entry);
+	options.interval_s = gtk_spin_button_get_value_as_int(seconds_entry);
+	options.interval_m = gtk_spin_button_get_value_as_int(minutes_entry);
+	options.interval_h = gtk_spin_button_get_value_as_int(hours_entry);
 	
 	update_mouse_button_option();
 	update_click_type_option();
 	update_repeating_mode();
 
-	options.click.set_mouse_location = pick_location_toggle->get_active();
-	options.click.position.x = x_position_entry->get_value_as_int();
-	options.click.position.y = y_position_entry->get_value_as_int();
-	options.repeat_count = click_repeat_counter->get_value_as_int();
+	options.click.set_mouse_location = gtk_check_button_get_active(pick_location_toggle);
+	options.click.position.x = gtk_spin_button_get_value_as_int(x_position_entry);
+	options.click.position.y = gtk_spin_button_get_value_as_int(y_position_entry);
+	options.repeat_count = gtk_spin_button_get_value_as_int(click_repeat_counter);
 	options.add_random_offset = false;
 	options.random_offset_ms = 0;
 
-	auto surface = get_surface();
-	auto display = get_display();
-
-	if (!surface || !display)
+	GdkSurface *surface = gtk_native_get_surface(GTK_NATIVE(application_window));
+	GdkDisplay *display = surface ? gdk_surface_get_display(surface) : nullptr;
+	
+	if (!display)
 		return;
 
-	auto monitor = display->get_monitor_at_surface(surface);
-	
+	GdkMonitor *monitor = gdk_display_get_monitor_at_surface(display, surface);
+
 	if (!monitor)
 		return;
 
-	Gdk::Rectangle geometry;
-	monitor->get_geometry(geometry);
+	GdkRectangle geometry;
+	gdk_monitor_get_geometry(monitor, &geometry);
 
-	options.click.screen_size.width = geometry.get_width();
-	options.click.screen_size.height = geometry.get_height();
+	options.click.screen_size.width = geometry.width;
+	options.click.screen_size.height = geometry.height;
 }
 
 void EzAutoClicker::MainWindow::connect_signals() {
-	start_button->signal_clicked().connect([this]{
-		start_clicker();
-	});
+	GtkEventController *controller = gtk_event_controller_key_new();
+	GSimpleAction *about_action = g_simple_action_new("about", nullptr);
 
-	stop_button->signal_clicked().connect([this]{
-		stop_clicker();
-	});
+	g_signal_connect(start_button, "clicked", G_CALLBACK(&MainWindowSignalHandler::on_start_button_clicked), this);
+	g_signal_connect(about_action, "activate", G_CALLBACK(on_about_dialog_action_activate), about_dialog);
+	g_signal_connect(stop_button, "clicked", G_CALLBACK(&MainWindowSignalHandler::on_stop_button_clicked), this);
+	g_signal_connect(hotkey_button, "clicked", G_CALLBACK(&MainWindowSignalHandler::on_hotkey_button_clicked), this);
+	g_signal_connect(controller, "key_pressed", G_CALLBACK(&MainWindowSignalHandler::on_key_pressed), this);
+	g_signal_connect(about_dialog, "close_request", G_CALLBACK(on_about_dialog_close_request), nullptr);
 
-	hotkey_button->signal_clicked().connect([this] {
-		set_capturing_keypresses(true);
-	});
-
-	auto controller = Gtk::EventControllerKey::create();
-	controller->signal_key_pressed().connect(sigc::mem_fun(
-			*this,
-			&MainWindow::on_key_pressed), false);
-	add_controller(controller);
+	g_action_map_add_action(G_ACTION_MAP(application_window), G_ACTION(about_action));
+	gtk_widget_add_controller(GTK_WIDGET(application_window), controller);
 }
 
 /**
- * @brief Checks if the modifier is equal to Gdk::ModifierType::NO_MODIFIER_MASK.
+ * @brief Checks if the modifier is equal to GDK_NO_MODIFIER_MASK.
  * @details Use this function over directly comparing (==) the modifier with
- * Gdk::ModifierType::NO_MODIFIER_MASK as that enum was only added in gtkmm 4.14.
+ * GDK_NO_MODIFIER_MASK as that enum was only added in gtkmm 4.14.
  * @return true if the modifier equals to
- * Gdk::ModifierType::NO_MODIFIER_MASK (>= gtkmm 4.14)
+ * GDK_NO_MODIFIER_MASK (>= gtkmm 4.14)
  * or 0 (< gtkmm 4.14), false otherwise.
  */
-static constexpr bool is_gdk_modifier_no_modifier(Gdk::ModifierType modifier) {
-	#if GTKMM_MAJOR_VERSION >= 4 && GTKMM_MINOR_VERSION >= 14
-	return modifier == Gdk::ModifierType::NO_MODIFIER_MASK;
+static constexpr bool is_gdk_modifier_no_modifier(GdkModifierType modifier) {
+	#if GDK_MAJOR_VERSION >= 4 && GDK_MINOR_VERSION >= 14
+	return modifier == GDK_NO_MODIFIER_MASK;
 	#else
 	return static_cast<int>(modifier) == 0;
 	#endif
@@ -176,23 +210,23 @@ static constexpr bool is_gdk_modifier_no_modifier(Gdk::ModifierType modifier) {
  * @brief Converts a Gdk::ModifierType into a hotkey modifier.
  * @note Unsupported Modifiers will be lost after conversion.
  */
-static constexpr EzAutoClicker::Input::Hotkey::Modifier gdk_modifier_to_hotkey_modifier(Gdk::ModifierType modifier) {
+static constexpr EzAutoClicker::Input::Hotkey::Modifier gdk_modifier_to_hotkey_modifier(GdkModifierType modifier) {
 	using Modifier = EzAutoClicker::Input::Hotkey::Modifier;
 	if (is_gdk_modifier_no_modifier(modifier))
 		return Modifier::NONE;
 
 	Modifier mod = Modifier::NONE;
 
-	if (static_cast<int>(modifier & Gdk::ModifierType::CONTROL_MASK) != 0)
+	if (static_cast<int>(modifier & GDK_CONTROL_MASK) != 0)
 		mod = mod | Modifier::CTRL;
 
-	if (static_cast<int>(modifier & Gdk::ModifierType::SHIFT_MASK) != 0)
+	if (static_cast<int>(modifier & GDK_SHIFT_MASK) != 0)
 		mod = mod | Modifier::SHIFT;
 	
-	if (static_cast<int>(modifier & Gdk::ModifierType::ALT_MASK) != 0)
+	if (static_cast<int>(modifier & GDK_ALT_MASK) != 0)
 		mod = mod | Modifier::ALT;
 
-	if (static_cast<int>(modifier & Gdk::ModifierType::SUPER_MASK) != 0)
+	if (static_cast<int>(modifier & GDK_SUPER_MASK) != 0)
 		mod = mod | Modifier::SUPER;
 
 	return mod;
@@ -265,7 +299,7 @@ static constexpr unsigned gdk_keycode_to_hotkey_key(guint keycode) {
 	return keycode - 8;
 }
 
-bool EzAutoClicker::MainWindow::on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state) {	
+bool EzAutoClicker::MainWindow::on_key_pressed(guint keyval, guint keycode, GdkModifierType state) {	
 	if (!capturing_key_presses)
 		return false;
 
@@ -274,11 +308,12 @@ bool EzAutoClicker::MainWindow::on_key_pressed(guint keyval, guint keycode, Gdk:
 		return true;
 	}
 
-	Glib::ustring key_description = Gtk::Accelerator::get_label(keyval, state);
+	char *c_key_description = gtk_accelerator_get_label(keyval, state);
+	auto key_description = std::unique_ptr<char, GDeleter>(c_key_description);
 	KeyValType type = get_keyval_into_from_keyval(keyval);
 	if (type != KeyValType::KEY) {
 		if (type == KeyValType::MODIFIER)
-			hotkey_button->set_label(key_description);
+			gtk_button_set_label(hotkey_button, key_description.get());
 		return true;
 	}
 
@@ -313,16 +348,16 @@ void EzAutoClicker::MainWindow::stop_clicker() {
 
 void EzAutoClicker::MainWindow::set_sending_inputs(bool p_sending_inputs) {
 	sending_inputs = p_sending_inputs;
-	start_button->set_sensitive(!p_sending_inputs);
-	stop_button->set_sensitive(p_sending_inputs);
+	gtk_widget_set_sensitive(GTK_WIDGET(start_button), !p_sending_inputs);
+	gtk_widget_set_sensitive(GTK_WIDGET(stop_button), p_sending_inputs);
 }
 
 void EzAutoClicker::MainWindow::set_capturing_keypresses(bool p_capturing_key_presses) {
 	capturing_key_presses = p_capturing_key_presses;
 	if (p_capturing_key_presses)
-		hotkey_button->set_label(_("Press a key..."));
+		gtk_button_set_label(hotkey_button, _("Press a key..."));
 	else
-		hotkey_button->set_label(hotkey_name);
+		gtk_button_set_label(hotkey_button, hotkey_name.get());
 }
 
 void EzAutoClicker::MainWindow::toggle_clicker() {
@@ -344,73 +379,70 @@ void EzAutoClicker::MainWindow::set_hotkey_listener(std::unique_ptr<Input::Hotke
 	if (hotkey_listener)
 		hotkey_listener->stop_reading();
 
-	if (hotkey_listener_connection.connected())
-		hotkey_listener_connection.disconnect();
-
 	hotkey_listener = std::move(p_hotkey_listener);
-	auto slot = hotkey_listener->signal_pressed.connect([this] {
+	hotkey_listener->signal_pressed.connect([this] {
 		if (!capturing_key_presses)
 			toggle_clicker();
 	});
 
-	auto hotkey = Input::Hotkey{.key = KEY_F5,
-	                            .modifiers = Input::Hotkey::Modifier::NONE};
-	hotkey_name = Gtk::Accelerator::get_label(GDK_KEY_F5,
-	                            static_cast<Gdk::ModifierType>(0));
-	hotkey_button->set_label(hotkey_name);
+	auto hotkey = Input::Hotkey{.key = KEY_F5, .modifiers = Input::Hotkey::Modifier::NONE};
+	char *key_description = gtk_accelerator_get_label(GDK_KEY_F5, static_cast<GdkModifierType>(0));
+
+	hotkey_name = std::unique_ptr<char, GDeleter>(key_description);
+	gtk_button_set_label(hotkey_button, hotkey_name.get());
 	hotkey_listener->register_hotkey(hotkey);
 }
 
 void EzAutoClicker::MainWindow::set_interval_ms(std::chrono::milliseconds interval) {
-	milliseconds_entry->set_value(interval.count());
+	gtk_spin_button_set_value(milliseconds_entry, interval.count());
 }
 
 void EzAutoClicker::MainWindow::set_interval_s(std::chrono::seconds interval) {
-	seconds_entry->set_value(interval.count());
+	gtk_spin_button_set_value(seconds_entry, interval.count());
 }
 
 void EzAutoClicker::MainWindow::set_interval_m(std::chrono::minutes interval) {
-	minutes_entry->set_value(interval.count());
+	gtk_spin_button_set_value(minutes_entry, interval.count());
 }
 
 void EzAutoClicker::MainWindow::set_interval_h(std::chrono::hours interval) {
-	hours_entry->set_value(interval.count());
+	gtk_spin_button_set_value(hours_entry, interval.count());
 }
 
 void EzAutoClicker::MainWindow::set_mouse_button(Input::Click::MouseButton mouse_button) {
 	if (mouse_button == Input::Click::MouseButton::LEFT)
-		mouse_button_dropdown->set_selected(0);
+		gtk_drop_down_set_selected(mouse_button_dropdown, 0);
 	else if (mouse_button == Input::Click::MouseButton::MIDDLE)
-		mouse_button_dropdown->set_selected(1);
+		gtk_drop_down_set_selected(mouse_button_dropdown, 1);
 	else
-		mouse_button_dropdown->set_selected(2);
+		gtk_drop_down_set_selected(mouse_button_dropdown, 2);
 }
 
 void EzAutoClicker::MainWindow::set_click_type(Input::ClickerOptions::ClickType click_type) {
 	if (click_type == Input::ClickerOptions::ClickType::SINGLE)
-		click_type_dropdown->set_selected(0);
+		gtk_drop_down_set_selected(click_type_dropdown, 0);
 	else
-		click_type_dropdown->set_selected(1);
+		gtk_drop_down_set_selected(click_type_dropdown, 1);
 }
 
 void EzAutoClicker::MainWindow::set_repeat_mode(Input::ClickerOptions::RepeatMode repeat_mode) {
-	repeal_until_stopped_toggle->set_active(repeat_mode == Input::ClickerOptions::RepeatMode::UNTIL_STOPPED);
+	gtk_check_button_set_active(repeal_until_stopped_toggle, repeat_mode == Input::ClickerOptions::RepeatMode::UNTIL_STOPPED);
 }
 
 void EzAutoClicker::MainWindow::set_use_mouse_offset(bool use_mouse_offset) {
-	pick_location_toggle->set_active(use_mouse_offset);
+	gtk_check_button_set_active(pick_location_toggle, use_mouse_offset);
 }
 
 void EzAutoClicker::MainWindow::set_mouse_x_position(int x) {
-	x_position_entry->set_value(x);
+	gtk_spin_button_set_value(x_position_entry, x);
 }
 
 void EzAutoClicker::MainWindow::set_mouse_y_position(int y) {
-	y_position_entry->set_value(y);
+	gtk_spin_button_set_value(y_position_entry, y);
 }
 
 void EzAutoClicker::MainWindow::set_repeat_count(long long repeat_count) {
-	click_repeat_counter->set_value(repeat_count);
+	gtk_spin_button_set_value(click_repeat_counter, repeat_count);
 }
 
 void EzAutoClicker::MainWindow::set_random_offset(std::chrono::milliseconds) {

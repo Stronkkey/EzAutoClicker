@@ -24,202 +24,253 @@
 #include <src/input/x11/clicker_x11.hpp>
 #include <src/input/x11/hotkey_listener_x11.hpp>
 
-EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() : Gtk::Application(Constants::APP_ID) {
-	set_id(Constants::APP_ID);
+EzAutoClicker::EzAutoClickerApp::EzAutoClickerApp() {
+	application = gtk_application_new(Constants::APP_ID, G_APPLICATION_DEFAULT_FLAGS);
 
-	#if GLIBMM_MAJOR_VERSION >= 2 && GLIBMM_MINOR_VERSION >= 80
-	set_version(Constants::APP_VERSION);
+	#if GLIB_MAJOR_VERSION >= 2 && GLIB_MINOR_VERSION >= 80
+	g_application_set_version(G_APPLICATION(application), Constants::APP_VERSION);
 	#endif
 
-	set_option_context_summary(EZAUTOCLICKER_CONTEXT_SUMMARY);
-	set_option_context_description(EZAUTOCLICKER_OPTION_CONTEXT_DESCRIPTION);
+	g_application_set_option_context_summary(G_APPLICATION(application), EZAUTOCLICKER_CONTEXT_SUMMARY);
+	g_application_set_option_context_description(G_APPLICATION(application), EZAUTOCLICKER_OPTION_CONTEXT_DESCRIPTION);
 	add_option_entries();
 
-	// Exported action, callable from other processes
-	add_action(Constants::TOGGLE_LONG_NAME,
-		sigc::mem_fun(*this,
-		&EzAutoClickerApp::on_toggle));
+	g_signal_connect(application, "activate", G_CALLBACK(EzAutoClickerApp::on_activate), this);
+	g_signal_connect(application, "handle_local_options", G_CALLBACK(EzAutoClickerApp::on_handle_local_options), this);
 
-	auto open_about_accel = Gtk::Accelerator::get_label(GDK_KEY_F1, Gdk::ModifierType(0));
-	set_accel_for_action("win.about", open_about_accel);
+	auto open_about_accel = gtk_accelerator_get_label(GDK_KEY_F1, static_cast<GdkModifierType>(0));
+	const char *accels[] = {open_about_accel, ""};
+	gtk_application_set_accels_for_action(application, "win.about", accels);
+
+	GSimpleAction *action = g_simple_action_new(Constants::TOGGLE_LONG_NAME, nullptr);
+	g_signal_connect(action, "activate", G_CALLBACK(EzAutoClickerApp::on_toggle), this);
+	g_action_map_add_action(G_ACTION_MAP(application), G_ACTION(action));
+	g_object_unref(action);
+}
+
+EzAutoClicker::EzAutoClickerApp::~EzAutoClickerApp() {
+	if (application)
+		g_object_unref(application);
 }
 
 void EzAutoClicker::EzAutoClickerApp::add_option_entries() {
-	add_main_option_entry(Gio::Application::OptionType::BOOL,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::TOGGLE_LONG_NAME,
 		Constants::TOGGLE_SHORT_NAME,
-		EZAUTOCLICKER_TOGGLE_OPTION_DESCRIPTION);
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_NONE,
+		EZAUTOCLICKER_TOGGLE_OPTION_DESCRIPTION,
+		nullptr);
 
-	add_main_option_entry(Gio::Application::OptionType::INT,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::INTERVAL_MS_LONG_NAME,
 		Constants::INTERVAL_MS_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
 		EZAUTOCLICKER_INTERVAL_MS_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_INTERVAL_MS_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::INT,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::INTERVAL_S_LONG_NAME,
 		Constants::INTERVAL_S_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
 		EZAUTOCLICKER_INTERVAL_S_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_INTERVAL_S_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::INT,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::INTERVAL_M_LONG_NAME,
 		Constants::INTERVAL_M_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
 		EZAUTOCLICKER_INTERVAL_M_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_INTERVAL_M_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::INT,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::INTERVAL_H_LONG_NAME,
 		Constants::INTERVAL_H_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
 		EZAUTOCLICKER_INTERVAL_H_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_INTERVAL_H_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::STRING,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::MOUSE_BUTTON_LONG_NAME,
 		Constants::MOUSE_BUTTON_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_STRING,
 		EZAUTOCLICKER_MOUSE_BUTTON_OPTION_DESCRIPTION,
 		Constants::MOUSE_BUTTON_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::STRING,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::CLICK_TYPE_LONG_NAME,
 		Constants::CLICK_TYPE_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_STRING,
 		EZAUTOCLICKER_CLICK_TYPE_OPTION_DESCRIPTION,
 		Constants::CLICK_TYPE_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::STRING,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::PICK_LOCATION_LONG_NAME,
 		Constants::PICK_LOCATION_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_STRING,
 		EZAUTOCLICKER_PICK_LOCATION_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_PICK_LOCATION_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::BOOL,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::REPEAT_UNTIL_STOPPED_LONG_NAME,
 		Constants::REPEAT_UNTIL_STOPPED_SHORT_NAME,
-		EZAUTOCLICKER_REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION);
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
+		EZAUTOCLICKER_REPEAT_UNTIL_STOPPED_OPTION_DESCRIPTION,
+		nullptr);
 
-	add_main_option_entry(Gio::Application::OptionType::INT,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::SET_REPEAT_COUNT_LONG_NAME,
 		Constants::SET_REPEAT_COUNT_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_INT64,
 		EZAUTOCLICKER_SET_REPEAT_COUNT_OPTION_DESCRIPTION,
 		EZAUTOCLICKER_SET_REPEAT_COUNT_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::STRING,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::CLICKER_LONG_NAME,
 		Constants::CLICKER_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_STRING,
 		EZAUTOCLICKER_CLICKER_OPTION_DESCRIPTION,
 		Constants::CLICKER_ARG_DESCRIPTION);
 
-	add_main_option_entry(Gio::Application::OptionType::STRING,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::HOTKEY_LISTENER_LONG_NAME,
 		Constants::HOTKEY_LISTENER_SHORT_NAME,
+		G_OPTION_FLAG_NONE,
+		G_OPTION_ARG_STRING,
 		EZAUTOCLICKER_HOTKEY_LISTENER_OPTION_DESCRIPTION,
 		Constants::HOTKEY_LISTENER_ARG_DESCRIPTION);
 
 	// This option is not handled here, but instead in the main function.
-	add_main_option_entry(Gio::Application::OptionType::BOOL,
+	g_application_add_main_option(G_APPLICATION(application),
 		Constants::ALLOW_ROOT_LONG_NAME,
 		Constants::ALLOW_ROOT_SHORT_NAME,
+		G_OPTION_FLAG_HIDDEN,
+		G_OPTION_ARG_NONE,
 		EZAUTOCLICKER_ALLOW_ROOT_OPTION_DESCRIPTION,
-		{},
-		Glib::OptionEntry::Flags::HIDDEN);
+		nullptr);
 }
 
-Glib::RefPtr<EzAutoClicker::EzAutoClickerApp> EzAutoClicker::EzAutoClickerApp::create(
-		std::unique_ptr<Input::Clicker> clicker, std::unique_ptr<Input::HotkeyListener> hotkey_listener)
-{
-	auto app = Glib::make_refptr_for_instance(new EzAutoClickerApp());
-	app->clicker = std::move(clicker);
-	app->hotkey_listener = std::move(hotkey_listener);
-
-	return app;
-}
-
-int EzAutoClicker::EzAutoClickerApp::on_handle_local_options(const Glib::RefPtr<Glib::VariantDict> &options) {
-	if (options->contains(Constants::TOGGLE_LONG_NAME)) {
-		handle_toggle_option();
+int EzAutoClicker::EzAutoClickerApp::on_handle_local_options(GApplication*, GVariantDict *options, gpointer data) {
+	auto *app = static_cast<EzAutoClickerApp*>(data);
+	if (g_variant_dict_contains(options, Constants::TOGGLE_LONG_NAME)) {
+		app->handle_toggle_option();
 		return 1;
 	}
 
-	gint32 int_value;
-	Glib::ustring string_value;
+	gint64 int_value = 100;
+	gchar *string_value;
 	bool bool_value;
 
-	if (options->lookup_value(Constants::INTERVAL_MS_LONG_NAME, int_value))
-		cli_options.interval_ms = int_value;
+	if (g_variant_dict_lookup(options, Constants::INTERVAL_MS_LONG_NAME, "x", &int_value))
+		app->cli_options.interval_ms = int_value;
 
-	if (options->lookup_value(Constants::INTERVAL_S_LONG_NAME, int_value))
-		cli_options.interval_s = int_value;
+	if (g_variant_dict_lookup(options, Constants::INTERVAL_S_LONG_NAME, "x", &int_value))
+		app->cli_options.interval_s = int_value;
 
-	if (options->lookup_value(Constants::INTERVAL_M_LONG_NAME, int_value))
-		cli_options.interval_m = int_value;
+	if (g_variant_dict_lookup(options, Constants::INTERVAL_M_LONG_NAME, "x", &int_value))
+		app->cli_options.interval_m = int_value;
 
-	if (options->lookup_value(Constants::INTERVAL_H_LONG_NAME, int_value))
-		cli_options.interval_h = int_value;
+	if (g_variant_dict_lookup(options, Constants::INTERVAL_H_LONG_NAME, "x", &int_value))
+		app->cli_options.interval_h = int_value;
 
-	if (options->lookup_value(Constants::MOUSE_BUTTON_LONG_NAME, string_value))
-		handle_mouse_button_option(string_value);
+	if (g_variant_dict_lookup(options, Constants::MOUSE_BUTTON_LONG_NAME, "s", &string_value)) {
+		app->handle_mouse_button_option(string_value);
+		g_free(string_value);
+	}
 
-	if (options->lookup_value(Constants::CLICK_TYPE_LONG_NAME, string_value))
-		handle_click_type_option(string_value);
+	if (g_variant_dict_lookup(options, Constants::CLICK_TYPE_LONG_NAME, "s", &string_value)) {
+		app->handle_click_type_option(string_value);
+		g_free(string_value);
+	}
 
-	if (options->lookup_value(Constants::PICK_LOCATION_LONG_NAME, string_value))
-		handle_pick_location_option(string_value);
+	if (g_variant_dict_lookup(options, Constants::PICK_LOCATION_LONG_NAME, "s", &string_value)) {
+		app->handle_pick_location_option(string_value);
+		g_free(string_value);
+	}
 
-	if (options->lookup_value(Constants::REPEAT_UNTIL_STOPPED_LONG_NAME, bool_value))
-		cli_options.repeat_mode = bool_value ? Input::ClickerOptions::RepeatMode::UNTIL_STOPPED : Input::ClickerOptions::RepeatMode::REPEAT_X_TIMES;
+	if (g_variant_dict_lookup(options, Constants::REPEAT_UNTIL_STOPPED_LONG_NAME, "b", &bool_value))
+		app->cli_options.repeat_mode = bool_value ? Input::ClickerOptions::RepeatMode::UNTIL_STOPPED : Input::ClickerOptions::RepeatMode::REPEAT_X_TIMES;
 
-	if (options->lookup_value(Constants::SET_REPEAT_COUNT_LONG_NAME, int_value))
-		cli_options.repeat_count = int_value;
+	if (g_variant_dict_lookup(options, Constants::SET_REPEAT_COUNT_LONG_NAME, "x", &int_value))
+		app->cli_options.repeat_count = int_value;
 
-	if (options->lookup_value(Constants::CLICKER_LONG_NAME, string_value))
-		handle_clicker_option(string_value);
+	if (g_variant_dict_lookup(options, Constants::CLICKER_LONG_NAME, "s", &string_value)) {
+		app->handle_clicker_option(string_value);
+		g_free(string_value);
+	}
 
-	if (options->lookup_value(Constants::HOTKEY_LISTENER_LONG_NAME, string_value))
-		handle_hotkey_listener_option(string_value);
+	if (g_variant_dict_lookup(options, Constants::HOTKEY_LISTENER_LONG_NAME, "s", &string_value)) {
+		app->handle_hotkey_listener_option(string_value);
+		g_free(string_value);
+	}
 
 	return -1;
 }
 
 void EzAutoClicker::EzAutoClickerApp::handle_toggle_option() {
 	// Connect to the session bus and find out if an instance is already running
-	if (!register_application()) {
+	if (!g_application_register(G_APPLICATION(application), nullptr, nullptr)) {
 		g_printerr("Could not register on the session bus.\n");
 		return;
 	}
 
-	if (!is_remote()) {
+	if (!g_application_get_is_remote(G_APPLICATION(application))) {
 		g_printerr("%s is not running. Start it first.\n", Constants::APP_NAME);
 		return;
 	}
 
-	activate_action(Constants::TOGGLE_LONG_NAME);
+	g_action_group_activate_action(G_ACTION_GROUP(application), Constants::TOGGLE_LONG_NAME, nullptr);
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_mouse_button_option(const Glib::ustring &value) {
-	if (value.lowercase() == "left")
+static std::string string_to_lower(const std::string &str) {
+	std::string lowercase = std::string();
+	lowercase.resize(str.size());
+
+	for (size_t i = 0; i < str.size(); i++)
+		lowercase[i] = std::tolower(static_cast<unsigned char>(str[i]));
+
+	return lowercase;
+}
+
+void EzAutoClicker::EzAutoClickerApp::handle_mouse_button_option(const std::string &value) {
+	std::string lowercase = string_to_lower(value);
+
+	if (lowercase == "left")
 		cli_options.button = Input::Click::MouseButton::LEFT;
-	if (value.lowercase() == "middle")
+	if (lowercase == "middle")
 		cli_options.button = Input::Click::MouseButton::MIDDLE;
-	if (value.lowercase() == "right")
+	if (lowercase == "right")
 		cli_options.button = Input::Click::MouseButton::RIGHT;
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_click_type_option(const Glib::ustring &value) {
-	if (value.lowercase() == "single")
+void EzAutoClicker::EzAutoClickerApp::handle_click_type_option(const std::string &value) {
+	std::string lowercase = string_to_lower(value);
+
+	if (lowercase == "single")
 		cli_options.click_type = Input::ClickerOptions::ClickType::SINGLE;
-	if (value.lowercase() == "double")
+	if (lowercase == "double")
 		cli_options.click_type = Input::ClickerOptions::ClickType::DOUBLE;
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::ustring &value) {
+void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const std::string &value) {
 	size_t pos = value.find(',');
 
-	if (pos == Glib::ustring::npos)
+	if (pos == std::string::npos)
 		return;
 
 	try {
 		cli_options.mouse_x_position = std::stoi(value.substr(0, pos));
-		cli_options.mouse_y_position = std::stoi(value.substr(pos + 1, Glib::ustring::npos));
+		cli_options.mouse_y_position = std::stoi(value.substr(pos + 1, std::string::npos));
 	} catch (const std::exception&) {
 		return;
 	}
@@ -227,22 +278,23 @@ void EzAutoClicker::EzAutoClickerApp::handle_pick_location_option(const Glib::us
 	cli_options.set_mouse_location = true;
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring &value) {
-	Glib::ustring lower = value.lowercase();
-	if (lower == "uinput") {
+void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const std::string &value) {
+	std::string lowercase = string_to_lower(value);
+
+	if (lowercase == "uinput") {
 		clicker = Input::ClickerFactory::create_clicker_uinput();
 		cli_options.clicker_set = true;
 	}
 
 	#if EZAUTOCLICKER_ENABLE_WLR
-	if (lower == "wlr") {
+	if (lowercase == "wlr") {
 		clicker = Input::ClickerFactory::create_clicker_wlr();
 		cli_options.clicker_set = true;
 	}
 	#endif
 
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-	if (lower == "x11") {
+	if (lowercase == "x11") {
 		clicker = Input::ClickerFactory::create_clicker_x11();
 		cli_options.clicker_set = true;
 	}
@@ -254,16 +306,17 @@ void EzAutoClicker::EzAutoClickerApp::handle_clicker_option(const Glib::ustring 
 	}
 }
 
-void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::ustring &value) {
-	Glib::ustring lower = value.lowercase();
+void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const std::string &value) {
+	std::string lowercase = string_to_lower(value);
+
 	#if EZAUTOCLICKER_X11_INPUT_ENABLED
-	if (lower == "x11") {
+	if (lowercase == "x11") {
 		cli_options.hotkey_listener_set = true;
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_x11();
 	}
 	#endif
 
-	if (lower == "evdev") {
+	if (lowercase == "evdev") {
 		cli_options.hotkey_listener_set = true;
 		hotkey_listener = Input::HotkeyListenerFactory::create_hotkey_listener_evdev();
 	}
@@ -274,8 +327,9 @@ void EzAutoClicker::EzAutoClickerApp::handle_hotkey_listener_option(const Glib::
 	}
 }
 
-void EzAutoClicker::EzAutoClickerApp::on_toggle() {
-	main_window->toggle_clicker();
+void EzAutoClicker::EzAutoClickerApp::on_toggle(GSimpleAction*, GVariant*, gpointer data) {
+	auto *app = static_cast<EzAutoClickerApp*>(data);
+	app->main_window->toggle_clicker();
 }
 
 std::unique_ptr<EzAutoClicker::Input::Clicker> EzAutoClicker::EzAutoClickerApp::get_clicker() {
@@ -327,32 +381,49 @@ void EzAutoClicker::EzAutoClickerApp::set_cli_options_on_main_window() {
 	}
 }
 
-void EzAutoClicker::EzAutoClickerApp::on_activate() {
+static void on_main_window_hide(GtkWidget*, gpointer data) {
+	EzAutoClicker::MainWindow *main_window = static_cast<EzAutoClicker::MainWindow*>(data);
+	delete main_window;
+}
+
+void EzAutoClicker::EzAutoClickerApp::on_activate(GtkApplication*, gpointer data) {
 	// Called for the first start, and when a second plain launch happens
-	auto windows = get_windows();
-	if (!windows.empty()) {
-		windows.front()->present();
+	auto *app = static_cast<EzAutoClickerApp*>(data);
+	GList *windows = gtk_application_get_windows(app->application);
+	gpointer front_window = windows ? windows->data : nullptr;
+
+	if (front_window) {
+		gtk_window_present(GTK_WINDOW(front_window));
 		return;
 	}
 
-	if (cli_options.fail_initialization) {
-		quit();
+	if (app->cli_options.fail_initialization) {
+		g_application_quit(G_APPLICATION(app->application));
 		return;
 	}
 
-	auto builder = Gtk::Builder::create_from_resource("/io/github/Stronkkey/EzAutoClicker/main_window.ui");
+	GtkBuilder *builder = gtk_builder_new_from_resource("/io/github/Stronkkey/EzAutoClicker/main_window.ui");
+	app->main_window = new MainWindow(builder);
+	g_object_unref(builder);
 
-	main_window = Gtk::Builder::get_widget_derived<MainWindow>(builder, "main_window");
-	main_window->set_clicker(get_clicker());
-	main_window->set_hotkey_listener(get_hotkey_listener());
-	main_window->set_title(Constants::APP_NAME);
-	add_window(*main_window);
+	app->main_window->set_clicker(app->get_clicker());
+	app->main_window->set_hotkey_listener(app->get_hotkey_listener());
+	gtk_application_add_window(app->application, GTK_WINDOW(app->main_window->get_window()));
 
-	set_cli_options_on_main_window();
+	app->set_cli_options_on_main_window();
 
-	main_window->signal_hide().connect([this] {
-		delete main_window;
-	});
+	g_signal_connect(app->main_window->get_window(), "hide", G_CALLBACK(on_main_window_hide), app->main_window);
+	app->main_window->present();
+}
 
-	main_window->present();
+int EzAutoClicker::EzAutoClickerApp::run(int argc, char *argv[]) {
+	return g_application_run(G_APPLICATION(application), argc, argv);
+}
+
+void EzAutoClicker::EzAutoClickerApp::set_clicker(std::unique_ptr<Input::Clicker> &&p_clicker) {
+	clicker = std::move(p_clicker);
+}
+
+void EzAutoClicker::EzAutoClickerApp::set_hotkey_listener(std::unique_ptr<Input::HotkeyListener> &&p_hotkey_listener) {
+	hotkey_listener = std::move(p_hotkey_listener);
 }

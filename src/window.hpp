@@ -14,47 +14,59 @@
  */
 #pragma once
 
-#include <gtkmm.h>
+#include <chrono>
+
+#include <gtk/gtk.h>
 
 #include <src/input/hotkey_listener.hpp>
 #include <src/input/threaded_clicker.hpp>
 
 namespace EzAutoClicker {
 
-class MainWindow : public Gtk::ApplicationWindow {
+class MainWindow {
 private:
+	friend class MainWindowSignalHandler;
+
+	GtkApplicationWindow *application_window;
 	Input::ClickerOptions options;
 	Input::ThreadedClicker threaded_clicker;
 	std::unique_ptr<Input::Clicker> clicker;
 	std::unique_ptr<Input::HotkeyListener> hotkey_listener;
-	sigc::connection hotkey_listener_connection;
 
-	Gtk::AboutDialog *about_dialog;
+	GtkAboutDialog *about_dialog;
 
-	Gtk::Button *start_button;
-	Gtk::Button *stop_button;
+	GtkButton *start_button;
+	GtkButton *stop_button;
 
-	Gtk::Button *hotkey_button;
-	Glib::ustring hotkey_name = "";
+	GtkButton *hotkey_button;
 
-	Gtk::SpinButton *milliseconds_entry;
-	Gtk::SpinButton *seconds_entry;
-	Gtk::SpinButton *minutes_entry;
-	Gtk::SpinButton *hours_entry;
+	struct GDeleter {
+		inline void operator()(char *string) {
+			if (string)
+				g_free(string);
+		}
+	};
 
-	Gtk::DropDown *mouse_button_dropdown;
-	Gtk::DropDown *click_type_dropdown;
+	std::unique_ptr<char, GDeleter> hotkey_name = nullptr;
+
+	GtkSpinButton *milliseconds_entry;
+	GtkSpinButton *seconds_entry;
+	GtkSpinButton *minutes_entry;
+	GtkSpinButton *hours_entry;
+
+	GtkDropDown *mouse_button_dropdown;
+	GtkDropDown *click_type_dropdown;
 
 	std::chrono::microseconds input_interval;
 
-	Gtk::CheckButton *current_location_toggle;
-	Gtk::CheckButton *pick_location_toggle;
-	Gtk::SpinButton *x_position_entry;
-	Gtk::SpinButton *y_position_entry;
+	GtkCheckButton *current_location_toggle;
+	GtkCheckButton *pick_location_toggle;
+	GtkSpinButton *x_position_entry;
+	GtkSpinButton *y_position_entry;
 
-	Gtk::CheckButton *repeat_toggle;
-	Gtk::SpinButton *click_repeat_counter;
-	Gtk::CheckButton *repeal_until_stopped_toggle;
+	GtkCheckButton *repeat_toggle;
+	GtkSpinButton *click_repeat_counter;
+	GtkCheckButton *repeal_until_stopped_toggle;
 
 	bool sending_inputs;
 	bool capturing_key_presses;
@@ -65,7 +77,7 @@ private:
 	void update_options();
 	void connect_signals();
 
-	bool on_key_pressed(guint keyval, guint keycode, Gdk::ModifierType state);
+	bool on_key_pressed(guint keyval, guint keycode, GdkModifierType state);
 
 	void start_clicker();
 	void stop_clicker();
@@ -73,7 +85,8 @@ private:
 	void set_sending_inputs(bool p_sending_inputs);
 	void set_capturing_keypresses(bool p_capturing_key_presses);
 public:
-	MainWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+	MainWindow(GtkBuilder *builder);
+	~MainWindow();
 
 	void toggle_clicker();
 
@@ -96,6 +109,14 @@ public:
 
 	inline bool is_clicker_running() const {
 		return threaded_clicker.is_running();
+	}
+
+	inline GtkApplicationWindow *get_window() {
+		return application_window;
+	}
+
+	inline void present() {
+		gtk_window_present(GTK_WINDOW(get_window()));
 	}
 };
 

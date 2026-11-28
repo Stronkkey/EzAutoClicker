@@ -29,6 +29,7 @@ configure_file(
 
 sources = files(
   'src/app.cpp',
+  'src/dispatcher.cpp',
   'src/input/clicker_factory.cpp',
   'src/input/evdev/hotkey_listener_evdev.cpp',
   'src/input/evdev/clicker_uinput.cpp',
@@ -70,11 +71,11 @@ allow_root = get_option('run_as_root').allowed()
 build_tests = get_option('tests').enabled()
 
 libevdev_dep = dependency('libevdev')
-gtkmm4_dep = dependency('gtkmm-4.0')
+gtk4_dep = dependency('gtk4')
 
 dependencies = [
   libevdev_dep,
-  gtkmm4_dep,
+  gtk4_dep,
 ]
 
 extra_dependencies = []

@@ -14,8 +14,7 @@
  */
 #pragma once
 
-#include <glibmm/dispatcher.h>
-
+#include <src/dispatcher.hpp>
 #include <src/input/hotkey.hpp>
 
 namespace EzAutoClicker {
@@ -27,7 +26,7 @@ protected:
 	Hotkey hotkey = {};
 public:
 	virtual ~HotkeyListener() = default;
-	Glib::Dispatcher signal_pressed = {};
+	Dispatcher signal_pressed = {};
 
 	virtual bool is_reading() const =0;
 	virtual void start_reading() =0;
